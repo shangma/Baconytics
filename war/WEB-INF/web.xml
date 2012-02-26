@@ -15,4 +15,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<welcome-file-list>
 		<welcome-file>baconytics</welcome-file>
 	</welcome-file-list>
+	
+	<servlet>
+        <servlet-name>aggregator</servlet-name>
+        <servlet-class>edu.gatech.cc.Baconytics.BAggregator</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>aggregator</servlet-name>
+        <url-pattern>/aggregator</url-pattern>
+    </servlet-mapping>
 </web-app>
