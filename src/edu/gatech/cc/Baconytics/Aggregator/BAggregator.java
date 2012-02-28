@@ -253,7 +253,7 @@ public class BAggregator extends HttpServlet {
                 System.out.println("suffix " + suffix);
                 suffix = getRedditTitles(baseUrl + "?count=25&after=" + suffix);
             }
-            pm.close();
+            // pm.close();
             // printAllData();
             writer.println("<a href='./show'>See results</a>");
         } catch (Exception e) {
