@@ -18,10 +18,28 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	
 	<servlet>
         <servlet-name>aggregator</servlet-name>
-        <servlet-class>edu.gatech.cc.Baconytics.BAggregator</servlet-class>
+        <servlet-class>edu.gatech.cc.Baconytics.Aggregator.BAggregator</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>aggregator</servlet-name>
         <url-pattern>/aggregator</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>show</servlet-name>
+        <servlet-class>edu.gatech.cc.Baconytics.Aggregator.DisplayServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>show</servlet-name>
+        <url-pattern>/show</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>delete</servlet-name>
+        <servlet-class>edu.gatech.cc.Baconytics.Aggregator.DeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>delete</servlet-name>
+        <url-pattern>/delete</url-pattern>
     </servlet-mapping>
 </web-app>
