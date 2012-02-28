@@ -17,6 +17,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</welcome-file-list>
 	
 	<servlet>
+		<servlet-name>ScraperServlet</servlet-name>
+		<servlet-class>edu.gatech.cc.Baconytics.ScraperServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ScraperServlet</servlet-name>
+		<url-pattern>/scraper</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
         <servlet-name>aggregator</servlet-name>
         <servlet-class>edu.gatech.cc.Baconytics.Aggregator.BAggregator</servlet-class>
     </servlet>
