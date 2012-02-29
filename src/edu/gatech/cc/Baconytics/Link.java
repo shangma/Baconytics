@@ -1,40 +1,36 @@
 package edu.gatech.cc.Baconytics;
 
-public final class Article implements Comparable<Article> {
-	private final String author, domain, id, name, permalink, selftext,
-			subreddit, subredditId, title, url;
-	private final int downs, numComments, score, ups;
-	private final long createdUtc, timeSeen;
-	private final boolean isSelf, over18;
+import java.util.List;
 
-	public Article(String author, String domain, String id, String name,
-			String permalink, String selftext, String subreddit,
-			String subredditId, String title, String url, long createdUtc,
-			int downs, int numComments, int score, int ups, long timeSeen,
-			boolean isSelf, boolean over18) {
+public final class Link implements Comparable<Link> {
+	private final String author, domain, id, name, permalink, subreddit,
+			subredditId, title, url;
+	private final long createdUtc;
+	private final boolean isSelf, over18;
+	private final List<LinkStats> linkStats;
+
+	public Link(String id, String name, String author, String domain,
+			String permalink, String subreddit, String subredditId,
+			String title, String url, long createdUtc, boolean isSelf,
+			boolean over18, List<LinkStats> linkStats) {
 		this.author = author;
 		this.domain = domain;
 		this.id = id;
 		this.name = name;
 		this.permalink = permalink;
-		this.selftext = selftext;
 		this.subreddit = subreddit;
 		this.subredditId = subredditId;
 		this.title = title;
 		this.url = url;
 		this.createdUtc = createdUtc;
-		this.downs = downs;
-		this.numComments = numComments;
-		this.score = score;
-		this.ups = ups;
-		this.timeSeen = timeSeen;
 		this.isSelf = isSelf;
 		this.over18 = over18;
+		this.linkStats = linkStats;
 	}
 
 	@Override
-	public int compareTo(Article compArticle) {
-		return score - compArticle.getScore();
+	public int compareTo(Link compArticle) {
+		return (int) (createdUtc - compArticle.getCreatedUtc());
 	}
 
 	public String getAuthor() {
@@ -49,32 +45,20 @@ public final class Article implements Comparable<Article> {
 		return domain;
 	}
 
-	public int getDowns() {
-		return downs;
-	}
-
 	public String getId() {
 		return id;
+	}
+
+	public List<LinkStats> getLinkStats() {
+		return linkStats;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public int getNumComments() {
-		return numComments;
-	}
-
 	public String getPermalink() {
 		return permalink;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public String getSelftext() {
-		return selftext;
 	}
 
 	public String getSubreddit() {
@@ -85,16 +69,8 @@ public final class Article implements Comparable<Article> {
 		return subredditId;
 	}
 
-	public long getTimeSeen() {
-		return timeSeen;
-	}
-
 	public String getTitle() {
 		return title;
-	}
-
-	public int getUps() {
-		return ups;
 	}
 
 	public String getUrl() {
@@ -112,22 +88,16 @@ public final class Article implements Comparable<Article> {
 	@Override
 	public String toString() {
 		StringBuilder toRet = new StringBuilder();
-		toRet.append("author: ").append(getAuthor()).append("\n");
-		toRet.append("domain: ").append(getDomain()).append("\n");
 		toRet.append("id: ").append(getId()).append("\n");
 		toRet.append("name: ").append(getName()).append("\n");
+		toRet.append("author: ").append(getAuthor()).append("\n");
+		toRet.append("domain: ").append(getDomain()).append("\n");
 		toRet.append("permalink: ").append(getPermalink()).append("\n");
-		toRet.append("selftext: ").append(getSelftext()).append("\n");
 		toRet.append("subreddit: ").append(getSubreddit()).append("\n");
 		toRet.append("subredditId: ").append(getSubredditId()).append("\n");
 		toRet.append("title: ").append(getTitle()).append("\n");
 		toRet.append("url: ").append(getUrl()).append("\n");
 		toRet.append("createdUtc: ").append(getCreatedUtc()).append("\n");
-		toRet.append("downs: ").append(getDowns()).append("\n");
-		toRet.append("numComments: ").append(getNumComments()).append("\n");
-		toRet.append("score: ").append(getScore()).append("\n");
-		toRet.append("ups: ").append(getUps()).append("\n");
-		toRet.append("timeSeen: ").append(getTimeSeen()).append("\n");
 		if (isSelf) {
 			toRet.append("isSelf: true\n");
 		} else {

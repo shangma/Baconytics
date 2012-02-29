@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,7 +21,6 @@ import org.json.JSONObject;
 @SuppressWarnings("serial")
 public class ScraperServlet extends HttpServlet {
 	private static final int TOTAL_TIME_REQUEST = 4;
-	private static final int POSTS_PER_REQUEST = 25;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -28,13 +28,13 @@ public class ScraperServlet extends HttpServlet {
 
 		// Gather Data
 		PrintWriter writer = resp.getWriter();
-		List<Article> articles = new LinkedList<Article>();
+		List<Link> links = new LinkedList<Link>();
 		String baseUrl = "http://www.reddit.com/r/all/top/.json";
 
-		// TODO(Andrew) Parse JSON into Article objects and store into database
+		// TODO(Andrew) Parse JSON into Link objects and store into database
 		// Requesting top 100 topics
 		try {
-			List<Article> articleBundle;
+			List<Link> linkBundle;
 			String strJson = "", lastTopic = "";
 			for (int requests = 0; requests < TOTAL_TIME_REQUEST; requests++) {
 				if (requests == 0) {
@@ -42,11 +42,10 @@ public class ScraperServlet extends HttpServlet {
 				} else {
 					strJson = getJSON(baseUrl + "?count=25&after=" + lastTopic);
 				}
-				articleBundle = parseJSON(strJson);
-				if (articleBundle.size() > 0) {
-					articles.addAll(articleBundle);
-					lastTopic = articleBundle.get(articleBundle.size() - 1)
-							.getId();
+				linkBundle = parseJSON(strJson);
+				if (linkBundle.size() > 0) {
+					links.addAll(linkBundle);
+					lastTopic = linkBundle.get(linkBundle.size() - 1).getId();
 				} else {
 					break;
 				}
@@ -57,8 +56,11 @@ public class ScraperServlet extends HttpServlet {
 		}
 
 		int i = 0;
-		for (Article a : articles) {
-			writer.println(i + " " + a.toString());
+		for (Link link : links) {
+			writer.println(i + " " + link.toString());
+			for (LinkStats linkStats : link.getLinkStats()) {
+				writer.println(linkStats.toString());
+			}
 			i++;
 		}
 
@@ -87,8 +89,8 @@ public class ScraperServlet extends HttpServlet {
 		connection.connect();
 
 		// Build the JSON String
-		reader = new BufferedReader(new InputStreamReader(connection
-				.getInputStream()));
+		reader = new BufferedReader(new InputStreamReader(
+				connection.getInputStream()));
 		while ((nextLine = reader.readLine()) != null) {
 			toRet.append(nextLine);
 		}
@@ -97,15 +99,15 @@ public class ScraperServlet extends HttpServlet {
 	}
 
 	/**
-	 * Parses the Reddit JSON in to a list of articles
+	 * Parses the Reddit JSON in to a list of Links
 	 * 
 	 * @param strJson
 	 *            the JSON String
-	 * @return A list of Articles
+	 * @return A list of Links
 	 * @throws JSONException
 	 */
-	private List<Article> parseJSON(String strJson) throws JSONException {
-		List<Article> toRet = new LinkedList<Article>();
+	private List<Link> parseJSON(String strJson) throws JSONException {
+		List<Link> toRet = new LinkedList<Link>();
 		String author, domain, id, name, permalink, selftext, subreddit, subredditId, title, url;
 		int downs, numComments, score, ups;
 		long createdUtc, timeSeen;
@@ -115,31 +117,33 @@ public class ScraperServlet extends HttpServlet {
 		JSONArray arrJson = json.optJSONObject("data").optJSONArray("children");
 
 		for (int i = 0; i < arrJson.length(); i++) {
-			JSONObject articleJson = arrJson.getJSONObject(i).getJSONObject(
-					"data");
-			author = articleJson.getString("author");
-			domain = articleJson.getString("domain");
-			id = articleJson.getString("id");
-			name = articleJson.getString("name");
-			permalink = articleJson.getString("permalink");
-			selftext = articleJson.getString("selftext");
-			subreddit = articleJson.getString("subreddit");
-			subredditId = articleJson.getString("subreddit_id");
-			title = articleJson.getString("title");
-			url = articleJson.getString("url");
-			createdUtc = articleJson.getInt("created_utc");
-			downs = articleJson.getInt("downs");
-			numComments = articleJson.getInt("num_comments");
-			score = articleJson.getInt("score");
-			ups = articleJson.getInt("ups");
+			JSONObject linkJson = arrJson.getJSONObject(i)
+					.getJSONObject("data");
+			author = linkJson.getString("author");
+			domain = linkJson.getString("domain");
+			id = linkJson.getString("id");
+			name = linkJson.getString("name");
+			permalink = linkJson.getString("permalink");
+			selftext = linkJson.getString("selftext");
+			subreddit = linkJson.getString("subreddit");
+			subredditId = linkJson.getString("subreddit_id");
+			title = linkJson.getString("title");
+			url = linkJson.getString("url");
+			createdUtc = linkJson.getInt("created_utc");
+			downs = linkJson.getInt("downs");
+			numComments = linkJson.getInt("num_comments");
+			score = linkJson.getInt("score");
+			ups = linkJson.getInt("ups");
 			timeSeen = System.currentTimeMillis();
-			isSelf = articleJson.getBoolean("is_self");
-			over18 = articleJson.getBoolean("over_18");
-			Article myArticle = new Article(author, domain, id, name,
-					permalink, selftext, subreddit, subredditId, title, url,
-					createdUtc, downs, numComments, score, ups, timeSeen,
-					isSelf, over18);
-			toRet.add(myArticle);
+			isSelf = linkJson.getBoolean("is_self");
+			over18 = linkJson.getBoolean("over_18");
+			ArrayList<LinkStats> linkStats = new ArrayList<LinkStats>();
+			linkStats.add(new LinkStats(id, timeSeen, score, ups, downs,
+					numComments, selftext));
+			Link myLink = new Link(id, name, author, domain, permalink,
+					subreddit, subredditId, title, url, createdUtc, isSelf,
+					over18, linkStats);
+			toRet.add(myLink);
 		}
 
 		return toRet;
