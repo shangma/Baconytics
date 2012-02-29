@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
   <cron>
-    <url>/aggregator</url>
-    <description>Update the aggregation every 10 minutes</description>
-    <schedule>every 10 minutes</schedule>
+    <url>/scraper</url>
+    <description>Run the scraper hourly</description>
+    <schedule>every 1 hours</schedule>
   </cron>
 </cronentries>

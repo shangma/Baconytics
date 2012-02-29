@@ -13,8 +13,8 @@ public class LinkStats implements Comparable<LinkStats> {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key key;
-	// @Persistent
-	// private Link link;
+	@Persistent
+	private Link link;
 
 	@Persistent
 	private int downs, numComments, score, ups;
@@ -53,9 +53,9 @@ public class LinkStats implements Comparable<LinkStats> {
 		return key;
 	}
 
-	// public Link getLink() {
-	// return link;
-	// }
+	public Link getLink() {
+		return link;
+	}
 
 	public int getNumComments() {
 		return numComments;

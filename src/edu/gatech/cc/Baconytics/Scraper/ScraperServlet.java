@@ -25,7 +25,7 @@ import edu.gatech.cc.Baconytics.DataModel.PMF;
 
 @SuppressWarnings("serial")
 public class ScraperServlet extends HttpServlet {
-	private static final int TOTAL_TIME_REQUEST = 4;
+	private static final int TOTAL_TIME_REQUEST = 20;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -36,7 +36,6 @@ public class ScraperServlet extends HttpServlet {
 		String baseUrl = "http://www.reddit.com/r/all/top/.json";
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 
-		// TODO(Andrew) Parse JSON into Link objects and store into database
 		// Requesting top [TOTAL_TIME_REQUEST * 25] topics
 		try {
 			List<Link> linkBundle;
@@ -50,7 +49,7 @@ public class ScraperServlet extends HttpServlet {
 				linkBundle = parseJSON(strJson);
 				if (linkBundle.size() > 0) {
 					links.addAll(linkBundle);
-					lastTopic = linkBundle.get(linkBundle.size() - 1).getId();
+					lastTopic = linkBundle.get(linkBundle.size() - 1).getName();
 				} else {
 					break;
 				}
@@ -60,6 +59,7 @@ public class ScraperServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		// Store links in to datastore
 		int i = 0;
 		for (Link link : links) {
 			pm.makePersistent(link);
