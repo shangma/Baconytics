@@ -1,4 +1,4 @@
-package edu.gatech.cc.Baconytics.Aggregator;
+package edu.gatech.cc.Baconytics.DataModel;
 
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManagerFactory;

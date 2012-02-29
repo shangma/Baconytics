@@ -1,13 +1,24 @@
-package edu.gatech.cc.Baconytics;
+package edu.gatech.cc.Baconytics.DataModel;
 
 import java.util.List;
 
-public final class Link implements Comparable<Link> {
-	private final String author, domain, id, name, permalink, subreddit,
-			subredditId, title, url;
-	private final long createdUtc;
-	private final boolean isSelf, over18;
-	private final List<LinkStats> linkStats;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable
+public class Link implements Comparable<Link> {
+	@PrimaryKey
+	private String id;
+	@Persistent
+	private String author, domain, name, permalink, subreddit, subredditId,
+			title, url;
+	@Persistent
+	private long createdUtc;
+	@Persistent
+	private boolean isSelf, over18;
+	@Persistent
+	private List<LinkStats> linkStats;
 
 	public Link(String id, String name, String author, String domain,
 			String permalink, String subreddit, String subredditId,

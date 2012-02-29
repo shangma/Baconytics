@@ -1,4 +1,4 @@
-package edu.gatech.cc.Baconytics;
+package edu.gatech.cc.Baconytics.Scraper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.gatech.cc.Baconytics.DataModel.Link;
+import edu.gatech.cc.Baconytics.DataModel.LinkStats;
+import edu.gatech.cc.Baconytics.DataModel.PMF;
+
 @SuppressWarnings("serial")
 public class ScraperServlet extends HttpServlet {
 	private static final int TOTAL_TIME_REQUEST = 4;
@@ -25,14 +30,14 @@ public class ScraperServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-
 		// Gather Data
 		PrintWriter writer = resp.getWriter();
 		List<Link> links = new LinkedList<Link>();
 		String baseUrl = "http://www.reddit.com/r/all/top/.json";
+		PersistenceManager pm = PMF.get().getPersistenceManager();
 
 		// TODO(Andrew) Parse JSON into Link objects and store into database
-		// Requesting top 100 topics
+		// Requesting top [TOTAL_TIME_REQUEST * 25] topics
 		try {
 			List<Link> linkBundle;
 			String strJson = "", lastTopic = "";
@@ -57,8 +62,10 @@ public class ScraperServlet extends HttpServlet {
 
 		int i = 0;
 		for (Link link : links) {
+			pm.makePersistent(link);
 			writer.println(i + " " + link.toString());
 			for (LinkStats linkStats : link.getLinkStats()) {
+				pm.makePersistent(linkStats);
 				writer.println(linkStats.toString());
 			}
 			i++;

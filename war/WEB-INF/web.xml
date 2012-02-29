@@ -8,47 +8,45 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>Baconytics</servlet-name>
 		<servlet-class>edu.gatech.cc.Baconytics.BaconyticsServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>Baconytics</servlet-name>
-		<url-pattern>/baconytics</url-pattern>
-	</servlet-mapping>
-	<welcome-file-list>
-		<welcome-file>baconytics</welcome-file>
-	</welcome-file-list>
-	
 	<servlet>
-		<servlet-name>ScraperServlet</servlet-name>
-		<servlet-class>edu.gatech.cc.Baconytics.ScraperServlet</servlet-class>
+		<servlet-name>scraper</servlet-name>
+		<servlet-class>edu.gatech.cc.Baconytics.Scraper.ScraperServlet</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>ScraperServlet</servlet-name>
-		<url-pattern>/scraper</url-pattern>
-	</servlet-mapping>
-	
 	<servlet>
         <servlet-name>aggregator</servlet-name>
         <servlet-class>edu.gatech.cc.Baconytics.Aggregator.BAggregator</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>aggregator</servlet-name>
-        <url-pattern>/aggregator</url-pattern>
-    </servlet-mapping>
-    
     <servlet>
         <servlet-name>show</servlet-name>
         <servlet-class>edu.gatech.cc.Baconytics.Aggregator.DisplayServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>show</servlet-name>
-        <url-pattern>/show</url-pattern>
-    </servlet-mapping>
-    
     <servlet>
         <servlet-name>delete</servlet-name>
         <servlet-class>edu.gatech.cc.Baconytics.Aggregator.DeleteServlet</servlet-class>
     </servlet>
+    
+    <servlet-mapping>
+		<servlet-name>Baconytics</servlet-name>
+		<url-pattern>/baconytics</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>scraper</servlet-name>
+		<url-pattern>/scraper</url-pattern>
+	</servlet-mapping>
+	 <servlet-mapping>
+        <servlet-name>aggregator</servlet-name>
+        <url-pattern>/aggregator</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>show</servlet-name>
+        <url-pattern>/show</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>delete</servlet-name>
         <url-pattern>/delete</url-pattern>
     </servlet-mapping>
+    
+    <welcome-file-list>
+		<welcome-file>baconytics</welcome-file>
+	</welcome-file-list>
 </web-app>

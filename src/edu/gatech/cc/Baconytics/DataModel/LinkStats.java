@@ -1,10 +1,29 @@
-package edu.gatech.cc.Baconytics;
+package edu.gatech.cc.Baconytics.DataModel;
 
-public final class LinkStats implements Comparable<LinkStats> {
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
 
-	private final int downs, numComments, score, ups;
-	private final String id, selftext;
-	private final long timeSeen;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.Text;
+
+@PersistenceCapable
+public class LinkStats implements Comparable<LinkStats> {
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Key key;
+	// @Persistent
+	// private Link link;
+
+	@Persistent
+	private int downs, numComments, score, ups;
+	@Persistent
+	private String id;
+	@Persistent
+	private Text selftext;
+	@Persistent
+	private long timeSeen;
 
 	public LinkStats(String id, long timeSeen, int score, int ups, int downs,
 			int numComments, String selftext) {
@@ -13,7 +32,7 @@ public final class LinkStats implements Comparable<LinkStats> {
 		this.score = score;
 		this.ups = ups;
 		this.id = id;
-		this.selftext = selftext;
+		this.selftext = new Text(selftext);
 		this.timeSeen = timeSeen;
 	}
 
@@ -30,6 +49,14 @@ public final class LinkStats implements Comparable<LinkStats> {
 		return id;
 	}
 
+	public Key getKey() {
+		return key;
+	}
+
+	// public Link getLink() {
+	// return link;
+	// }
+
 	public int getNumComments() {
 		return numComments;
 	}
@@ -38,7 +65,7 @@ public final class LinkStats implements Comparable<LinkStats> {
 		return score;
 	}
 
-	public String getSelftext() {
+	public Text getSelftext() {
 		return selftext;
 	}
 
@@ -59,7 +86,8 @@ public final class LinkStats implements Comparable<LinkStats> {
 		toRet.append("ups: ").append(getUps()).append("\n");
 		toRet.append("downs: ").append(getDowns()).append("\n");
 		toRet.append("numComments: ").append(getNumComments()).append("\n");
-		toRet.append("selftext: ").append(getSelftext()).append("\n");
+		toRet.append("selftext: ").append(getSelftext().toString())
+				.append("\n");
 		return toRet.toString();
 	}
 }
