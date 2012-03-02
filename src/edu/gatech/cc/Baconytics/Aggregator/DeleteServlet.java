@@ -12,32 +12,34 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
+import edu.gatech.cc.Baconytics.DataModel.PMF;
+
 @SuppressWarnings("serial")
 public class DeleteServlet extends HttpServlet {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    private static PrintWriter writer;
+	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+	private static PrintWriter writer;
 
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
 
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        writer = resp.getWriter();
-        writer.println("Deleting database");
-        Query query = pm.newQuery(Keyword.class);
-        query.deletePersistentAll();
-        query.closeAll();
+		PersistenceManager pm = PMF.get().getPersistenceManager();
+		writer = resp.getWriter();
+		writer.println("Deleting database");
+		Query query = pm.newQuery(Keyword.class);
+		query.deletePersistentAll();
+		query.closeAll();
 
-        query = pm.newQuery(Reddit.class);
-        query.deletePersistentAll();
-        query.closeAll();
+		query = pm.newQuery(Reddit.class);
+		query.deletePersistentAll();
+		query.closeAll();
 
-        query = pm.newQuery(Bundle.class);
-        query.deletePersistentAll();
-        query.closeAll();
+		query = pm.newQuery(Bundle.class);
+		query.deletePersistentAll();
+		query.closeAll();
 
-        pm.close();
-        writer.println("Done.");
+		pm.close();
+		writer.println("Done.");
 
-    }
+	}
 }
