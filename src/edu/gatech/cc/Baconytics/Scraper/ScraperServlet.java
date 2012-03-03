@@ -25,8 +25,8 @@ import edu.gatech.cc.Baconytics.DataModel.PMF;
 
 @SuppressWarnings("serial")
 public class ScraperServlet extends HttpServlet {
-	// Grab 8 * 25 links (GAE has a hard deadline of 30 sec)
-	private static final int TOTAL_TIME_REQUEST = 8;
+	// Grab 4 * 25 links (GAE has a hard deadline of 30 sec)
+	private static final int TOTAL_TIME_REQUEST = 4;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
