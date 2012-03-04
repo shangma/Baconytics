@@ -25,7 +25,8 @@ import edu.gatech.cc.Baconytics.DataModel.PMF;
 
 @SuppressWarnings("serial")
 public class ScraperServlet extends HttpServlet {
-	private static final int TOTAL_TIME_REQUEST = 20;
+	// Grab 4 * 25 links (GAE has a hard deadline of 30 sec)
+	private static final int TOTAL_TIME_REQUEST = 4;
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -53,6 +54,8 @@ public class ScraperServlet extends HttpServlet {
 				} else {
 					break;
 				}
+				// Make fewer than one request per two seconds
+				Thread.sleep(3 * 1000);
 			}
 
 		} catch (Exception e) {
@@ -94,6 +97,10 @@ public class ScraperServlet extends HttpServlet {
 		connection.setConnectTimeout(10 * 1000);
 		connection.setRequestMethod("GET");
 		connection.connect();
+
+		// Print Headers
+		System.out.println(connection.getResponseCode() + ": "
+				+ connection.getResponseMessage());
 
 		// Build the JSON String
 		reader = new BufferedReader(new InputStreamReader(

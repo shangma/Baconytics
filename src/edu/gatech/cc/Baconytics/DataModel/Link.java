@@ -17,7 +17,7 @@ public class Link implements Comparable<Link> {
 	private long createdUtc;
 	@Persistent
 	private boolean isSelf, over18;
-	@Persistent(mappedBy = "link")
+	@Persistent
 	private List<LinkStats> linkStats;
 
 	public Link(String id, String name, String author, String domain,
