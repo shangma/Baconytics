@@ -23,6 +23,22 @@ public class GAEPutter implements PutterBase<Reddit, KeyRedRel> {
 
     private static PersistenceManager pm = PMF.get().getPersistenceManager();
 
+    // To initlize the GAEKeyword entity in datastore
+    static {
+        Key redKey = KeyFactory
+                .createKey(GAEReddit.class.getSimpleName(), "@@");
+        Key kwKey = KeyFactory
+                .createKey(GAEKeyword.class.getSimpleName(), "@@");
+        GAEKeyword keyword = new GAEKeyword("@@");
+        keyword.setKey(kwKey);
+        GAEBundle bundle = new GAEBundle(redKey, keyword, -1.0);
+        HashSet<GAEBundle> bdSet = new HashSet<GAEBundle>();
+        bdSet.add(bundle);
+        keyword.setRedditList(bdSet);
+        pm.makePersistent(keyword);
+        System.out.println("Initialized GAEKeyword Entity");
+    }
+
     @SuppressWarnings("finally")
     private static GAEKeyword lookup(String keyword) {
         Query query = pm.newQuery(GAEKeyword.class);
