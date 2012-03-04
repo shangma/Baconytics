@@ -1,4 +1,4 @@
-package edu.gatech.cc.Baconytics.Aggregator;
+package edu.gatech.cc.Baconytics.appengine.DataModel;
 
 import java.util.HashSet;
 
@@ -10,7 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(detachable = "true")
-public class Keyword {
+public class GAEKeyword {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -20,14 +20,14 @@ public class Keyword {
     private String keyword;
 
     @Persistent(mappedBy = "keyword")
-    private HashSet<Bundle> bundleSet;
+    private HashSet<GAEBundle> bundleSet;
 
-    public Keyword(String keyword) {
+    public GAEKeyword(String keyword) {
         this.keyword = keyword;
-        bundleSet = new HashSet<Bundle>();
+        bundleSet = new HashSet<GAEBundle>();
     }
 
-    public Keyword(String keyword, HashSet<Bundle> bundleSet) {
+    public GAEKeyword(String keyword, HashSet<GAEBundle> bundleSet) {
         this.keyword = keyword;
         this.bundleSet = bundleSet;
     }
@@ -48,12 +48,17 @@ public class Keyword {
         return keyword;
     }
 
-    public void setRedditList(HashSet<Bundle> bundleSet) {
+    public void setRedditList(HashSet<GAEBundle> bundleSet) {
         this.bundleSet = bundleSet;
     }
 
-    public HashSet<Bundle> getBundleSet() {
+    public HashSet<GAEBundle> getBundleSet() {
         return bundleSet;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj != null && obj instanceof GAEKeyword
+                && this.key.equals(((GAEKeyword) obj).getKey());
+    }
 }

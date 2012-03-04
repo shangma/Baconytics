@@ -1,4 +1,4 @@
-package edu.gatech.cc.Baconytics.Aggregator;
+package edu.gatech.cc.Baconytics.appengine.DataModel;
 
 import java.util.HashSet;
 
@@ -10,55 +10,34 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
-public class Reddit {
+public class GAEReddit {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private Key key;
 
     @Persistent
-    private String name;
-
-    @Persistent
-    private String title;
+    private String id;
 
     @Persistent
     private HashSet<Key> keywordSet;
 
-    public Reddit(String name, String title) {
-        this.name = name;
-        this.title = title;
+    public GAEReddit(String id) {
+        this.id = id;
         keywordSet = new HashSet<Key>();
     }
 
-    public Reddit(String name, String title, HashSet<Key> keywordSet) {
-        this.name = name;
-        this.title = title;
+    public GAEReddit(String id, HashSet<Key> keywordSet) {
+        this.id = id;
         this.keywordSet = keywordSet;
     }
 
-    public void setKey(Key key) {
-        this.key = key;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Key getKey() {
-        return key;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
+    public String getId() {
+        return id;
     }
 
     public void setKeywordSet(HashSet<Key> keywordSet) {
@@ -67,6 +46,14 @@ public class Reddit {
 
     public HashSet<Key> getKeywordSet() {
         return keywordSet;
+    }
+
+    public Key getKey() {
+        return key;
+    }
+
+    public void setKey(Key key) {
+        this.key = key;
     }
 
 }
