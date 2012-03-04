@@ -15,7 +15,7 @@ public class GAEFeeder implements FeederBase<Reddit> {
 
     private static PersistenceManager pm = PMF.get().getPersistenceManager();
 
-    private static long lastUTCTime = 0;
+    public static long lastUTCTime = 0;
 
     public GAEFeeder() {
     }

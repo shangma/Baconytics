@@ -2,6 +2,7 @@ package test.edu.gatech.cc.Baconytics.appengine;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Time;
 import java.util.HashSet;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.Key;
 
 import edu.gatech.cc.Baconytics.DataModel.PMF;
+import edu.gatech.cc.Baconytics.appengine.GAEFeeder;
 import edu.gatech.cc.Baconytics.appengine.DataModel.GAEBundle;
 import edu.gatech.cc.Baconytics.appengine.DataModel.GAEKeyword;
 import edu.gatech.cc.Baconytics.appengine.DataModel.GAEReddit;
@@ -28,6 +30,8 @@ public class Show extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         writer = resp.getWriter();
+        Time tm = new Time(GAEFeeder.lastUTCTime);
+        writer.println("Last update: " + tm.toString());
         // Print all topics with keywords
         Query query = pm.newQuery(GAEReddit.class);
         @SuppressWarnings("unchecked")
