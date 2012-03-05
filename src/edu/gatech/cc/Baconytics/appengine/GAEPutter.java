@@ -21,10 +21,9 @@ import edu.gatech.cc.Baconytics.appengine.DataModel.Reddit;
 
 public class GAEPutter implements PutterBase<Reddit, KeyRedRel> {
 
-    private static PersistenceManager pm = PMF.get().getPersistenceManager();
-
     // To initlize the GAEKeyword entity in datastore
     static {
+        PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
             pm.newQuery(GAEKeyword.class);
         } catch (Exception e) {
@@ -44,7 +43,7 @@ public class GAEPutter implements PutterBase<Reddit, KeyRedRel> {
     }
 
     @SuppressWarnings("finally")
-    private static GAEKeyword lookup(String keyword) {
+    private static GAEKeyword lookup(String keyword, PersistenceManager pm) {
         try {
             Query query = pm.newQuery(GAEKeyword.class);
             query.setFilter("keyword == lastNameParam");
@@ -79,30 +78,38 @@ public class GAEPutter implements PutterBase<Reddit, KeyRedRel> {
         return ret;
     }
 
+    private static void updateGAEKeyword(KeyRedRel krr, GAEKeyword gaeKW) {
+        krr.setGaeKeyword(gaeKW);
+        HashSet<GAEBundle> bdSet = gaeKW.getBundleSet();
+        HashSet<RedRel> rrSet = krr.getRedrelSet();
+        for (RedRel item : rrSet) {
+            GAEReddit iGaeReddit = item.getReddit().getGaeReddit();
+            iGaeReddit.getKeywordSet().add(gaeKW.getKey());
+            GAEBundle bundle = new GAEBundle(iGaeReddit.getKey(),
+                    item.getRelevance());
+            bdSet.add(bundle);
+        }
+    }
+
     private static void popluateGAEKeyword(Set<KeyRedRel> keywordSet) {
         for (KeyRedRel krr : keywordSet) {
+            PersistenceManager pm = PMF.get().getPersistenceManager();
             String keyword = krr.getKeyword();
-            GAEKeyword gaeKW = lookup(keyword);
+            GAEKeyword gaeKW = lookup(keyword, pm);
             Key kwKey = null;
             if (gaeKW != null) {
                 kwKey = gaeKW.getKey();
+                updateGAEKeyword(krr, gaeKW);
             } else {
                 kwKey = KeyFactory.createKey(GAEKeyword.class.getSimpleName(),
                         keyword);
                 gaeKW = new GAEKeyword(keyword);
                 gaeKW.setKey(kwKey);
+                updateGAEKeyword(krr, gaeKW); // For creating an item, use
+                                              // pm.makePersistent()
+                pm.makePersistent(gaeKW);
             }
-            krr.setGaeKeyword(gaeKW);
-            HashSet<GAEBundle> bdSet = gaeKW.getBundleSet();
-            HashSet<RedRel> rrSet = krr.getRedrelSet();
-            for (RedRel item : rrSet) {
-                GAEReddit iGaeReddit = item.getReddit().getGaeReddit();
-                iGaeReddit.getKeywordSet().add(kwKey);
-                GAEBundle bundle = new GAEBundle(iGaeReddit.getKey(),
-                        item.getRelevance());
-                bdSet.add(bundle);
-            }
-            pm.makePersistent(gaeKW);
+            pm.close(); // For updating & creating an item, use pm.close()
         }
     }
 
@@ -121,6 +128,7 @@ public class GAEPutter implements PutterBase<Reddit, KeyRedRel> {
         popluateGAEKeyword(right);
 
         // Store GAEReddit set
+        PersistenceManager pm = PMF.get().getPersistenceManager();
         pm.makePersistentAll(gaeRedditSet);
     }
 }

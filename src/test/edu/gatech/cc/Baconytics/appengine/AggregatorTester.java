@@ -19,7 +19,6 @@ public class AggregatorTester extends HttpServlet {
             throws IOException {
         new GAEAggregator().aggregate();
         writer = resp.getWriter();
-
         writer.println("<a href='./show'>See Results</a>");
     }
 }

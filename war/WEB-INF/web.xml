@@ -52,7 +52,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>deletegaebundle</servlet-name>
         <servlet-class>test.edu.gatech.cc.Baconytics.appengine.DeleteGAEBundle</servlet-class>
     </servlet>
-    
+    <servlet>
+        <servlet-name>timer</servlet-name>
+        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.SetUTCTime</servlet-class>
+    </servlet>
+        
     <servlet-mapping>
 		<servlet-name>Baconytics</servlet-name>
 		<url-pattern>/baconytics</url-pattern>
@@ -100,7 +104,13 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-mapping>
         <servlet-name>deletegaebundle</servlet-name>
         <url-pattern>/debug/deletegaebundle</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>  
+    <servlet-mapping>
+        <servlet-name>timer</servlet-name>
+        <url-pattern>/debug/timer</url-pattern>
+    </servlet-mapping>  
+
+      
     <welcome-file-list>
 		<welcome-file>baconytics</welcome-file>
 	</welcome-file-list>

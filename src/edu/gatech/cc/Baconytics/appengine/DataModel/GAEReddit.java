@@ -56,4 +56,14 @@ public class GAEReddit {
         this.key = key;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        ret.append("id: ").append(id).append(" Total: ")
+                .append(keywordSet.size()).append("\n");
+        for (Key key : keywordSet) {
+            ret.append("\t").append(key.toString()).append("\n");
+        }
+        return ret.toString();
+    }
 }

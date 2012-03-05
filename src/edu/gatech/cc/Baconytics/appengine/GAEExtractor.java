@@ -40,7 +40,7 @@ public class GAEExtractor implements
         for (Reddit reddit : source) {
             System.out.println("Processing " + reddit.getTitle());
             Set<TagRel> newWords = apiInterface.process(reddit.getTitle());
-            if (newWords == null) {
+            if (newWords == null || newWords.size() == 0) {
                 continue;
             }
             HashMap<String, RedRel> kwMap = Mapper.map(reddit, newWords);
@@ -72,7 +72,10 @@ public class GAEExtractor implements
                     continue;
                 }
                 RedRel redrel = new RedRel(reddit, tr.getRelevance());
-                ret.put(tr.getKeyword(), redrel);
+                ret.put(tr.getKeyword().toLowerCase()/*
+                                                      * Alchemy is
+                                                      * case-sensitive
+                                                      */, redrel);
             }
             if (ret.size() == 0) {
                 return null;

@@ -21,17 +21,17 @@ public class GAEBundle {
     private GAEKeyword keyword;
 
     @Persistent
-    public double relevance;
+    private double relevance;
 
     public GAEBundle(Key redditKey, double relevance) {
         this.setRedditKey(redditKey);
-        this.relevance = relevance;
+        this.setRelevance(relevance);
     }
 
     public GAEBundle(Key redditKey, GAEKeyword keyword, double relevance) {
         this.redditKey = redditKey;
         this.keyword = keyword;
-        this.relevance = relevance;
+        this.setRelevance(relevance);
     }
 
     public void setKey(Key key) {
@@ -56,5 +56,21 @@ public class GAEBundle {
 
     public void setRedditKey(Key redditKey) {
         this.redditKey = redditKey;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        ret.append("RID: ").append(getRedditKey()).append(" Rel: ")
+                .append(getRelevance()).append("\n");
+        return ret.toString();
+    }
+
+    public double getRelevance() {
+        return relevance;
+    }
+
+    public void setRelevance(double relevance) {
+        this.relevance = relevance;
     }
 }

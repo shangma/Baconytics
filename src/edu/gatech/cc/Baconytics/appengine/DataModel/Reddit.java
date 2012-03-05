@@ -60,4 +60,16 @@ public class Reddit {
     public void setGaeReddit(GAEReddit gaeReddit) {
         this.gaeReddit = gaeReddit;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        ret.append("ID: ").append(getId()).append(" Title: ")
+                .append(getTitle()).append(" Size: ").append(keywordSet.size())
+                .append("\n");
+        for (KeyRedRel key : keywordSet) {
+            ret.append("\t").append(key.getKeyword()).append("\n");
+        }
+        return ret.toString();
+    }
 }

@@ -16,17 +16,18 @@ public class FeederTester extends HttpServlet {
 
     private static PrintWriter writer;
 
+    @SuppressWarnings("static-access")
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         GAEFeeder feeder = new GAEFeeder();
         writer = resp.getWriter();
-        HashSet<Reddit> results = feeder.feed();
         writer.println("Testing GAEFeeder");
-        writer.println("Total: " + results.size());
+        HashSet<Reddit> results = feeder.feed();
+        writer.println("Total: " + results.size() + " UTCTime: "
+                + feeder.lastUTCTime);
         for (Reddit reddit : results) {
-            writer.println("Name " + reddit.getId() + "\n\tTitle: "
-                    + reddit.getTitle());
+            writer.println(reddit.toString());
         }
     }
 }

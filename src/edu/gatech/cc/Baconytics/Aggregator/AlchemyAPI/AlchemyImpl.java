@@ -20,9 +20,9 @@ import edu.gatech.cc.Baconytics.Aggregator.BaseClasses.NlpApiInterface;
 import edu.gatech.cc.Baconytics.appengine.DataModel.TagRel;
 
 public class AlchemyImpl implements NlpApiInterface<String, TagRel> {
+    private static final String apiKey = "7805e728abe20f66b57c94fa1dabac2558a06dd4";
     // private static final String apiKey =
-    // "7805e728abe20f66b57c94fa1dabac2558a06dd4";
-    private static final String apiKey = "7e868c622fa14eeeca487626bad8416c9df4a036";
+    // "7e868c622fa14eeeca487626bad8416c9df4a036";
     private static final AlchemyAPI alchemyObj = AlchemyAPI
             .GetInstanceFromString(apiKey);
 

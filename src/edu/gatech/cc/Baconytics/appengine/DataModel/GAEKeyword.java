@@ -61,4 +61,15 @@ public class GAEKeyword {
         return obj != null && obj instanceof GAEKeyword
                 && this.key.equals(((GAEKeyword) obj).getKey());
     }
+
+    @Override
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        ret.append("Keyword: ").append(getKeyword()).append(" Size: ")
+                .append(bundleSet.size()).append("\n");
+        for (GAEBundle bundle : bundleSet) {
+            ret.append("\t" + bundle.toString());
+        }
+        return ret.toString();
+    }
 }
