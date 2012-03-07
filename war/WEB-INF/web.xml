@@ -56,6 +56,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>timer</servlet-name>
         <servlet-class>test.edu.gatech.cc.Baconytics.appengine.SetUTCTime</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>analyzer</servlet-name>
+        <servlet-class>edu.gatech.cc.Baconytics.Analyzer.Analyzer</servlet-class>
+    </servlet>
         
     <servlet-mapping>
 		<servlet-name>Baconytics</servlet-name>
@@ -109,6 +113,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>timer</servlet-name>
         <url-pattern>/debug/timer</url-pattern>
     </servlet-mapping>  
+    <servlet-mapping>
+        <servlet-name>analyzer</servlet-name>
+        <url-pattern>/analyzer</url-pattern>
+    </servlet-mapping>
 
       
     <welcome-file-list>
