@@ -3,11 +3,22 @@
 <html>
 <body>
 
-<h3>This is where we show the trending topics..</h3>
-<p>topic</p>
-<p>topic</p>
-<p>topic</p>
-<p>topic</p>
+<h3>Top 10 trending topics:</h3>
+
+<script type="text/javascript">
+var txt = '{"employees":[' +
+'{"firstName":"John","lastName":"Doe" },' +
+'{"firstName":"Anna","lastName":"Smith" },' +
+'{"firstName":"Peter","lastName":"Jones" }]}';
+
+var obj = eval ("(" + txt + ")");
+for (i = 0; i < 3; i++){
+	//document.getElementById("fname").innerHTML=obj.employees[i].firstName 
+	document.write("First Name:" + obj.employees[i].firstName + "<br /> ");
+	//document.getElementById("lname").innerHTML=obj.employees[i].lastName
+	document.write("Last Name:" + obj.employees[i].lastName + "<br />");
+} 
+</script>
 
 </body>
 </html>
