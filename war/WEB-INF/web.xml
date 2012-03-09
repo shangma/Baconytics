@@ -5,70 +5,66 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet>
-		<servlet-name>Baconytics</servlet-name>
-		<servlet-class>edu.gatech.cc.Baconytics.BaconyticsServlet</servlet-class>
+		<servlet-name>baconytics</servlet-name>
+		<servlet-class>edu.gatech.cc.baconytics.BaconyticsServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>scraper</servlet-name>
-		<servlet-class>edu.gatech.cc.Baconytics.Scraper.ScraperServlet</servlet-class>
+		<servlet-class>edu.gatech.cc.baconytics.scraper.ScraperServlet</servlet-class>
 	</servlet>
-	<servlet>
-        <servlet-name>testfeeder</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.FeederTester</servlet-class>
-    </servlet>
     <servlet>
-        <servlet-name>testapi</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.NlpApiTester</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>testextractor</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.ExtractorTester</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>testputter</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.PutterTester</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>initkeyword</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.InitKeywordEntity</servlet-class>
-    </servlet>
-        <servlet>
         <servlet-name>aggregator</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.AggregatorTester</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>show</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.Show</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deletegaereddit</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.DeleteGAEReddit</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deletegaekeyword</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.DeleteGAEKeyword</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>deletegaebundle</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.DeleteGAEBundle</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>timer</servlet-name>
-        <servlet-class>test.edu.gatech.cc.Baconytics.appengine.SetUTCTime</servlet-class>
+        <servlet-class>edu.gatech.cc.baconytics.aggregator.AggregatorServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>analyzer</servlet-name>
-        <servlet-class>edu.gatech.cc.Baconytics.Analyzer.Analyzer</servlet-class>
+        <servlet-class>edu.gatech.cc.baconytics.analyzer.Analyzer</servlet-class>
     </servlet>
-        
     <servlet-mapping>
-		<servlet-name>Baconytics</servlet-name>
+		<servlet-name>baconytics</servlet-name>
 		<url-pattern>/baconytics</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>scraper</servlet-name>
 		<url-pattern>/scraper</url-pattern>
 	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>aggregator</servlet-name>
+        <url-pattern>/aggregator</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>analyzer</servlet-name>
+        <url-pattern>/analyzer</url-pattern>
+    </servlet-mapping>
+    
+	<servlet>
+        <servlet-name>testfeeder</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.FeederTester</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>testapi</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.NlpApiTester</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>testextractor</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.ExtractorTester</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>testputter</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.PutterTester</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>initkeyword</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.InitKeywordEntity</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>show</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.Show</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>timer</servlet-name>
+        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.SetUTCTime</servlet-class>
+    </servlet>
 	<servlet-mapping>
         <servlet-name>testfeeder</servlet-name>
         <url-pattern>/testfeeder</url-pattern>
@@ -90,35 +86,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <url-pattern>/initkeyword</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>aggregator</servlet-name>
-        <url-pattern>/aggregator</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>show</servlet-name>
         <url-pattern>/show</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>deletegaereddit</servlet-name>
-        <url-pattern>/debug/deletegaereddit</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deletegaekeyword</servlet-name>
-        <url-pattern>/debug/deletegaekeyword</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deletegaebundle</servlet-name>
-        <url-pattern>/debug/deletegaebundle</url-pattern>
-    </servlet-mapping>  
-    <servlet-mapping>
         <servlet-name>timer</servlet-name>
         <url-pattern>/debug/timer</url-pattern>
     </servlet-mapping>  
-    <servlet-mapping>
-        <servlet-name>analyzer</servlet-name>
-        <url-pattern>/analyzer</url-pattern>
-    </servlet-mapping>
 
-      
     <welcome-file-list>
 		<welcome-file>baconytics</welcome-file>
 	</welcome-file-list>

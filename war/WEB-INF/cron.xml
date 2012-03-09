@@ -5,5 +5,11 @@
     <description>Run the scraper hourly</description>
     <schedule>every 1 hours</schedule>
   </cron>
+  
+  <cron>
+    <url>/aggregator</url>
+    <description>Run the scraper hourly</description>
+    <schedule>every 6 hours</schedule>
+  </cron>
 </cronentries>
 
