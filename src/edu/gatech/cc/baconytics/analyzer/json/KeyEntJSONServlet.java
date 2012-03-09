@@ -46,7 +46,7 @@ public class KeyEntJSONServlet extends HttpServlet {
 		}
 
 		for (int i = 0; i < jsonArr.size(); i++) {
-			writer.println("hi " + jsonArr.get(i));
+			writer.println(jsonArr.get(i));
 		}
 
 	}
