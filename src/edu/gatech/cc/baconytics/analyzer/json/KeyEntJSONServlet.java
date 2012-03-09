@@ -30,6 +30,7 @@ public class KeyEntJSONServlet extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		writer = resp.getWriter();
+		// resp.get
 		// JSONObject json; = new JSONObject();
 
 		Query query = pm.newQuery(KeywordEntity.class);
@@ -43,10 +44,10 @@ public class KeyEntJSONServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 		}
+
 		for (int i = 0; i < jsonArr.size(); i++) {
-			writer.println(jsonArr.get(i));
+			writer.println("hi " + jsonArr.get(i));
 		}
 
 	}
-
 }
