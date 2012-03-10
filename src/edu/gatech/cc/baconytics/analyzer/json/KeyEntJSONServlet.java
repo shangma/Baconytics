@@ -35,10 +35,18 @@ public class KeyEntJSONServlet extends HttpServlet {
 
 		Query query = pm.newQuery(KeywordEntity.class);
 		keyEntList = (List<KeywordEntity>) query.execute();
+		jsonArr.clear();
+		int k = 0;
 		for (KeywordEntity e : keyEntList) {
 			try {
+				if (k > 9) {
+					break;
+				}
 				jsonArr.add(new JSONObject().put("keyword", e.getKeyword())
 						.put("score", e.getNumOfPosts()));
+				writer.println("test for input " + jsonArr.get(k)
+						+ " count is " + k);
+				k++;
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
