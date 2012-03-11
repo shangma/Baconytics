@@ -55,6 +55,7 @@ public class Analyzer extends HttpServlet {
 			pm.makePersistent(keyEntList.get(i));
 			writer.println(i + " " + keyEntList.toString());
 		}
+		writer.flush();
 
 	}
 

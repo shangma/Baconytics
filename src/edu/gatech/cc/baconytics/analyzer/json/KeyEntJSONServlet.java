@@ -29,7 +29,9 @@ public class KeyEntJSONServlet extends HttpServlet {
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
+		resp.setContentType("text/html");
 		writer = resp.getWriter();
+
 		// resp.get
 		// JSONObject json; = new JSONObject();
 
@@ -44,8 +46,8 @@ public class KeyEntJSONServlet extends HttpServlet {
 				}
 				jsonArr.add(new JSONObject().put("keyword", e.getKeyword())
 						.put("score", e.getNumOfPosts()));
-				writer.println("test for input " + jsonArr.get(k)
-						+ " count is " + k);
+				// writer.println("test for input " + jsonArr.get(k)
+				// + " count is " + k);
 				k++;
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
@@ -56,6 +58,7 @@ public class KeyEntJSONServlet extends HttpServlet {
 		for (int i = 0; i < jsonArr.size(); i++) {
 			writer.println(jsonArr.get(i));
 		}
+		writer.flush();
 
 	}
 }
