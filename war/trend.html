@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 
 <html>
-<body>
-
 <h3>Top 10 trending topics:</h3>
 
-<script type="text/javascript" src="jquery.js"></script>          
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>          
 <script type="text/javascript">  
 var txt = '{"employees":[' +
 '{"firstName":"John","lastName":"Doe" },' +
@@ -20,13 +18,32 @@ for (i = 0; i < 3; i++){
 	document.write("Last Name:" + obj.employees[i].lastName + "<br />");
 } 
 //alert("not yet");
-document.write("not yet1");
-$.get("index.html", function(response) {
-	document.write(response);
-    alert(response) 
-});
-alert("got it");
-</script>
+//document.write("not yet!");
 
+$(document).ready(function() {
+	   extractSource();
+});
+
+function extractSource() 
+{	
+		//$.get("index.html");
+		
+        //$("#divTestArea1").load("http://localhost:8888/keyentjsonservlet", function(responseText, statusText, xhr)
+        //This should the source from index.html
+        //NOTE: DOES NOT WORK!
+        $("#divTestArea1").load("index.html", function(responseText, statusText, xhr){
+            if(statusText == "success"){
+                    alert("Successfully loaded the content!");
+                    //this alert should display the source of the page extracted.
+                    alert(responseText);
+            }
+            if(statusText == "error")
+                    alert("An error occurred: " + xhr.status + " - " + xhr.statusText);
+    	});
+}
+
+</script>
+<body>
+	<div id="divTestArea1"></div>
 </body>
 </html>
