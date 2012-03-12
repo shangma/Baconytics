@@ -53,7 +53,8 @@ public class Analyzer extends HttpServlet {
 		// store keyEntList into datastore
 		for (int i = 0; i < RETURN_THRESHHOLD; i++) {
 			pm.makePersistent(keyEntList.get(i));
-			writer.println(i + " " + keyEntList.toString());
+			writer.println("this is the " + i + "th entity; "
+					+ keyEntList.get(i).toString());
 		}
 		writer.flush();
 
