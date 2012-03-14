@@ -9,22 +9,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.gatech.cc.baconytics.aggregator.Feeder;
-import edu.gatech.cc.baconytics.aggregator.model.LinkKeyword;
+import edu.gatech.cc.baconytics.model.LinkKeywordMap;
 
 @SuppressWarnings("serial")
 public class FeederTester extends HttpServlet {
 
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		Feeder feeder = new Feeder();
-		PrintWriter writer = resp.getWriter();
-		writer.println("Testing Feeder");
-		Set<LinkKeyword> results = feeder.feed();
-		writer.println("Total: " + results.size() + " UTCTime: "
-				+ feeder.fetchLastUTCTime());
-		for (LinkKeyword linkKeyword : results) {
-			writer.println(linkKeyword.toString());
-		}
-	}
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+        PrintWriter writer = resp.getWriter();
+        writer.println("Testing Feeder<br/>");
+        Set<LinkKeywordMap> results = Feeder.feed();
+        writer.println("Total: " + results.size() + " UTCTime: "
+                + Feeder.fetchLastUTCTime() + "<br/>");
+        for (LinkKeywordMap linkKeyword : results) {
+            writer.println(linkKeyword.getId() + "<br/>\n\t"
+                    + linkKeyword.getTitle() + "<br/>");
+        }
+    }
 }

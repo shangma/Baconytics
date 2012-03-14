@@ -1,5 +1,12 @@
 package edu.gatech.cc.baconytics.aggregator.model;
 
+/**
+ * This is an intermediate class for representing the output data of NLP API.
+ * Should only be used by Extractor
+ * 
+ * @author Michael
+ * 
+ */
 public class KeywordRelevance {
     private String keyword;
     private double relevance;

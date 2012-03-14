@@ -10,68 +10,83 @@ import com.google.appengine.api.datastore.Key;
 @PersistenceCapable
 public class LinkRelevanceBundle {
 
-	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key key;
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private Key key;
 
-	@Persistent
-	private KeywordLinkMap keyword;
+    @Persistent
+    private KeywordLinkMap keyword;
 
-	@Persistent
-	private Key linkKey;
+    @Persistent
+    private Key linkKey;
 
-	@Persistent
-	private double relevance;
+    @Persistent
+    private double relevance;
 
-	public LinkRelevanceBundle(Key linkKey, double relevance) {
-		this.setLinkKey(linkKey);
-		this.setRelevance(relevance);
-	}
+    private LinkKeywordMap link;
 
-	public LinkRelevanceBundle(Key linkKey, KeywordLinkMap keyword,
-			double relevance) {
-		this.linkKey = linkKey;
-		this.keyword = keyword;
-		this.setRelevance(relevance);
-	}
+    public LinkRelevanceBundle(LinkKeywordMap link, double relevance) {
+        this.link = link;
+        this.relevance = relevance;
+    }
 
-	public Key getKey() {
-		return key;
-	}
+    public LinkRelevanceBundle(Key linkKey, double relevance) {
+        this.setLinkKey(linkKey);
+        this.setRelevance(relevance);
+    }
 
-	public KeywordLinkMap getKeyword() {
-		return keyword;
-	}
+    public LinkRelevanceBundle(Key linkKey, KeywordLinkMap keyword,
+            double relevance) {
+        this.linkKey = linkKey;
+        this.keyword = keyword;
+        this.setRelevance(relevance);
+    }
 
-	public Key getLinkKey() {
-		return linkKey;
-	}
+    public Key getKey() {
+        return key;
+    }
 
-	public double getRelevance() {
-		return relevance;
-	}
+    public KeywordLinkMap getKeyword() {
+        return keyword;
+    }
 
-	public void setKey(Key key) {
-		this.key = key;
-	}
+    public Key getLinkKey() {
+        return linkKey;
+    }
 
-	public void setKeyword(KeywordLinkMap keyword) {
-		this.keyword = keyword;
-	}
+    public double getRelevance() {
+        return relevance;
+    }
 
-	public void setLinkKey(Key linkKey) {
-		this.linkKey = linkKey;
-	}
+    public void setKey(Key key) {
+        this.key = key;
+    }
 
-	public void setRelevance(double relevance) {
-		this.relevance = relevance;
-	}
+    public void setKeyword(KeywordLinkMap keyword) {
+        this.keyword = keyword;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder ret = new StringBuilder();
-		ret.append("RID: ").append(getLinkKey()).append(" Rel: ")
-				.append(getRelevance()).append("\n");
-		return ret.toString();
-	}
+    public void setLinkKey(Key linkKey) {
+        this.linkKey = linkKey;
+    }
+
+    public void setRelevance(double relevance) {
+        this.relevance = relevance;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder ret = new StringBuilder();
+        ret.append("RID: ").append(getLinkKey()).append(" Rel: ")
+                .append(getRelevance()).append("\n");
+        return ret.toString();
+    }
+
+    public LinkKeywordMap getLink() {
+        return link;
+    }
+
+    public void setLink(LinkKeywordMap link) {
+        this.link = link;
+    }
 }

@@ -11,6 +11,11 @@ import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable
 public class LinkKeywordMap {
+    // No need to store these attributes
+
+    private String title;
+    private String subreddit;
+    // private HashSet<KeywordLinkMap> keywordLinkSet;
 
     @Persistent
     private String id;
@@ -21,6 +26,13 @@ public class LinkKeywordMap {
 
     @Persistent
     private HashSet<Key> keywordSet;
+
+    public LinkKeywordMap(String id, String title, String subreddit) {
+        this.id = id;
+        this.setTitle(title);
+        this.setSubreddit(subreddit);
+        keywordSet = new HashSet<Key>();
+    }
 
     public LinkKeywordMap(String id) {
         this.id = id;
@@ -65,5 +77,21 @@ public class LinkKeywordMap {
             ret.append("\t").append(key.toString()).append("\n");
         }
         return ret.toString();
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getSubreddit() {
+        return subreddit;
+    }
+
+    public void setSubreddit(String subreddit) {
+        this.subreddit = subreddit;
     }
 }
