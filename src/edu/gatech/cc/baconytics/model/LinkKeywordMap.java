@@ -3,6 +3,7 @@ package edu.gatech.cc.baconytics.model;
 import java.util.HashSet;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -12,8 +13,9 @@ import com.google.appengine.api.datastore.Key;
 @PersistenceCapable
 public class LinkKeywordMap {
     // No need to store these attributes
-
+    @NotPersistent
     private String title;
+    @NotPersistent
     private String subreddit;
     // private HashSet<KeywordLinkMap> keywordLinkSet;
 

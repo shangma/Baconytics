@@ -48,7 +48,6 @@ public class SetUTCTime extends HttpServlet {
                     e.setTime(newTime);
                     writer.println("New Time: " + e.getTime());
                     System.out.println("New time " + newTime);
-                    return;
                 }
             }
             pm.close();
