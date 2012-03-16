@@ -24,6 +24,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
         <servlet-name>keyentjsonservlet</servlet-name>
         <servlet-class>edu.gatech.cc.baconytics.analyzer.json.KeyEntJSONServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>timevis</servlet-name>
+        <servlet-class>edu.gatech.cc.baconytics.analyzer.ForumActivity</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>timevis</servlet-name>
+        <url-pattern>/timevisualization</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
 		<servlet-name>baconytics</servlet-name>
 		<url-pattern>/baconytics</url-pattern>
