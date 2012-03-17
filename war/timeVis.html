@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        $.ajax({
+            url: "./timevisualization",
+            success: function (array) {
+                var obj = jQuery.parseJSON(array);
+                console.log(array);
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Time');
+                data.addColumn('number', 'Avg');
+                data.addColumn('number', 'No. of Posts');
+                data.addColumn('number', 'No. of Votes');
+                data.addRows(obj);
+
+                var options = {
+                    title: 'Reddit'
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+                chart.draw(data, options);
+            }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+  </body>
+</html>

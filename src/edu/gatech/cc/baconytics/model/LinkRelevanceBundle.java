@@ -1,6 +1,7 @@
 package edu.gatech.cc.baconytics.model;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -23,6 +24,7 @@ public class LinkRelevanceBundle {
     @Persistent
     private double relevance;
 
+    @NotPersistent
     private LinkKeywordMap link;
 
     public LinkRelevanceBundle(LinkKeywordMap link, double relevance) {
