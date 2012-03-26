@@ -38,6 +38,28 @@
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
       }
+	  
+	$(document).ready(function() {
+	alert("got in invis")
+		makeInvis();
+	});
+	
+	function makeInvis() {
+		alert("got in invis");
+		chart_div.style.display = "none";
+	}
+	
+	function loadChart(element) {
+		google.load("visualization", "1", {packages:["corechart"]});
+		google.setOnLoadCallback( function() {
+			var data = new google.visualization.DataTable();
+			// Added data
+
+			var chart = new google.visualization.LineChart(document.getElementById(element));
+			chart.draw(data, {width: 900, height: 400});
+     });
+	}
+	
     </script>
   </head>
 

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+
+<h4>Choose metric</h4>
+
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="jquery.selectbox-0.1.3.min.js"></script>
+<script type="text/javascript">
+
+var sel = 99;
+function alertselected(selectobj){
+ //alert(selectobj.selectedIndex + " is the selected ");
+ sel = selectobj.selectedIndex;
+ //alert(sel);
+ window.changeLayout();
+ 
+}
+</script>
+
+<form id="theForm">
+<select id="dropDown" onChange="alertselected(this)">
+	<option>Option 1</option>
+	<option>Option 2</option>
+	<option>Option 3</option>
+</select> 
+
+</form>
+	
+</script>
+<body>
+     
+</body>
+</html>
