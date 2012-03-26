@@ -1,26 +1,26 @@
 body {
-background-color: #000
-margin-top: 0px;
-margin-bottom: 0px;
+	background-color: #000
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 #outerContainer {
-min-height:20em;
-width: 800px;
-margin-right: auto;
-margin-left: auto;
+	min-height:20em;
+	width: 1000px;
+	margin-right: auto;
+	margin-left: auto;
 }
 
-#topContainer {
+#leftContainer {
 	min-height:20em;
-	width: 200px;
+	width: 300px;
 	margin-left: left;
 	position: absolute;
 }
 
 #articleLinkContainer {
 	min-height:60em;
-	width: 600px;
+	width: 700px;
 	margin-right: right;
 	margin-left: auto;
 	z-index: 1;
@@ -29,68 +29,67 @@ margin-left: auto;
 
 #bottomContainer {
 	min-height:60em;
-	width: 600px;
+	width: 700px;
 	margin-right: auto;
 	margin-left: auto;
 	z-index: 2;
 }
 
 #metricChoose {
-min-height: 15em;
-min-width: 200px;
-background-color: #398;
-float: left;
-border-style:solid;
-border-width:1px;
-
+	min-height: 15em;
+	min-width: 300px;
+	background-color: #398;
+	float: left;
+	border-style:solid;
+	border-width:1px;
 }
 
 #trendingTopics {
-min-height: 45em;
-width: 200px;
-background-color: #502;
-float: left;
-border-style:solid;
-border-width:1px;
+	min-height: 45em;
+	width: 300px;
+	background-color: #502;
+	float: left;
+	border-style:solid;
+	border-width:1px;
 }
 
 #trendLinks {
-min-height: 40em;
-min-width: 600px;
-background-color: #092;
-float: left;
-border-style:solid;
-border-width:1px;
+	min-height: 40em;
+	min-width: 700px;
+	background-color: #092;
+	float: left;
+	border-style:solid;
+	border-width:1px;
 }
 
 #graphLeft {
-min-height: 20em;
-width: 298px;
-background-color: #224;
-float: left;
-border-style:solid;
-border-width:1px;
-display:block;
+	min-height: 20em;
+	width: 348px;
+	background-color: #146;
+	float: left;
+	border-style:solid;
+	border-width:1px;
+	display:block;
 }
 
 #graphRight {
-min-height: 20em;
-width: 298px;
-background-color: #124;
-float: right;
-z-index: 2;
-border-style:solid;
-border-width:1px;
-display:block;
+	min-height: 20em;
+	width: 348px;
+	background-color: #287;
+	float: right;
+	z-index: 2;
+	border-style:solid;
+	border-width:1px;
+	display:block;
 }
 
 #testingHidden {
-min-height: 20em;
-width: 298px;
-background-color: #124;
-float: right;
-z-index: 2;
-border-style:solid;
-border-width:1px;
-display:none;
+	min-height: 20em;
+	width: 348px;
+	background-color: #114;
+	float: right;
+	z-index: 2;
+	border-style:solid;
+	border-width:1px;
+	display:none;
 }

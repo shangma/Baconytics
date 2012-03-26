@@ -54,7 +54,7 @@
       }
 	  
 	  function drawChart3() {
-		alert("IN THERE!");
+		//alert("IN THERE!");
         // Create the data table.
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Topping');
@@ -73,7 +73,7 @@
                        'height':300};
 
         // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('graphRight'));
+        var chart = new google.visualization.PieChart(document.getElementById('testingHidden'));
 		
         chart.draw(data, options);
       }
@@ -84,7 +84,7 @@
 		 
 		google.setOnLoadCallback(function() {
 			$(function() {
-				alert("draw chart 2.2");
+				//alert("draw chart 2.2");
 				// init my stuff
 				var data = new google.visualization.DataTable();
 			  
@@ -103,6 +103,6 @@
 	 }
 	 
 	 function testCall(){
-		alert("in TestCall");
+		//alert("in TestCall");
 		document.write("inside gchart!");
 	}

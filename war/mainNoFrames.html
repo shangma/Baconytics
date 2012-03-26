@@ -20,6 +20,8 @@
       // Set a callback to run when the Google Visualization API is loaded.
       google.setOnLoadCallback(drawChart);
 	  google.setOnLoadCallback(drawChart2);
+	  google.setOnLoadCallback(drawChart3);
+	  
 $(document).ready(function() {
 		extractSource();
 		
@@ -76,9 +78,9 @@ function extractSource()
 {	
         $("#metricChoose").load("http://localhost:8888/metricSelect.html", function(responseText, statusText, xhr){
             if(statusText == "success"){
-                alert("Successfully loaded the content!");
+                //alert("Successfully loaded the content!");
                 //this alert should display the source of the page extracted.
-                alert("in metric");
+                //alert("in metric");
             }
             if(statusText == "error")
                 alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
@@ -86,9 +88,9 @@ function extractSource()
 		
 		$("#trendingTopics").load("http://localhost:8888/trend.html", function(responseText, statusText, xhr){
             if(statusText == "success"){
-                    alert("Successfully loaded the content!");
+                    //alert("Successfully loaded the content!");
                     //this alert should display the source of the page extracted.
-                    alert("in trendingTopics");
+                    //alert("in trendingTopics");
             }
             if(statusText == "error")
                     alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
@@ -97,48 +99,29 @@ function extractSource()
 		
 		$("#trendLinks").load("http://localhost:8888/link.html", function(responseText, statusText, xhr){
             if(statusText == "success"){
-                    alert("Successfully loaded the content!");
+                    //alert("Successfully loaded the content!");
                     //this alert should display the source of the page extracted.
-                    alert("in trendLinks");
+                    //alert("in trendLinks");
             }
             if(statusText == "error")
                     alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
     	});
 		
-		/*
-		$("#graphLefts").load("http://localhost:8888/chart.html", function(responseText, statusText, xhr){
-            if(statusText == "success"){
-                    alert("Successfully loaded the content!");
-                    //this alert should display the source of the page extracted.
-                    alert(responseText);
-            }
-            if(statusText == "error")
-                    alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
-    	});
-		
-		$("#graphRights").load("http://localhost:8888/chart.html", function(responseText, statusText, xhr){
-            if(statusText == "success"){
-                    alert("Successfully loaded the content!");
-                    //this alert should display the source of the page extracted.
-                    alert(responseText);
-            }
-            if(statusText == "error")
-                    alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
-    	});
-		*/
-		
-		
-		
+		//hacky fix for graph invisibility
+		toggle('graphRight');
+		toggle('graphLeft');
+				
 }
 
 function changeLayout(){
-alert("MADE IT!");
+//alert("MADE IT!");
 	google.load('visualization', '1.0', {'packages':['corechart']});
 	google.setOnLoadCallback(drawChart3);
-	alert("MADE IT BACK!");
+	//alert("MADE IT BACK!");
 	
 	toggle('graphRight');
 	toggle('testingHidden');
+	
 	/*
 	function toggleDiv(divId) {
 		$("#graphRight").toggle();
@@ -162,36 +145,26 @@ function toggle(id) {
 <body>
 
 	<div id="outerContainer">
-		<div id="topContainer">
+		<div id="leftContainer">
 
 			<div id="metricChoose"></div>
-			
 			<div id="trendingTopics"></div>
 					
 		</div>
 		
 		<div id="articleLinkContainer">
 		
-			<div id="trendLinks">
-				
-			</div>
-			<div id="graphLeft">
-				
-				
-			</div>
+			<div id="trendLinks"></div>
+			<div id="bottomContainer">
 			
-			
-			<div id="graphRight">
+				<div id="graphLeft"></div>
+				<div id="graphRight"></div>
+				<div id="testingHidden"></div>
 				
-			</div>
-			
-			<div id="testingHidden">
 			</div>
 			
 		</div>
-		<div id="bottomContainer">
-			
-		</div>
+		
 	</div>
 
 	<div
