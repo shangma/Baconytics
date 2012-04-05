@@ -3,12 +3,62 @@
 <html>
 <head>
 </head>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="jquery.json-2.3.js"></script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+		getLink();
+	});
+
+	function getLink(){
+		var str = "";
+		var link = "";
+		$.ajax({
+				url: "./trendlink",
+				success: function (array) {
+					var obj = jQuery.parseJSON(array);
+					$.each(obj, function(key, value){
+						//console.log(value);
+						$.each(value, function(k, v){
+							
+							//console.log(v);
+							if(k == '"title"'){
+								str = v;
+							}
+							else if(k == '"link"'){
+								link = v;
+							}
+							//$('#content').append(str + '</br>' + link + '</br>');
+							//console.log(str);
+							//console.log(link);
+							
+						});
+						$('#links').append('<a href="' + link + '">' + str + '</a></br>');
+						//var tmp = $.parseJSON(value);
+						//console.log(tmp.title);
+					});
+					//console.log(obj.title);
+					//str = $.evalJSON(obj).title;					
+				}
+		});
+		//$.getJSON("http://localhost:8888/trendlink", function(json) {	
+			//obj = data;
+			//for (i = 0; i < data.keyEnt.length; i++) {				
+			//	str = str + data.keyEnt[i].title + "<br />";
+				//console.log(json.title);
+			//}
+			//alert(strContent);
+			//txt.innerHTML = str;
+			//str = $.evalJSON(obj).title;
+			//alert(str);
+		//});
+	}
+</script>
 
 <body>
 <h3>This is where we show the links to the articles..</h3>
-<a href="">link</a></br>
-<a href="">link</a></br>
-<a href="">link</a>
+<p><b id='links'></b> </p> 
 </body>
 
 </html>

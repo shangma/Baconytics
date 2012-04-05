@@ -50,8 +50,8 @@ public class trendLinks extends HttpServlet {
 				JSONArray json = new JSONArray();
 				for (int j = 0; j < 10; j++) {
 					JSONObject item = new JSONObject();
-					item.put("title", trendTitle[j]);
-					item.put("link", trendLink[j]);
+					item.put("\"title\"", trendTitle[j]);
+					item.put("\"link\"", trendLink[j]);
 					json.put(item);
 				}
 				writer.println(json.toString());
