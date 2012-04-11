@@ -1,4 +1,10 @@
-<!-- Indices written at Wed, 11 Apr 2012 20:58:33 UTC -->
+<!-- Indices written at Wed, 11 Apr 2012 22:42:24 UTC -->
 
-<datastore-indexes/>
+<datastore-indexes>
 
+    <!-- Used 100 times in query history -->
+    <datastore-index kind="LinkStats" ancestor="true" source="auto">
+        <property name="linkStats_INTEGER_IDX" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

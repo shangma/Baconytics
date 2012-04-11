@@ -8,56 +8,39 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		getLink();
+		getLink('');
 	});
 
-	function getLink(){
+	function getLink(topic){
 		var str = "";
 		var link = "";
+		var keyword = topic;
+		//alert("1");
+		$('.links').remove();
 		$.ajax({
 				url: "./trendlink",
 				success: function (array) {
 					var obj = jQuery.parseJSON(array);
 					$.each(obj, function(key, value){
-						//console.log(value);
 						$.each(value, function(k, v){
-							
-							//console.log(v);
 							if(k == '"title"'){
 								str = v;
 							}
 							else if(k == '"link"'){
 								link = v;
-							}
-							//$('#content').append(str + '</br>' + link + '</br>');
-							//console.log(str);
-							//console.log(link);
-							
+							}							
 						});
-						$('#links').append('<a href="' + link + '">' + str + '</a></br>');
-						//var tmp = $.parseJSON(value);
-						//console.log(tmp.title);
-					});
-					//console.log(obj.title);
-					//str = $.evalJSON(obj).title;					
+						$('#links').append('<a class="links" href="' + link + '">' + str + '</br></a>');
+					});				
 				}
 		});
-		//$.getJSON("http://localhost:8888/trendlink", function(json) {	
-			//obj = data;
-			//for (i = 0; i < data.keyEnt.length; i++) {				
-			//	str = str + data.keyEnt[i].title + "<br />";
-				//console.log(json.title);
-			//}
-			//alert(strContent);
-			//txt.innerHTML = str;
-			//str = $.evalJSON(obj).title;
-			//alert(str);
-		//});
+		//alert("got here! end");
+		$('#kw').text(keyword);
 	}
 </script>
 
 <body>
-<h3>This is where we show the links to the articles..</h3>
+<h3>This is the links associated with the keyword: <div id="kw"></div></h3>
 <p><b id='links'></b> </p> 
 </body>
 

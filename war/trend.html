@@ -10,33 +10,28 @@
 	var strContent = "";
 
 	$(document).ready(function() {
-		extractSource();
+		getKeywords();
 	});
 	var json="test";
-
-	function extractSource() {
-		//document.write("<h3>Top 10 trending topics:</h3>")	
-		
-
-		
+    var topic=new Array();
+	
+	function getKeywords() {	
 		$.getJSON("http://localhost:8888/keyentjsonservlet", function(data) {
 			json = data;
 			
 			for (i = 0; i < data.keyEnt.length; i++) {
-				
-				//document.write("Trend: " + data.keyEnt[i].keyword + " ");
-				//document.write("Score: " + data.keyEnt[i].score + "<br />");
-				strContent= strContent +  "Trend: " + data.keyEnt[i].keyword + " " + "Score: " + data.keyEnt[i].score + "<br />";
+				strContent= strContent +  "Trend: <a href='javascript:getLinkwithKeyword(" + i + ")'>" + data.keyEnt[i].keyword + "</a> " + "Score: " + data.keyEnt[i].score + "<br />";
 				//alert(strContent);
+				//alert("repeat");
+				topic[i] = data.keyEnt[i].keyword;
 			}
 			//alert(strContent);
 			txt.innerHTML=strContent;
-		});
-		
-		
-		
-		
-
+		});	
+	}
+	function getLinkwithKeyword(i){
+		window.getLink(topic[i]);
+		//console.log(topic[i]);
 	}
 </script>
 <p><b id='content'></b> </p> 
