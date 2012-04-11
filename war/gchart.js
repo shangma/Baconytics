@@ -1,4 +1,8 @@
-    // Callback that creates and populates a data table,
+    	
+
+
+
+	// Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
       function drawChart(graphLoc) {
@@ -106,3 +110,47 @@
 		//alert("in TestCall");
 		document.write("inside gchart!");
 	}
+
+      function drawKeywordBarGraph(graphLoc) {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+
+	alert("0");
+
+	var strContent = "";
+	var json="test";
+
+	$.parseJSON("http://localhost:8888/keyentjsonservlet");
+	
+/*
+	$.getJSON("http://localhost:8888/keyentjsonservlet", function(retData) {
+		
+		json = retData;
+			
+		for (i = 0; i < retData.keyEnt.length; i++) {
+			alert("data.keyEnt[i].keyword");
+		}
+		
+	}
+*/
+	alert("1");
+        data.addColumn('string', 'Topping');
+        data.addColumn('number', 'Slices');
+        data.addRows([
+          ['testing', 3],
+          ['Onions', 1],
+          ['Olives', 1],
+          ['Zucchini', 1],
+          ['Pepperoni', 2]
+        ]);
+
+        // Set chart options
+        var options = {'title':'How Much Pizza I Ate Last Night',
+                       'width':400,
+                       'height':300};
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.BarChart(document.getElementById('graphLeft'));
+        chart.draw(data, options);
+      }
