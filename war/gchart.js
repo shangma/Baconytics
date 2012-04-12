@@ -111,46 +111,44 @@
 		document.write("inside gchart!");
 	}
 
-      function drawKeywordBarGraph(graphLoc) {
+    function drawKeywordBarGraph(graphLoc) {
 
-        // Create the data table.
-        var data = new google.visualization.DataTable();
+	$.ajax({
+            url: "./keyentjsonservlet",
+            success: function (array) {
+                var obj = jQuery.parseJSON(array);
+                //console.log(obj.keyEnt);
+				var array_data = new Array();
+				var i = 0;
+				$.each(obj.keyEnt, function(key,value){
+					var keyword,score;
+					$.each(value, function(k,v){
+						if(k == 'keyword'){
+							keyword = v;
+						}
+						else if(k == 'score'){
+							score = v;
+						}
+					});
+					array_data[i] = new Array();
+					array_data[i][0] = keyword;
+					array_data[i][1] = score;
+					i++
+				});
+				console.log(array_data);
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'keyword');
+                data.addColumn('number', 'score');
+                data.addRows(array_data);
 
-	alert("0");
+                var options = {
+                    'title': 'Trending topics',
+					'width': 400,
+					'height': 300
+                };
 
-	var strContent = "";
-	var json="test";
-
-	$.parseJSON("http://localhost:8888/keyentjsonservlet");
-	
-/*
-	$.getJSON("http://localhost:8888/keyentjsonservlet", function(retData) {
-		
-		json = retData;
-			
-		for (i = 0; i < retData.keyEnt.length; i++) {
-			alert("data.keyEnt[i].keyword");
-		}
-		
-	}
-*/
-	alert("1");
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows([
-          ['testing', 3],
-          ['Onions', 1],
-          ['Olives', 1],
-          ['Zucchini', 1],
-          ['Pepperoni', 2]
-        ]);
-
-        // Set chart options
-        var options = {'title':'How Much Pizza I Ate Last Night',
-                       'width':400,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.BarChart(document.getElementById('graphLeft'));
-        chart.draw(data, options);
+                var chart = new google.visualization.BarChart(document.getElementById('graphLeft'));
+                chart.draw(data, options);
+            }
+        });      
       }
