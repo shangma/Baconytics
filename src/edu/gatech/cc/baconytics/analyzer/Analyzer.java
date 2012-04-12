@@ -497,7 +497,7 @@ public class Analyzer extends HttpServlet {
 		for (KeywordLinkMap e : keywordList) {
 			if (e != null) {
 				KeywordEntity kE = new KeywordEntity(e.getKeyword(),
-						e.getBundleSetSize());
+						e.getBundleSetSize(), e);
 				// System.out.println(kE);
 				eList.add(kE);
 			}
