@@ -7,6 +7,8 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
 
+import edu.gatech.cc.baconytics.model.KeywordLinkMap;
+
 @PersistenceCapable(detachable = "true")
 public class KeywordEntity {
 
@@ -20,12 +22,16 @@ public class KeywordEntity {
 	@Persistent
 	private int numOfPosts = 1;
 
+	@Persistent
+	private KeywordLinkMap keywordLinkMap;
+
 	/*
 	 * @Persistent private HashSet<Key> keywordSet;
 	 */
-	public KeywordEntity(String keyword, int numOfPosts) {
+	public KeywordEntity(String keyword, int numOfPosts, KeywordLinkMap k) {
 		this.keyword = keyword;
 		this.numOfPosts = numOfPosts;
+		this.keywordLinkMap = k;
 		// keywordSet = new HashSet<Key>();
 	}
 
@@ -48,6 +54,10 @@ public class KeywordEntity {
 
 	public int getNumOfPosts() {
 		return numOfPosts;
+	}
+
+	public KeywordLinkMap getKeywordLinkMap() {
+		return this.keywordLinkMap;
 	}
 
 	/*
