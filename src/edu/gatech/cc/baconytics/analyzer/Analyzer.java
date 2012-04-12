@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import edu.gatech.cc.baconytics.model.AnalyzerCheckpoint;
 import edu.gatech.cc.baconytics.model.KeywordLinkMap;
 import edu.gatech.cc.baconytics.model.Link;
@@ -77,7 +81,7 @@ public class Analyzer extends HttpServlet {
 				analyzerCheckpoint = list.get(0);
 				analyzerCheckpoint.resetCheckPoint();
 				pm.currentTransaction().commit();
-				writer.println(analyzerCheckpoint.getTime());
+				// writer.println(analyzerCheckpoint.getTime());
 			}
 
 			return;
@@ -97,19 +101,19 @@ public class Analyzer extends HttpServlet {
 
 		// Print sorted keyEntList
 		if (!keyEntList.isEmpty()) {
-			writer.println("Total: " + keywordList.size() + "\n");
+			// writer.println("Total: " + keywordList.size() + "\n");
 			for (KeywordEntity e : keyEntList) {
-				writer.println(e.toString());
+				// writer.println(e.toString());
 			}
 		}
 
 		// store keyEntList into datastore
 		for (int i = 0; i < RETURN_THRESHHOLD; i++) {
 			pm.makePersistent(keyEntList.get(i));
-			writer.println("this is the " + i + "th entity; "
-					+ keyEntList.get(i).toString());
+			// writer.println("this is the " + i + "th entity; "
+			// + keyEntList.get(i).toString());
 		}
-		writer.flush();
+		// writer.flush();
 
 		// user
 
@@ -232,16 +236,61 @@ public class Analyzer extends HttpServlet {
 		Query userQuery = pm.newQuery(User.class);
 		userQuery.setRange(0, 10);
 		/*
-		 * Fetching top 10 results of highest Karma scorers
+		 * User Fetching top 10 results of highest Karma scorers
 		 */
 		userQuery.setOrdering("karma desc");
-		List<User> userList = (List<User>) userQuery.execute();
+		List<User> userList = (List<User>) userQuery.execute(); // sorted on
+																// karma
 
-		writer.println(" ");
-		writer.println("The Top Karmic users");
+		// writer.println(" ");
+		// writer.println("The Top Karmic users");
+
+		JSONArray json = new JSONArray();
+
+		JSONObject jsonObject = new JSONObject();
+
+		System.out.println(jsonObject.toString());
+
+		int i = 1;
 		for (User user : userList) {
-			writer.println("Username:" + user.getUsername()
-					+ " Karma accumulated: " + user.getKarma());
+			JSONArray karmaJSON = new JSONArray();
+
+			String username = user.getUsername();
+			if (jsonObject.has(username)) {
+				try {
+					JSONArray arr = (JSONArray) jsonObject.get(username);
+
+					arr.put(1, i);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+
+				JSONArray jsonObjectArray = new JSONArray();
+				for (int j = 0; j < 5; j++) {
+					jsonObjectArray.put(JSONObject.NULL);
+				}
+
+				try {
+					jsonObjectArray.put(0, username);
+					jsonObjectArray.put(1, i); // karma is at 0th place
+					jsonObject.put(username, jsonObjectArray);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			karmaJSON.put(username);
+			karmaJSON.put(1);
+			karmaJSON.put(user.getKarma());
+			karmaJSON.put(username);
+
+			// writer.println("Username:" + user.getUsername()
+			// + " Karma accumulated: " + user.getKarma());
+			json.put(karmaJSON);
+			i++;
 		}
 
 		userQuery.setRange(0, 10);
@@ -251,11 +300,49 @@ public class Analyzer extends HttpServlet {
 		userQuery.setOrdering("totalVisits desc");
 		userList = (List<User>) userQuery.execute();
 
-		writer.println(" ");
-		writer.println("Highest Hits collectors");
+		// writer.println(" ");
+		// writer.println("Highest Hits collectors");
+		i = 1;
 		for (User user : userList) {
-			writer.println("Username:" + user.getUsername()
-					+ " totalVisits accumulated: " + user.getTotalVisits());
+			JSONArray hitJSON = new JSONArray();
+			String username = user.getUsername();
+
+			if (jsonObject.has(username)) {
+				try {
+					JSONArray arr = (JSONArray) jsonObject.get(username);
+
+					arr.put(2, i);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+
+				JSONArray jsonObjectArray = new JSONArray();
+				for (int j = 0; j < 5; j++) {
+					jsonObjectArray.put(JSONObject.NULL);
+				}
+
+				try {
+					jsonObjectArray.put(0, username);
+					jsonObjectArray.put(2, i); // hits is at 1st place
+					jsonObject.put(username, jsonObjectArray);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			hitJSON.put(username);
+			hitJSON.put(2);
+			hitJSON.put(user.getTotalVisits());
+			hitJSON.put(username);
+			// writer.println("Username:" + user.getUsername()
+			// + " Karma accumulated: " + user.getKarma());
+			json.put(hitJSON);
+			// writer.println("Username:" + user.getUsername()
+			// /+ " totalVisits accumulated: " + user.getTotalVisits());
+			i++;
 		}
 
 		userQuery.setRange(0, 10);
@@ -265,11 +352,49 @@ public class Analyzer extends HttpServlet {
 		userQuery.setOrdering("totalLinks desc");
 		userList = (List<User>) userQuery.execute();
 
-		writer.println(" ");
-		writer.println("Highest contributors");
+		// writer.println(" ");
+		// writer.println("Highest contributors");
+		i = 1;
 		for (User user : userList) {
-			writer.println("Username:" + user.getUsername()
-					+ " totalLinks accumulated: " + user.getTotalLinks());
+			JSONArray ContriJSON = new JSONArray();
+			String username = user.getUsername();
+
+			if (jsonObject.has(username)) {
+				try {
+					JSONArray arr = (JSONArray) jsonObject.get(username);
+
+					arr.put(3, i);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+
+				JSONArray jsonObjectArray = new JSONArray();
+				for (int j = 0; j < 5; j++) {
+					jsonObjectArray.put(JSONObject.NULL);
+				}
+
+				try {
+					jsonObjectArray.put(0, username);
+					jsonObjectArray.put(3, i); // links is at 2nd place
+					jsonObject.put(username, jsonObjectArray);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			ContriJSON.put(username);
+			ContriJSON.put(3);
+			ContriJSON.put(user.getTotalLinks());
+			ContriJSON.put(username);
+			// writer.println("Username:" + user.getUsername()
+			// + " Karma accumulated: " + user.getKarma());
+			json.put(ContriJSON);
+			// writer.println("Username:" + user.getUsername()
+			// + " totalLinks accumulated: " + user.getTotalLinks());
+			i++;
 		}
 
 		userQuery.setRange(0, 10);
@@ -279,13 +404,61 @@ public class Analyzer extends HttpServlet {
 		userQuery.setOrdering("totalComments desc");
 		userList = (List<User>) userQuery.execute();
 
-		writer.println(" ");
-		writer.println("Highest Attention seekers");
+		// writer.println(" ");
+		// writer.println("Highest Attention seekers");
+		i = 1;
 		for (User user : userList) {
-			writer.println("Username:" + user.getUsername()
-					+ " totalComments accumulated: " + user.getTotalComments());
+			JSONArray attentJSON = new JSONArray();
+			String username = user.getUsername();
+
+			if (jsonObject.has(username)) {
+				try {
+					JSONArray arr = (JSONArray) jsonObject.get(username);
+
+					arr.put(4, i);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+
+				JSONArray jsonObjectArray = new JSONArray();
+				for (int j = 0; j < 5; j++) {
+					jsonObjectArray.put(JSONObject.NULL);
+				}
+
+				try {
+					jsonObjectArray.put(0, username);
+					jsonObjectArray.put(4, i); // comments is at 3rd place
+					jsonObject.put(username, jsonObjectArray);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			attentJSON.put(username);
+			attentJSON.put(4);
+			attentJSON.put(user.getTotalComments());
+			attentJSON.put(username);
+			// writer.println("Username:" + user.getUsername()
+			// + " Karma accumulated: " + user.getKarma());
+			json.put(attentJSON);
+			// writer.println("Username:" + user.getUsername()
+			// + " totalComments accumulated: " + user.getTotalComments());
+			i++;
 		}
-		writer.flush();
+		// writer.flush();
+
+		try {
+			JSONArray output = jsonObject.toJSONArray(jsonObject.names());
+			writer.println(output.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// writer.println(json.toString());
 
 	}
 
@@ -310,7 +483,7 @@ public class Analyzer extends HttpServlet {
 			analyzerCheckpoint = list.get(0);
 			analyzerCheckpoint.resetCheckPoint();
 			pm.currentTransaction().commit();
-			writer.println(analyzerCheckpoint.getTime());
+			// writer.println(analyzerCheckpoint.getTime());
 		}
 
 	}
