@@ -484,6 +484,7 @@ public class Analyzer extends HttpServlet {
 			analyzerCheckpoint.resetCheckPoint();
 			pm.currentTransaction().commit();
 			// writer.println(analyzerCheckpoint.getTime());
+
 		}
 
 	}
