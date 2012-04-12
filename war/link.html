@@ -37,9 +37,28 @@
 		//alert("got here! end");
 		$('#kw').text(keyword);
 	}
+	
+	var sel = 99;
+	function alertselected(selectobj){
+	
+		//alert(selectobj.selectedIndex + " is the selected ");
+		sel = selectobj.selectedIndex;
+		//alert(sel);
+		window.changeLayout();
+	}
 </script>
 
 <body>
+<div id="dropDown">
+	<form id="theForm" float: right;>
+		<select id="dropDown" onChange="alertselected(this)">
+			<option>Trending Topics</option>
+			<option>test 2</option>
+			<option>test 3</option>
+		</select> 
+
+	</form>
+</div>
 <h3>These are the links associated with the keyword: <div id="kw"></div></h3>
 <p><b id='links'></b> </p> 
 </body>
