@@ -1,6 +1,7 @@
 package edu.gatech.cc.baconytics.analyzer;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -22,7 +23,10 @@ public class KeywordEntity {
 	@Persistent
 	private int numOfPosts = 1;
 
-	@Persistent
+	// @Persistent
+	// private JSONArray urlJSONArray;
+
+	@NotPersistent
 	private KeywordLinkMap keywordLinkMap;
 
 	/*
@@ -31,6 +35,7 @@ public class KeywordEntity {
 	public KeywordEntity(String keyword, int numOfPosts, KeywordLinkMap k) {
 		this.keyword = keyword;
 		this.numOfPosts = numOfPosts;
+		// this.urlJSONArray = urlJSONArray;
 		this.keywordLinkMap = k;
 		// keywordSet = new HashSet<Key>();
 	}
@@ -56,8 +61,20 @@ public class KeywordEntity {
 		return numOfPosts;
 	}
 
+	// public JSONArray getURLJSONArray() {
+	// return this.urlJSONArray;
+	// }
+	//
+	// public void setURLJSONArray(JSONArray urlJSONArray) {
+	// this.urlJSONArray = urlJSONArray;
+	// }
+
 	public KeywordLinkMap getKeywordLinkMap() {
 		return this.keywordLinkMap;
+	}
+
+	public void setKeywordLinkMap(KeywordLinkMap k) {
+		this.keywordLinkMap = k;
 	}
 
 	/*
