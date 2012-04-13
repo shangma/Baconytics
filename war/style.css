@@ -120,6 +120,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	display:none;
 }
 
+#timeVis {
+	min-height: 18em;
+	width: 1000px;
+	background-color: #114;
+	float: right;
+	z-index: 2;
+	display:none;
+}
+
 #welcomeLeftContainer {
 	min-height:20em;
 	width: 300px;
