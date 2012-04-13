@@ -413,14 +413,6 @@ public class Analyzer extends HttpServlet {
 		}
 		writer.println(jsonUser.toString());
 
-		// try {
-		// // JSONArray output = jsonUser.toJSONArray(jsonUser.names);
-		// writer.println(jsonUser.toString());
-		// } catch (JSONException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-
 	}
 
 	/*
@@ -457,22 +449,6 @@ public class Analyzer extends HttpServlet {
 		List eList = new ArrayList<KeywordEntity>();
 		for (KeywordLinkMap e : keywordList) {
 			if (e != null) {
-
-				// JSONArray linkJSON = new JSONArray();
-				// Query linkQuery = pm.newQuery(Link.class);
-				// linkQuery.declareParameters("Key linkKey");
-				// for (LinkRelevanceBundle bundle : e.getBundleSet()) {
-				// Key linkKey = bundle.getLinkKey();
-				// linkList = (List<Link>) linkQuery.execute(linkKey);
-				// for (Link link : linkList) {
-				// JSONArray lJSON = new JSONArray();
-				// lJSON.put(link.getTitle());
-				// lJSON.put(link.getUrl());
-				//
-				// linkJSON.put(lJSON);
-				// }
-				//
-				// }
 
 				KeywordEntity kE = new KeywordEntity(e.getKeyword(),
 						e.getBundleSetSize(), e);
