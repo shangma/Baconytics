@@ -1,11 +1,14 @@
 package edu.gatech.cc.baconytics.analyzer;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+
+import edu.gatech.cc.baconytics.model.KeywordLinkMap;
 
 @PersistenceCapable(detachable = "true")
 public class KeywordEntity {
@@ -20,13 +23,20 @@ public class KeywordEntity {
 	@Persistent
 	private int numOfPosts = 1;
 
+	// @Persistent
+	// private JSONArray urlJSONArray;
+
+	@NotPersistent
+	private KeywordLinkMap keywordLinkMap;
+
 	/*
 	 * @Persistent private HashSet<Key> keywordSet;
 	 */
-	public KeywordEntity(String keyword, int numOfPosts) {
+	public KeywordEntity(String keyword, int numOfPosts, KeywordLinkMap k) {
 		this.keyword = keyword;
 		this.numOfPosts = numOfPosts;
-		// keywordSet = new HashSet<Key>();
+		// this.urlJSONArray = urlJSONArray;
+		this.keywordLinkMap = k;
 	}
 
 	// public GAEReddit(String id, HashSet<Key> keywordSet) {
@@ -48,6 +58,22 @@ public class KeywordEntity {
 
 	public int getNumOfPosts() {
 		return numOfPosts;
+	}
+
+	// public JSONArray getURLJSONArray() {
+	// return this.urlJSONArray;
+	// }
+	//
+	// public void setURLJSONArray(JSONArray urlJSONArray) {
+	// this.urlJSONArray = urlJSONArray;
+	// }
+
+	public KeywordLinkMap getKeywordLinkMap() {
+		return this.keywordLinkMap;
+	}
+
+	public void setKeywordLinkMap(KeywordLinkMap k) {
+		this.keywordLinkMap = k;
 	}
 
 	/*
