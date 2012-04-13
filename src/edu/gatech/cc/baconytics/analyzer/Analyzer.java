@@ -242,54 +242,41 @@ public class Analyzer extends HttpServlet {
 		List<User> userList = (List<User>) userQuery.execute(); // sorted on
 																// karma
 
-		// writer.println(" ");
-		// writer.println("The Top Karmic users");
-
-		JSONArray json = new JSONArray();
-
-		JSONObject jsonObject = new JSONObject();
-
-		System.out.println(jsonObject.toString());
+		JSONObject jsonUser = new JSONObject();
+		JSONArray categoryJSON;
 
 		int i = 1;
 		for (User user : userList) {
-			JSONArray karmaJSON = new JSONArray();
-
 			String username = user.getUsername();
-			if (jsonObject.has(username)) {
-				try {
-					JSONArray arr = (JSONArray) jsonObject.get(username);
+			try {
+				JSONArray karmaJSON = new JSONArray();
+				JSONObject jsonRank = new JSONObject();
+				jsonRank.put("rank", i);
 
-					arr.put(1, i);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
+				JSONObject jsonValue = new JSONObject();
+				jsonValue.put("value", user.getKarma());
 
-				JSONArray jsonObjectArray = new JSONArray();
-				for (int j = 0; j < 5; j++) {
-					jsonObjectArray.put(JSONObject.NULL);
+				karmaJSON.put(jsonRank);
+				karmaJSON.put(jsonValue);
+
+				JSONObject jsonKarma = new JSONObject();
+				jsonKarma.put("karma", karmaJSON);
+
+				if (jsonUser.has(username)) {
+					categoryJSON = jsonUser.getJSONArray(username);
+
+				} else {
+					categoryJSON = new JSONArray();
 				}
 
-				try {
-					jsonObjectArray.put(0, username);
-					jsonObjectArray.put(1, i); // karma is at 0th place
-					jsonObject.put(username, jsonObjectArray);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				categoryJSON.put(jsonKarma);
+				jsonUser.put(username, categoryJSON);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-			karmaJSON.put(username);
-			karmaJSON.put(1);
-			karmaJSON.put(user.getKarma());
-			karmaJSON.put(username);
-
-			// writer.println("Username:" + user.getUsername()
-			// + " Karma accumulated: " + user.getKarma());
-			json.put(karmaJSON);
 			i++;
 		}
 
@@ -304,44 +291,36 @@ public class Analyzer extends HttpServlet {
 		// writer.println("Highest Hits collectors");
 		i = 1;
 		for (User user : userList) {
-			JSONArray hitJSON = new JSONArray();
 			String username = user.getUsername();
+			try {
+				JSONArray visitsJSON = new JSONArray();
+				JSONObject jsonRank = new JSONObject();
+				jsonRank.put("rank", i);
 
-			if (jsonObject.has(username)) {
-				try {
-					JSONArray arr = (JSONArray) jsonObject.get(username);
+				JSONObject jsonValue = new JSONObject();
+				jsonValue.put("value", user.getTotalVisits());
 
-					arr.put(2, i);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				visitsJSON.put(jsonRank);
+				visitsJSON.put(jsonValue);
+
+				JSONObject jsonVisits = new JSONObject();
+				jsonVisits.put("visits", visitsJSON);
+
+				if (jsonUser.has(username)) {
+					categoryJSON = jsonUser.getJSONArray(username);
+
+				} else {
+					categoryJSON = new JSONArray();
 				}
-			} else {
 
-				JSONArray jsonObjectArray = new JSONArray();
-				for (int j = 0; j < 5; j++) {
-					jsonObjectArray.put(JSONObject.NULL);
-				}
+				categoryJSON.put(jsonVisits);
+				jsonUser.put(username, categoryJSON);
 
-				try {
-					jsonObjectArray.put(0, username);
-					jsonObjectArray.put(2, i); // hits is at 1st place
-					jsonObject.put(username, jsonObjectArray);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-			hitJSON.put(username);
-			hitJSON.put(2);
-			hitJSON.put(user.getTotalVisits());
-			hitJSON.put(username);
-			// writer.println("Username:" + user.getUsername()
-			// + " Karma accumulated: " + user.getKarma());
-			json.put(hitJSON);
-			// writer.println("Username:" + user.getUsername()
-			// /+ " totalVisits accumulated: " + user.getTotalVisits());
 			i++;
 		}
 
@@ -356,44 +335,36 @@ public class Analyzer extends HttpServlet {
 		// writer.println("Highest contributors");
 		i = 1;
 		for (User user : userList) {
-			JSONArray ContriJSON = new JSONArray();
 			String username = user.getUsername();
+			try {
+				JSONArray contriJSON = new JSONArray();
+				JSONObject jsonRank = new JSONObject();
+				jsonRank.put("rank", i);
 
-			if (jsonObject.has(username)) {
-				try {
-					JSONArray arr = (JSONArray) jsonObject.get(username);
+				JSONObject jsonValue = new JSONObject();
+				jsonValue.put("value", user.getTotalLinks());
 
-					arr.put(3, i);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				contriJSON.put(jsonRank);
+				contriJSON.put(jsonValue);
+
+				JSONObject jsonContri = new JSONObject();
+				jsonContri.put("contribution", contriJSON);
+
+				if (jsonUser.has(username)) {
+					categoryJSON = jsonUser.getJSONArray(username);
+
+				} else {
+					categoryJSON = new JSONArray();
 				}
-			} else {
 
-				JSONArray jsonObjectArray = new JSONArray();
-				for (int j = 0; j < 5; j++) {
-					jsonObjectArray.put(JSONObject.NULL);
-				}
+				categoryJSON.put(jsonContri);
+				jsonUser.put(username, categoryJSON);
 
-				try {
-					jsonObjectArray.put(0, username);
-					jsonObjectArray.put(3, i); // links is at 2nd place
-					jsonObject.put(username, jsonObjectArray);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-			ContriJSON.put(username);
-			ContriJSON.put(3);
-			ContriJSON.put(user.getTotalLinks());
-			ContriJSON.put(username);
-			// writer.println("Username:" + user.getUsername()
-			// + " Karma accumulated: " + user.getKarma());
-			json.put(ContriJSON);
-			// writer.println("Username:" + user.getUsername()
-			// + " totalLinks accumulated: " + user.getTotalLinks());
 			i++;
 		}
 
@@ -408,57 +379,47 @@ public class Analyzer extends HttpServlet {
 		// writer.println("Highest Attention seekers");
 		i = 1;
 		for (User user : userList) {
-			JSONArray attentJSON = new JSONArray();
 			String username = user.getUsername();
+			try {
+				JSONArray commentJSON = new JSONArray();
+				JSONObject jsonRank = new JSONObject();
+				jsonRank.put("rank", i);
 
-			if (jsonObject.has(username)) {
-				try {
-					JSONArray arr = (JSONArray) jsonObject.get(username);
+				JSONObject jsonValue = new JSONObject();
+				jsonValue.put("value", user.getTotalComments());
 
-					arr.put(4, i);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				commentJSON.put(jsonRank);
+				commentJSON.put(jsonValue);
+
+				JSONObject jsonComment = new JSONObject();
+				jsonComment.put("comments", commentJSON);
+
+				if (jsonUser.has(username)) {
+					categoryJSON = jsonUser.getJSONArray(username);
+
+				} else {
+					categoryJSON = new JSONArray();
 				}
-			} else {
 
-				JSONArray jsonObjectArray = new JSONArray();
-				for (int j = 0; j < 5; j++) {
-					jsonObjectArray.put(JSONObject.NULL);
-				}
+				categoryJSON.put(jsonComment);
+				jsonUser.put(username, categoryJSON);
 
-				try {
-					jsonObjectArray.put(0, username);
-					jsonObjectArray.put(4, i); // comments is at 3rd place
-					jsonObject.put(username, jsonObjectArray);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
-			attentJSON.put(username);
-			attentJSON.put(4);
-			attentJSON.put(user.getTotalComments());
-			attentJSON.put(username);
-			// writer.println("Username:" + user.getUsername()
-			// + " Karma accumulated: " + user.getKarma());
-			json.put(attentJSON);
-			// writer.println("Username:" + user.getUsername()
-			// + " totalComments accumulated: " + user.getTotalComments());
 			i++;
 		}
-		// writer.flush();
+		writer.println(jsonUser.toString());
 
-		try {
-			JSONArray output = jsonObject.toJSONArray(jsonObject.names());
-			writer.println(output.toString());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		// writer.println(json.toString());
+		// try {
+		// // JSONArray output = jsonUser.toJSONArray(jsonUser.names);
+		// writer.println(jsonUser.toString());
+		// } catch (JSONException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
 
 	}
 
