@@ -515,7 +515,7 @@ public class Analyzer extends HttpServlet {
 
 				KeywordEntity kE = new KeywordEntity(e.getKeyword(),
 						e.getBundleSetSize(), e);
-				// System.out.println(kE);
+				System.out.println(kE);
 				eList.add(kE);
 			}
 
