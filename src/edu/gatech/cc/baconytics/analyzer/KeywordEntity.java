@@ -37,7 +37,6 @@ public class KeywordEntity {
 		this.numOfPosts = numOfPosts;
 		// this.urlJSONArray = urlJSONArray;
 		this.keywordLinkMap = k;
-		// keywordSet = new HashSet<Key>();
 	}
 
 	// public GAEReddit(String id, HashSet<Key> keywordSet) {
