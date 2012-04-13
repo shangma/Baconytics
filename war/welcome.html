@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Baconytics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Testing Bacon Main Page" />
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+
+<script type="text/javascript" src="gchart.js"></script>
+
+<script type="text/javascript">
+
+	// Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawKeywordBarGraph);
+	  google.setOnLoadCallback(drawChart2);
+	  google.setOnLoadCallback(drawChart3);
+	  
+$(document).ready(function() {
+
+	$(document).ready(function() {
+		
+		$('#a').click(function () {
+			alert('jQuery.click()');
+			return true;
+		});
+	   
+	});
+});
+
+function button_onClick() {
+   document.location.href='http://localhost:8888/mainNoFrames.html';
+}
+
+</script>
+<body>
+
+	<div id="outerContainer">
+		<!--
+		<div id="welcomeLeftContainer">
+
+			
+			<
+			<div id="trendingTopics">
+				Gonna put something here!
+			</div>
+			
+					
+		</div>
+		-->
+		<div id="welcomeMain">
+		
+			<img border="0" src="/images/tempImage2.png" alt="Bacon Graph" width="600" height="400" />
+			
+			<br/>
+			
+			
+		</div>
+		
+		<div id="analyze">
+				<button type="button" onclick="button_onClick()" href="http://localhost:8888/mainNoFrames.html"> 
+					Start Analyzing! 
+				</button>
+		</div>
+		
+	</div>
+	<div id="bottomContainer">
+			<!--
+				<div id="graphLeft"></div>
+				<div id="graphRight"></div>
+				<div id="testingHidden"></div>
+			-->
+			I'm still figuring out what to put in all these places....yeah
+	</div>
+	
+</body>
+</html>

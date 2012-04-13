@@ -119,3 +119,28 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	z-index: 2;
 	display:none;
 }
+
+#welcomeLeftContainer {
+	min-height:20em;
+	width: 300px;
+	margin-left: left;
+	position: absolute;
+	background-color: #F7F7F8
+}
+
+#welcomeMain{
+	min-height:30em;
+	width: 70%;
+	margin-right: auto;
+	margin-left: auto;
+	z-index: 1;
+	background-color: #F0F3FC
+}
+
+#button{
+	width: 70%;
+	margin-right: auto;
+	margin-left: auto;
+	z-index: 1;
+	background-color: #244
+}
