@@ -26,10 +26,16 @@ public class SetUTCTime extends HttpServlet {
         try {
             PersistenceManager pm = PMF.get().getPersistenceManager();
             String param = req.getParameter("time");
+            String type = req.getParameter("type");
+            if (type == null) {
+                writer.print("Missing type");
+                return;
+            }
             if (param == null) {
                 System.out.println("no param");
                 UTCTime time = new UTCTime();
                 time.setTime(0);
+                time.setCursorType(type);
                 pm.makePersistent(time);
                 pm.close();
                 writer.println("Set UTC Time: " + time.getTime());
@@ -40,15 +46,17 @@ public class SetUTCTime extends HttpServlet {
             System.out.println("param " + param);
             pm = PMF.get().getPersistenceManager();
             Query query = pm.newQuery(UTCTime.class);
+            query.setFilter("cursorType == typeParam");
+            query.declareParameters("String typeParam");
             @SuppressWarnings("unchecked")
-            List<UTCTime> results = (List<UTCTime>) query.execute();
+            List<UTCTime> results = (List<UTCTime>) query.execute(type
+                    .toUpperCase());
             if (!results.isEmpty()) {
-                for (UTCTime e : results) {
-                    writer.println("Old Time: " + e.getTime());
-                    e.setTime(newTime);
-                    writer.println("New Time: " + e.getTime());
-                    System.out.println("New time " + newTime);
-                }
+                UTCTime tm = results.get(0);
+                writer.println("Old Time: " + tm.getTime());
+                tm.setTime(newTime);
+                writer.println("New Time: " + tm.getTime());
+                System.out.println("New time " + newTime);
             }
             pm.close();
         } catch (Exception e) {
