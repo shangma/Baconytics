@@ -8,39 +8,41 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
-		getLink('');
+		$('#links').append('<p class="links">Click on the topics to see the posts</p>');
 	});
 
 	function getLink(topic){
 		var str = "";
+		var baselink = "http://reddit.com";
 		var link = "";
 		var keyword = topic;
 		//alert("1");
 		$('.links').remove();
 		$.ajax({
-				url: "./trendlink",
-				success: function (array) {
-					var obj = jQuery.parseJSON(array);
-					$.each(obj, function(key, value){
-						$.each(value, function(k, v){
-							if(k == '"title"'){
-								str = v;
-							}
-							else if(k == '"link"'){
-								link = v;
-							}							
+			url: "./analyzer",
+			success: function (array) {
+				var obj = jQuery.parseJSON(array);
+				//console.log(obj.keyword_list);
+				$.each(obj.keyword_list, function(key, value){					
+					//console.log(value.keyword);
+					if(value.keyword==keyword){
+						//console.log(value.link_list);
+						$.each(value.link_list, function(k,v){
+							link = baselink + v.permalink;
+							//console.log(v.title);
+							$('#links').append('<a class="links" href="'+link+'">'+v.title+'</br></a>')
 						});
-						$('#links').append('<a class="links" href="' + link + '">' + str + '</br></a>');
-					});				
-				}
+					}
+				});				
+			}
 		});
 		//alert("got here! end");
 		$('#kw').text(keyword);
 	}
-	
+
 	var sel = 99;
 	function alertselected(selectobj){
-	
+
 		//alert(selectobj.selectedIndex + " is the selected ");
 		sel = selectobj.selectedIndex;
 		//alert(sel);
@@ -53,7 +55,7 @@
 		else if(sel==2){
 			window.changeTimeVis();
 		}
-		
+
 	}
 </script>
 
