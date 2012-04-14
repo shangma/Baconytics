@@ -98,6 +98,17 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	display:block;
 }
 
+#graphRight {
+	min-height: 18em;
+	width: 400px;
+	background-color: #287;
+	float: right;
+	z-index: 2;
+	
+	display:block;
+}
+
+/**
 #graphBotLeft {
 	min-height: 18em;
 	width: 400px;
@@ -116,20 +127,48 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	
 	display:none;
 }
+**/
 
-#dropDown {
-	
-	float: right;
+#graphTopLeft {
+	min-height: 18em;
+	width: 400px;
+	background-color: #146;
+	float: left;
+	z-index: 3;
+	display:none;
 }
 
-#graphRight {
+#graphTopRight {
 	min-height: 18em;
 	width: 400px;
 	background-color: #287;
 	float: right;
-	z-index: 2;
+	z-index: 3;
+	display:none;
+}
+
+#graphBotLeft {
+	min-height: 18em;
+	width: 400px;
+	background-color: #146;
+	float: left;
+	z-index: 3;
+	display:none;
+}
+
+#graphBotRight {
+	min-height: 18em;
+	width: 400px;
+	background-color: #287;
+	float: right;
+	z-index: 3;
+	display:none;
+}
+
+
+#dropDown {
 	
-	display:block;
+	float: right;
 }
 
 #testingHidden {

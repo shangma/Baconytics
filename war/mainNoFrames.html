@@ -18,10 +18,12 @@
       google.load('visualization', '1.0', {'packages':['corechart']});
 
       // Set a callback to run when the Google Visualization API is loaded.
-      	google.setOnLoadCallback(drawKeywordBarGraph);
-	//google.setOnLoadCallback(drawChart2);
-	//google.setOnLoadCallback(drawChart3);
 
+	/**Trend Keywords **/
+      	google.setOnLoadCallback(drawKeywordBarGraph);
+	google.setOnLoadCallback(drawChart2);
+	
+	/**user data **/
 	google.setOnLoadCallback(userTopKarma);
 	google.setOnLoadCallback(userTopNumCom);
 	google.setOnLoadCallback(userTopNumLinks);
@@ -31,18 +33,8 @@
 	  
 $(document).ready(function() {
 		extractSource();
-		
 		var locate = window.location;
-		
 		var dDown = window.document.getElementById("dropDown");
-
-		
-		//testCall();
-		//google.setOnLoadCallback(drawChart2);
-		
-		
-		
-		
 });
 
 function extractSource() 
@@ -79,15 +71,26 @@ function extractSource()
     	});
 		
 		//hacky fix for graph invisibility
+		toggle('trendingTopics');
+
 		toggle('graphRight');
 		toggle('graphLeft');
+		show('graphRight');
+		show('graphLeft');
 
 		toggle('graphBotLeft');
 		toggle('graphBotRight');
+		toggle('graphTopLeft');
+		toggle('graphTopRight');
 		hide('graphBotLeft');
 		hide('graphBotRight');
+		hide('graphTopLeft');
+		hide('graphTopRight');
 
-		toggle('trendingTopics');
+		
+		
+		
+
 }
 
 function changeLayoutTrendKeys(){
@@ -124,31 +127,39 @@ function changeLayoutTrendKeys(){
 	//toggle('testingHidden');
 	//toggle('timeVis');
 	
+/*
 	hide('userTopKarma');
 	hide('userTopNumCom');
 	hide('userTopNumLinks');
 	hide('userTotNumVisits');
+*/
+	hide('graphBotLeft');
+	hide('graphBotRight');
+	hide('graphTopLeft');
+	hide('graphTopRight');
 
 }
 
 function changeLayoutUserData(){
 
 	hide('trendingTopics');
-	//hide('leftContainer');
 
 	document.getElementById('articleLinkContainer').style.width='1000px';	
 	document.getElementById('trendLinks').style.width='1000px';
-	//document.getElementById('trendLinks').style.border: 1;
 
 	hide('graphLeft');
 	hide('graphRight');
-	//toggle('testingHidden');
-	//toggle('timeVis');
 	
+/*
 	show('userTopKarma');
 	show('userTopNumCom');
 	show('userTopNumLinks');
 	show('userTotNumVisits');
+*/
+	show('graphBotLeft');
+	show('graphBotRight');
+	show('graphTopLeft');
+	show('graphTopRight');
 }
 
 function show(id){
@@ -196,6 +207,10 @@ function toggle(id) {
 			
 			
 		</div>
+
+		<div id="rightContainer">
+
+		</div>
 		
 	</div>
 	<div id="bottomContainer">
@@ -205,7 +220,10 @@ function toggle(id) {
 				<!--
 				<div id="testingHidden"></div>
 				-->
-				
+
+				<div id='graphTopLeft'></div>
+				<div id='graphTopRight'></div>				
+
 				<div id="graphBotLeft"></div>
 				<div id="graphBotRight"></div>
 	
