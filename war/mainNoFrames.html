@@ -71,7 +71,11 @@ function extractSource()
     	});
 		
 		//hacky fix for graph invisibility
+		
 		toggle('trendingTopics');
+		toggle('userTable');
+		toggle('trendLinks');
+		hide('userTable');
 
 		toggle('graphRight');
 		toggle('graphLeft');
@@ -85,7 +89,7 @@ function extractSource()
 		hide('graphBotLeft');
 		hide('graphBotRight');
 		hide('graphTopLeft');
-		hide('graphTopRight');	
+		hide('graphTopRight');
 
 }
 
@@ -112,10 +116,13 @@ function changeLayoutTrendKeys(){
 	//google.setOnLoadCallback(drawKeywordBarGraph);
 	//google.setOnLoadCallback(drawChart2);
 
+	hide('userTable');
+
 	document.getElementById('articleLinkContainer').style.width='700px';
 	document.getElementById('trendLinks').style.width='700px';
+	document.getElementById('leftContainer').style.width='300px';
 	//document.getElementById('trendLinks').style.border: 0;
-
+	show('trendLinks');
 	show('trendingTopics');
 
 	show('graphLeft');
@@ -133,9 +140,14 @@ function changeLayoutTrendKeys(){
 function changeLayoutUserData(){
 
 	hide('trendingTopics');
+	hide('trendLinks');
 
-	document.getElementById('articleLinkContainer').style.width='1000px';	
-	document.getElementById('trendLinks').style.width='1000px';
+	document.getElementById('articleLinkContainer').style.width='550px';	
+	//document.getElementById('trendLinks').style.width='1000px';
+
+	document.getElementById('leftContainer').style.width='450px';
+	
+	show('userTable');
 
 	hide('graphLeft');
 	hide('graphRight');
@@ -189,34 +201,45 @@ function toggle(id) {
 				<div id="metricChoose"></div>
 			-->
 			<div id="trendingTopics"></div>
+			<div id="userTable"></div>
 					
 		</div>
 		
 		<div id="articleLinkContainer">
 		
 			<div id="trendLinks"></div>
-			
-			
-		</div>
 
+			<div id='graphTopLeft'></div>
+			<div id='dropdown'></div>
+			<div id='graphTopRight'></div>				
+			<div id="graphBotLeft"></div>
+			<div id="graphBotRight"></div>
+						
+		</div>
+		
+		<!--
 		<div id="rightContainer">
-
+			
 		</div>
+		-->
 		
 	</div>
 	<div id="bottomContainer">
 			
-				<div id="graphLeft"></div>
-				<div id="graphRight"></div>
-				<!--
-				<div id="testingHidden"></div>
-				-->
+		<div id="graphLeft"></div>
+		<div id="graphRight"></div>
+		<!--
+		<div id="testingHidden"></div>
+		-->
 
-				<div id='graphTopLeft'></div>
-				<div id='graphTopRight'></div>				
+		<!--
+		<div id='graphTopLeft'></div>
+		<div id='graphTopRight'></div>				
+		<div id="graphBotLeft"></div>
+		<div id="graphBotRight"></div>
+		-->
 
-				<div id="graphBotLeft"></div>
-				<div id="graphBotRight"></div>
+	</div>
 	
 </body>
 </html>

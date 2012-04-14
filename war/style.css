@@ -29,6 +29,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 	display:block;
 }
 
+#rightContainer {
+	min-height:72em;
+	width: 400px;
+	margin-right: right;
+	position: absolute;
+	background-color: #F7F7F8
+	display:none;
+}
+
 #articleLinkContainer {
 	min-height:30em;
 	width: 700px;
@@ -89,6 +98,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	border-width:1px;
 }
 
+#userTable {
+	min-height: 40em;
+	min-width: 450px;
+	
+	float: left;
+	border-style:solid;
+	border-width:1px;
+	display:none;
+}
+
 #graphLeft {
 	min-height: 18em;
 	width: 400px;
@@ -142,7 +161,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	min-height: 18em;
 	width: 400px;
 	background-color: #287;
-	float: right;
+	float: left;
 	z-index: 3;
 	display:none;
 }
@@ -160,7 +179,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	min-height: 18em;
 	width: 400px;
 	background-color: #287;
-	float: right;
+	float: left;
 	z-index: 3;
 	display:none;
 }
