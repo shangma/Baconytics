@@ -24,17 +24,32 @@
 	google.setOnLoadCallback(drawChart2);
 	
 	/**user data **/
-	google.setOnLoadCallback(userTopKarma);
+	/*google.setOnLoadCallback(userTopKarma);
 	google.setOnLoadCallback(userTopNumCom);
 	google.setOnLoadCallback(userTopNumLinks);
 	google.setOnLoadCallback(userTotNumVisits);
-
+	google.setOnLoadCallback(drawTable)
+*/
 	
 	  
 $(document).ready(function() {
+		var jsonData;
 		extractSource();
 		var locate = window.location;
 		var dDown = window.document.getElementById("dropDown");
+		$.ajax({
+			url : "./analyzer",
+			success : function(array){
+				jsonData = $.parseJSON(array);
+				drawTable(jsonData);
+				userTopKarma(jsonData);
+				userTopNumCom(jsonData);
+				userTopNumLinks(jsonData);
+				userTotNumVisits(jsonData);
+				
+				
+			}
+		})
 });
 
 function extractSource() 
@@ -71,11 +86,11 @@ function extractSource()
     	});
 		
 		//hacky fix for graph invisibility
-		
 		toggle('trendingTopics');
 		toggle('userTable');
 		toggle('trendLinks');
-		hide('userTable');
+		show('userTable');
+		
 
 		toggle('graphRight');
 		toggle('graphLeft');
@@ -116,7 +131,7 @@ function changeLayoutTrendKeys(){
 	//google.setOnLoadCallback(drawKeywordBarGraph);
 	//google.setOnLoadCallback(drawChart2);
 
-	hide('userTable');
+	show('userTable');
 
 	document.getElementById('articleLinkContainer').style.width='700px';
 	document.getElementById('trendLinks').style.width='700px';
@@ -147,7 +162,7 @@ function changeLayoutUserData(){
 
 	document.getElementById('leftContainer').style.width='450px';
 	
-	show('userTable');
+	hide('userTable');
 
 	hide('graphLeft');
 	hide('graphRight');
@@ -200,7 +215,10 @@ function toggle(id) {
 			<!--
 				<div id="metricChoose"></div>
 			-->
+			<!-- trend keywords -->
 			<div id="trendingTopics"></div>
+			
+			<!-- user data -->
 			<div id="userTable"></div>
 					
 		</div>
@@ -208,7 +226,6 @@ function toggle(id) {
 		<div id="articleLinkContainer">
 		
 			<div id="trendLinks"></div>
-
 			<div id='graphTopLeft'></div>
 			<div id='dropdown'></div>
 			<div id='graphTopRight'></div>				
