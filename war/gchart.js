@@ -190,7 +190,7 @@ function userTopKarma(graphLoc) {
 				'height': 300
                 	};
 
- 	               var chart = new google.visualization.BarChart(document.getElementById('graphLeft'));
+ 	               var chart = new google.visualization.BarChart(document.getElementById('graphTopLeft'));
          	       chart.draw(data, options);
             	}
         });      
@@ -232,7 +232,7 @@ function userTopNumCom(graphLoc) {
 				'height': 300
                 	};
 
- 	               var chart = new google.visualization.BarChart(document.getElementById('graphRight'));
+ 	               var chart = new google.visualization.BarChart(document.getElementById('graphTopRight'));
          	       chart.draw(data, options);
             	}
         });      
