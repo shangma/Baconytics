@@ -152,3 +152,170 @@
             }
         });      
       }
+/****************************************************************/
+
+
+function userTopKarma(graphLoc) {
+
+	$.ajax({
+        	url: "./keyentjsonservlet",
+        	success: function (array) {
+                	var obj = jQuery.parseJSON(array);
+			var array_data = new Array();
+			var i = 0;
+			$.each(obj.keyEnt, function(key,value){
+				var keyword,score;
+				$.each(value, function(k,v){
+					if(k == 'keyword'){
+						keyword = v;
+					}
+					else if(k == 'score'){
+						score = v;
+					}
+				});
+				array_data[i] = new Array();
+				array_data[i][0] = keyword;
+				array_data[i][1] = score;
+				i++;
+			});
+			console.log(array_data);
+                	var data = new google.visualization.DataTable();
+                	data.addColumn('string', 'keyword');
+                	data.addColumn('number', 'score');
+                	data.addRows(array_data);
+
+                	var options = {
+                	    'title': 'userTopKarma',
+				'width': 400,
+				'height': 300
+                	};
+
+ 	               var chart = new google.visualization.BarChart(document.getElementById('graphLeft'));
+         	       chart.draw(data, options);
+            	}
+        });      
+}
+
+
+function userTopNumCom(graphLoc) {
+
+	$.ajax({
+        	url: "./keyentjsonservlet",
+        	success: function (array) {
+                	var obj = jQuery.parseJSON(array);
+			var array_data = new Array();
+			var i = 0;
+			$.each(obj.keyEnt, function(key,value){
+				var keyword,score;
+				$.each(value, function(k,v){
+					if(k == 'keyword'){
+						keyword = v;
+					}
+					else if(k == 'score'){
+						score = v;
+					}
+				});
+				array_data[i] = new Array();
+				array_data[i][0] = keyword;
+				array_data[i][1] = score;
+				i++;
+			});
+			console.log(array_data);
+                	var data = new google.visualization.DataTable();
+                	data.addColumn('string', 'keyword');
+                	data.addColumn('number', 'score');
+                	data.addRows(array_data);
+
+                	var options = {
+                	    'title': 'userTopNumCom',
+				'width': 400,
+				'height': 300
+                	};
+
+ 	               var chart = new google.visualization.BarChart(document.getElementById('graphRight'));
+         	       chart.draw(data, options);
+            	}
+        });      
+}
+
+function userTopNumLinks(graphLoc) {
+
+	$.ajax({
+        	url: "./keyentjsonservlet",
+        	success: function (array) {
+                	var obj = jQuery.parseJSON(array);
+			var array_data = new Array();
+			var i = 0;
+			$.each(obj.keyEnt, function(key,value){
+				var keyword,score;
+				$.each(value, function(k,v){
+					if(k == 'keyword'){
+						keyword = v;
+					}
+					else if(k == 'score'){
+						score = v;
+					}
+				});
+				array_data[i] = new Array();
+				array_data[i][0] = keyword;
+				array_data[i][1] = score;
+				i++;
+			});
+			console.log(array_data);
+                	var data = new google.visualization.DataTable();
+                	data.addColumn('string', 'keyword');
+                	data.addColumn('number', 'score');
+                	data.addRows(array_data);
+
+                	var options = {
+                	    'title': 'userTopNumLinks',
+				'width': 400,
+				'height': 300
+                	};
+
+ 	               var chart = new google.visualization.BarChart(document.getElementById('graphBotLeft'));
+         	       chart.draw(data, options);
+            	}
+        });      
+}
+
+function userTotNumVisits(graphLoc) {
+
+	$.ajax({
+        	url: "./keyentjsonservlet",
+        	success: function (array) {
+                	var obj = jQuery.parseJSON(array);
+			var array_data = new Array();
+			var i = 0;
+			$.each(obj.keyEnt, function(key,value){
+				var keyword,score;
+				$.each(value, function(k,v){
+					if(k == 'keyword'){
+						keyword = v;
+					}
+					else if(k == 'score'){
+						score = v;
+					}
+				});
+				array_data[i] = new Array();
+				array_data[i][0] = keyword;
+				array_data[i][1] = score;
+				i++;
+			});
+			console.log(array_data);
+                	var data = new google.visualization.DataTable();
+                	data.addColumn('string', 'keyword');
+                	data.addColumn('number', 'score');
+                	data.addRows(array_data);
+
+                	var options = {
+                	    'title': 'userTotNumVisits',
+				'width': 400,
+				'height': 300
+                	};
+
+ 	               var chart = new google.visualization.BarChart(document.getElementById('graphBotRight'));
+         	       chart.draw(data, options);
+            	}
+        });      
+}
