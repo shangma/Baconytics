@@ -38,7 +38,7 @@ public class KeyEntJSONServlet extends HttpServlet {
 		Query query = pm.newQuery(KeywordEntity.class);
 		keyEntList = (List<KeywordEntity>) query.execute();
 		// jsonArr.clear();
-		// int k = 0;
+		int k = 0;
 		/*
 		 * try { writer.println(new JSONObject().put("keyword", "KeyEntity")); }
 		 * catch (JSONException e2) { // TODO Auto-generated catch block
@@ -56,16 +56,16 @@ public class KeyEntJSONServlet extends HttpServlet {
 					writer.println(",");
 				}
 
-				// if (k > 9) {
-				// // break;
-				// }
+				if (k > 9) {
+					break;
+				}
 				/*
 				 * jsonArr.add(new JSONObject().put("keyword", e.getKeyword())
 				 * .put("score", e.getNumOfPosts()));
 				 */
 				// writer.println("test for input " + jsonArr.get(k)
 				// + " count is " + k);
-				// k++;
+				k++;
 
 				writer.print(new JSONObject().put("keyword", e.getKeyword())
 						.put("score", e.getNumOfPosts()));
