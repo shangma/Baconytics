@@ -50,36 +50,13 @@ public class AggregatorServlet extends HttpServlet {
      */
 
     /**
-     * Mark the last processed Link and update the UTCTime table in database
-     * 
-     * @param time
-     */
-    private void commitLastUTCTime(long time) {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query query = pm.newQuery(UTCTime.class);
-        query.setFilter("cursorType == typeParam");
-        query.declareParameters("String typeParam");
-        try {
-            @SuppressWarnings("unchecked")
-            List<UTCTime> results = (List<UTCTime>) query.execute(CURSORTYPE);
-            if (!results.isEmpty()) {
-                results.get(0).setTime(time);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            pm.close();
-        }
-    }
-
-    /**
      * Populate a set of LinkKeyword objects from database. Only take the title
      * and id of each Link
      * 
      * @return a HashSet of LinkKeyword objects
      */
     private Set<LinkKeywordMap> feed() {
-        UTCTime utcTimeObj = fetchLastUTCTime();
+        UTCTime utcTimeObj = UTCTime.fetchLastUTCTime(CURSORTYPE);
         if (utcTimeObj == null) {
             return null;
         }
@@ -106,7 +83,7 @@ public class AggregatorServlet extends HttpServlet {
                     ret.add(reddit);
                 }
             }
-            commitLastUTCTime(lastUTCTime);
+            UTCTime.commitLastUTCTime(lastUTCTime, CURSORTYPE);
             return ret;
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,31 +94,6 @@ public class AggregatorServlet extends HttpServlet {
             pm.close();
         }
         return null;
-    }
-
-    /**
-     * Read the UTC time of last processed Link
-     * 
-     * @return The UTC time
-     */
-    public UTCTime fetchLastUTCTime() {
-        PersistenceManager pm = PMF.get().getPersistenceManager();
-        Query query = pm.newQuery(UTCTime.class);
-        query.setFilter("cursorType == typeParam");
-        query.declareParameters("String typeParam");
-        UTCTime ret = null;
-        try {
-            @SuppressWarnings("unchecked")
-            List<UTCTime> results = (List<UTCTime>) query.execute(CURSORTYPE);
-            if (!results.isEmpty()) {
-                ret = results.get(0);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            pm.close();
-        }
-        return ret;
     }
 
     /*

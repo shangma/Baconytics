@@ -453,7 +453,7 @@ public class Analyzer extends HttpServlet {
         try {
             ret.put("user_list", jsonUser);
             System.out.println(jsonUser.toString());
-            ret.put("keywrod_list", keywordListJarray);
+            ret.put("keyword_list", keywordListJarray);
         } catch (Exception e) {
             e.printStackTrace();
         }
