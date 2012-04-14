@@ -213,3 +213,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	z-index: 1;
 	background-color: #244
 }
+#welcomeMain h1{
+	text-align:center;
+	font-family:'Bookman Old Style',Bookman,'URW Bookman L','Palatino Linotype',serif;
+	font-size:50px;
+	color:#FF6600;
+}
+#welcomeMain h1 span{
+	position:relative;
+	left:8%;
+	top:15px;
+	font-size:20px;
+}
