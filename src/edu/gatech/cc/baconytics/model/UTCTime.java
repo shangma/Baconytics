@@ -20,6 +20,11 @@ public class UTCTime {
     @Persistent
     private long time;
 
+    public UTCTime(String cursorType) {
+        this.cursorType = cursorType;
+        time = 0;
+    }
+
     public long getTime() {
         return time;
     }
@@ -52,6 +57,9 @@ public class UTCTime {
             List<UTCTime> results = (List<UTCTime>) query.execute(CURSORTYPE);
             if (!results.isEmpty()) {
                 ret = results.get(0);
+            } else {
+                ret = new UTCTime(CURSORTYPE);
+                pm.makePersistent(ret);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -33,7 +33,7 @@ public class SetUTCTime extends HttpServlet {
             }
             if (param == null) {
                 System.out.println("no param");
-                UTCTime time = new UTCTime();
+                UTCTime time = new UTCTime(type);
                 time.setTime(0);
                 time.setCursorType(type);
                 pm.makePersistent(time);

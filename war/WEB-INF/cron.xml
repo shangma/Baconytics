@@ -8,8 +8,15 @@
   
   <cron>
     <url>/aggregator</url>
-    <description>Run the scraper hourly</description>
+    <description>Run the aggregator every 6 hours</description>
     <schedule>every 6 hours</schedule>
   </cron>
+  
+  <cron>
+    <url>/timevisualization</url>
+    <description>Run the timevisualization 6 hours</description>
+    <schedule>every 6 hours</schedule>
+  </cron>
+  
 </cronentries>
 
