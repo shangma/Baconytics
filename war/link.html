@@ -44,7 +44,13 @@
 		//alert(selectobj.selectedIndex + " is the selected ");
 		sel = selectobj.selectedIndex;
 		//alert(sel);
-		window.changeLayout();
+		if(sel == 0){
+			window.changeLayoutTrendKeys();
+		}
+		else if(sel==1){
+			window.changeLayoutUserData();
+		}
+		
 	}
 </script>
 
@@ -53,7 +59,7 @@
 	<form id="theForm" float: right;>
 		<select id="dropDown" onChange="alertselected(this)">
 			<option>Trending Topics</option>
-			<option>test 2</option>
+			<option>User</option>
 			<option>test 3</option>
 		</select> 
 

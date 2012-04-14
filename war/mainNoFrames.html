@@ -81,13 +81,18 @@ function extractSource()
 		//hacky fix for graph invisibility
 		toggle('graphRight');
 		toggle('graphLeft');
+
 		toggle('graphBotLeft');
 		toggle('graphBotRight');
-				
+		hide('graphBotLeft');
+		hide('graphBotRight');
+
+		toggle('trendingTopics');
 }
 
-function changeLayout(){
+function changeLayoutTrendKeys(){
 //alert("MADE IT!");
+/**OLD CODE!***
 	google.load('visualization', '1.0', {'packages':['corechart']});
 	google.setOnLoadCallback(drawChart3);
 	//alert("MADE IT BACK!");
@@ -102,13 +107,64 @@ function changeLayout(){
 	toggle('userTopNumLinks');
 	toggle('userTotNumVisits');
 	
-	/*
-	function toggleDiv(divId) {
-		$("#graphRight").toggle();
-		$("#testingHidden").toggle();
-	}
-	*/
+**/
+
+	//google.load('visualization', '1.0', {'packages':['corechart']});
+	//google.setOnLoadCallback(drawKeywordBarGraph);
+	//google.setOnLoadCallback(drawChart2);
+
+	document.getElementById('articleLinkContainer').style.width='700px';
+	document.getElementById('trendLinks').style.width='700px';
+	//document.getElementById('trendLinks').style.border: 0;
+
+	show('trendingTopics');
+
+	show('graphLeft');
+	show('graphRight');
+	//toggle('testingHidden');
+	//toggle('timeVis');
 	
+	hide('userTopKarma');
+	hide('userTopNumCom');
+	hide('userTopNumLinks');
+	hide('userTotNumVisits');
+
+}
+
+function changeLayoutUserData(){
+
+	hide('trendingTopics');
+	//hide('leftContainer');
+
+	document.getElementById('articleLinkContainer').style.width='1000px';	
+	document.getElementById('trendLinks').style.width='1000px';
+	//document.getElementById('trendLinks').style.border: 1;
+
+	hide('graphLeft');
+	hide('graphRight');
+	//toggle('testingHidden');
+	//toggle('timeVis');
+	
+	show('userTopKarma');
+	show('userTopNumCom');
+	show('userTopNumLinks');
+	show('userTotNumVisits');
+}
+
+function show(id){
+
+	var state = document.getElementById(id).style.display;
+        if (state == 'none') {
+			document.getElementById(id).style.display = 'block';
+    	}
+}
+
+function hide(id){
+
+	var state = document.getElementById(id).style.display;
+        if (state == 'block') {
+			document.getElementById(id).style.display = 'none';
+    	}
 }
 
 function toggle(id) {
