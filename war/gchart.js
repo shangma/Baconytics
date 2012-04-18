@@ -364,3 +364,39 @@
      	 show('userTable');
 
     	}
+
+    function drawChart() {
+        $.ajax({
+            url: "./timevisualization",
+            type: "POST",
+            success: function (array) {
+                var obj = jQuery.parseJSON(array);
+                console.log(array);
+                
+                var dataVote = new google.visualization.DataTable();
+                dataVote.addColumn('string', 'Time');
+                dataVote.addColumn('number', 'No. of Votes');
+                dataVote.addRows(obj.votes);
+
+                var options = {
+                    title: 'Reddit Votes'
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_vote'));
+                chart.draw(dataVote, options);
+                
+                var dataPost = new google.visualization.DataTable();
+                dataPost.addColumn('string', 'Time');
+                dataPost.addColumn('number', 'No. of Posts');
+                dataPost.addRows(obj.posts);
+
+                var options = {
+                    title: 'Reddit Posts',
+                    colors: ['red','#004411']
+                };
+
+                var chart = new google.visualization.LineChart(document.getElementById('chart_post'));
+                chart.draw(dataPost, options);
+            }
+        });
+    }

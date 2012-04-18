@@ -11,6 +11,8 @@
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 
 <script type="text/javascript" src="gchart.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 
 <script type="text/javascript">
 
@@ -30,6 +32,8 @@
 	google.setOnLoadCallback(userTotNumVisits);
 	google.setOnLoadCallback(drawTable)
 */
+	/** Forum Activity **/
+	google.setOnLoadCallback(drawChart);
 	
 	  
 $(document).ready(function() {
@@ -84,11 +88,13 @@ function extractSource()
             if(statusText == "error")
                     alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
     	});
-		
+        
 		//hacky fix for graph invisibility
 		toggle('trendingTopics');
 		toggle('userTable');
 		toggle('trendLinks');
+        toggle('forumActivity');
+        hide('forumActivity');
 		show('userTable');
 		
 
@@ -149,6 +155,7 @@ function changeLayoutTrendKeys(){
 	hide('graphBotRight');
 	hide('graphTopLeft');
 	hide('graphTopRight');
+    hide('forumActivity');
 
 }
 
@@ -156,6 +163,7 @@ function changeLayoutUserData(){
 
 	hide('trendingTopics');
 	hide('trendLinks');
+    hide('forumActivity');
 
 	document.getElementById('articleLinkContainer').style.width='550px';	
 	//document.getElementById('trendLinks').style.width='1000px';
@@ -174,8 +182,20 @@ function changeLayoutUserData(){
 }
 
 function changeTimeVis(){
+    show('forumActivity');
 
-	
+    hide('trendingTopics');
+	hide('trendLinks');
+    
+    hide('userTable');
+
+	hide('graphLeft');
+	hide('graphRight');
+    
+	hide('graphBotLeft');
+	hide('graphBotRight');
+	hide('graphTopLeft');
+	hide('graphTopRight');
 }
 
 
@@ -220,7 +240,12 @@ function toggle(id) {
 			
 			<!-- user data -->
 			<div id="userTable"></div>
-					
+            
+            <!-- forum activity -->
+            <div id="forumActivity">
+                <div id="chart_vote" style="width: 100%; height: 50%;"></div>
+                <div id="chart_post" style="width: 100%; height: 50%;"></div>
+            </div>
 		</div>
 		
 		<div id="articleLinkContainer">
