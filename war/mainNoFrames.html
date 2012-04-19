@@ -138,7 +138,7 @@ function changeLayoutTrendKeys(){
 	//google.setOnLoadCallback(drawKeywordBarGraph);
 	//google.setOnLoadCallback(drawChart2);
 
-	show('userTable');
+	hide('userTable');
 
 	document.getElementById('articleLinkContainer').style.width='850px';
 	document.getElementById('trendLinks').style.width='700px';
@@ -171,7 +171,7 @@ function changeLayoutUserData(){
 
 	document.getElementById('leftContainer').style.width='450px';
 	
-	hide('userTable');
+	show('userTable');
 
 	hide('graphLeft');
 	hide('graphRight');
@@ -183,12 +183,12 @@ function changeLayoutUserData(){
 }
 
 function changeTimeVis(){
-    show('forumActivity');
+    
 
-    hide('trendingTopics');
+    	hide('trendingTopics');
 	hide('trendLinks');
     
-    hide('userTable');
+    	hide('userTable');
 
 	hide('graphLeft');
 	hide('graphRight');
@@ -196,7 +196,9 @@ function changeTimeVis(){
 	hide('graphBotLeft');
 	hide('graphBotRight');
 	hide('graphTopLeft');
+
 	hide('graphTopRight');
+	show('forumActivity');
 }
 
 
@@ -255,7 +257,7 @@ function toggle(id) {
 
 			<div id="metricChoose"></div>			
 
-			<div id='graphTopLeft'></div>
+			<div id='graphTopLeft' ></div>
 
 			<!--<div id='dropdown'></div>-->
 
@@ -274,7 +276,7 @@ function toggle(id) {
 	</div>
 	<div id="bottomContainer">
 			
-		<div id="graphLeft"></div>
+		<div id="graphLeft" align="center"></div>
 		<div id="graphRight"></div>
 		<!--
 		<div id="testingHidden"></div>

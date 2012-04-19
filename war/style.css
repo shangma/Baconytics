@@ -47,16 +47,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 	z-index: 1;
 	/*background-color: #F0F3FC*/
 	
-background: rgb(240,243,252); /* Old browsers */
-/* IE9 SVG, needs conditional override of 'filter' to 'none' */
-background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSI0MyUiIHN0b3AtY29sb3I9IiNmMGYzZmMiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZjBmM2ZjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
-background: -moz-linear-gradient(top,  rgba(240,243,252,1) 43%, rgba(240,243,252,1) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(43%,rgba(240,243,252,1)), color-stop(100%,rgba(240,243,252,1))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* IE10+ */
-background: linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', endColorstr='#f0f3fc',GradientType=0 ); /* IE6-8 */
 
 
 
@@ -90,6 +80,18 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	float: left;
 	border-style:solid;
 	border-width:1px;
+
+	background: rgb(240,243,252); /* Old browsers */
+	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
+	background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSI0MyUiIHN0b3AtY29sb3I9IiNmMGYzZmMiIHN0b3Atb3BhY2l0eT0iMSIvPgogICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjZjBmM2ZjIiBzdG9wLW9wYWNpdHk9IjEiLz4KICA8L2xpbmVhckdyYWRpZW50PgogIDxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9InVybCgjZ3JhZC11Y2dnLWdlbmVyYXRlZCkiIC8+Cjwvc3ZnPg==);
+	background: -moz-linear-gradient(top,  rgba(240,243,252,1) 43%, rgba(240,243,252,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(43%,rgba(240,243,252,1)), color-stop(100%,rgba(240,243,252,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* IE10+ */
+	background: linear-gradient(top,  rgba(240,243,252,1) 43%,rgba(240,243,252,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', endColorstr='#f0f3fc',GradientType=0 ); /* IE6-8 */
+
 }
 
 #metricChoose {
@@ -103,22 +105,25 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 #userTable {
 	min-height: 40em;
 	min-width: 450px;
-	
 	float: left;
 	border-style:solid;
 	border-width:1px;
-	display:none;
+	display:block;
+	
 }
 
 #graphLeft {
 	min-height: 18em;
 	width: 400px;
-	background-color: #146;
-	float: left;
+	/*background-color: #146;*/
 	z-index: 2;
 	display:block;
+	margin-left:auto;
+	margin-right:auto;
+	width:70%;
 }
 
+/*
 #graphRight {
 	min-height: 18em;
 	width: 400px;
@@ -128,6 +133,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	
 	display:block;
 }
+*/
 
 /**
 #graphBotLeft {
