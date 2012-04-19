@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,8 +45,9 @@ public class KeyEntJSONServlet extends HttpServlet {
 		 * catch (JSONException e2) { // TODO Auto-generated catch block
 		 * e2.printStackTrace(); }
 		 */
-
-		writer.println("{\"keyEnt\": [");
+		JSONObject output = new JSONObject();
+		JSONArray jsonArray = new JSONArray();
+		// writer.println("{\"keyEnt\": [");
 		boolean first = true;
 		for (KeywordEntity e : keyEntList) {
 			try {
@@ -53,7 +55,7 @@ public class KeyEntJSONServlet extends HttpServlet {
 				if (first) {
 					first = false;
 				} else {
-					writer.println(",");
+					// writer.println(",");
 				}
 
 				if (k > 9) {
@@ -67,23 +69,35 @@ public class KeyEntJSONServlet extends HttpServlet {
 				// + " count is " + k);
 				k++;
 
-				writer.print(new JSONObject().put("keyword", e.getKeyword())
-						.put("score", e.getNumOfPosts()));
+				JSONObject jsonObject = new JSONObject();
+				jsonObject.put("keyword", e.getKeyword());
+				jsonObject.put("score", e.getNumOfPosts());
+				// writer.print(new JSONObject().put("keyword", e.getKeyword())
+				// .put("score", e.getNumOfPosts()));
 
 				// writer.println(",");
+				jsonArray.put(jsonObject);
 
 			} catch (JSONException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-		writer.println("] }");
+
+		try {
+			output.put("keyEnt", jsonArray);
+			writer.println(output.toString());
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		// writer.println("] }");
 
 		/*
 		 * redundant code slated for removal for (int i = 0; i < jsonArr.size();
 		 * i++) { writer.println(jsonArr.get(i)); }
 		 */
-		writer.flush();
+		// writer.flush();
 		writer.close();
 
 	}
