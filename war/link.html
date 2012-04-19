@@ -6,41 +6,38 @@
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript" src="jquery.json-2.3.js"></script>
 <script type="text/javascript">
-
+    var jsonData;
 	$(document).ready(function(){
 		$('#links').append('<p class="links">Click on the topics to see the posts</p>');
 	});
-
+	
+	function getData(data){
+		jsonData = data;
+	}
+	
 	function getLink(topic){
 		var str = "";
 		var baselink = "http://reddit.com";
 		var link = "";
 		var keyword = topic;
 		//alert("1");
-		$('.links').remove();
-		$.ajax({
-			url: "./analyzer",
-			success: function (array) {
-				var obj = jQuery.parseJSON(array);
-				//console.log(obj.keyword_list);
-				$.each(obj.keyword_list, function(key, value){					
-					//console.log(value.keyword);
-					if(value.keyword==keyword){
-						//console.log(value.link_list);
-						$.each(value.link_list, function(k,v){
-							link = baselink + v.permalink;
-							//console.log(v.title);
-							$('#links').append('<a class="links" href="'+link+'">'+v.title+'</br></a>')
-						});
-					}
-				});				
+		$('.links').remove();;
+		$.each(jsonData.keyword_list, function(key, value){					
+			//console.log(value.keyword);
+			if(value.keyword==keyword){
+				//console.log(value.link_list);
+				$.each(value.link_list, function(k,v){
+					link = baselink + v.permalink;
+					//console.log(v.title);
+					$('#links').append('<a class="links" href="'+link+'">'+v.title+'</br></a>')
+				});
 			}
-		});
+		});				
+
 		//alert("got here! end");
 		$('#kw').text(keyword);
 	}
 
-/*
 	var sel = 99;
 	function alertselected(selectobj){
 
@@ -58,24 +55,21 @@
 		}
 
 	}
-*/
 </script>
 
 <body>
-<!--
 <div id="dropDown">
 	<form id="theForm" float: right;>
 		<select id="dropDown" onChange="alertselected(this)">
 			<option>Trending Topics</option>
 			<option>User</option>
-			<option>Forum Activity</option>
+			<option>test 3</option>
 		</select> 
 
 	</form>
 </div>
--->
 <h3>These are the links associated with the keyword: <div id="kw"></div></h3>
-<p><b id='links'></b> </p> 
+<p style="word-wrap: break-word;"><b id='links'></b> </p> 
 </body>
 
 </html>

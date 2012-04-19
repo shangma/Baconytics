@@ -76,10 +76,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 #trendLinks {
 	min-height: 30em;
 	min-width: 700px;
-	
+	max-width: 700px;
 	float: left;
 	border-style:solid;
 	border-width:1px;
+
 
 	background: rgb(240,243,252); /* Old browsers */
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
