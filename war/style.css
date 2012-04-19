@@ -15,7 +15,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 
 #outerContainer {
 	min-height:20em;
-	width: 1000px;
+	width: 1150px;
 	margin-right: auto;
 	margin-left: auto;
 }
@@ -40,9 +40,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 
 #articleLinkContainer {
 	min-height:30em;
-	width: 700px;
-	margin-right: right;
-	margin-left: auto;
+	width: 850px;
+	/*margin-right: auto;
+	margin-left: left;*/
+	float: right;
 	z-index: 1;
 	/*background-color: #F0F3FC*/
 	
@@ -70,14 +71,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	z-index: 2;
 }
 
-#metricChoose {
-	min-height: 15em;
-	min-width: 300px;
-	background-color: #398;
-	float: left;
-	border-style:solid;
-	border-width:1px;
-}
+
 
 #trendingTopics {
 	min-height: 30em;
@@ -98,6 +92,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	border-width:1px;
 }
 
+#metricChoose {
+	min-height: 2em;
+	width: 130px;
+	float: right;
+	float: top
+	z-index: 1;
+}
+
 #userTable {
 	min-height: 40em;
 	min-width: 450px;
@@ -113,7 +115,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 	width: 400px;
 	background-color: #146;
 	float: left;
-	
+	z-index: 2;
 	display:block;
 }
 
@@ -185,8 +187,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0f3fc', end
 }
 
 
-#dropDown {
-	
+#dropDown1 {
 	float: right;
 }
 

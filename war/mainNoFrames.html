@@ -58,15 +58,7 @@ $(document).ready(function() {
 
 function extractSource() 
 {	
-        $("#metricChoose").load("./metricSelect.html", function(responseText, statusText, xhr){
-            if(statusText == "success"){
-                //alert("Successfully loaded the content!");
-                //this alert should display the source of the page extracted.
-                //alert("in metric");
-            }
-            if(statusText == "error")
-                alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
-    	});
+        
 		
 		$("#trendingTopics").load("./trend.html", function(responseText, statusText, xhr){
             if(statusText == "success"){
@@ -88,13 +80,23 @@ function extractSource()
             if(statusText == "error")
                     alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
     	});
+
+		$("#metricChoose").load("./metricSelect.html", function(responseText, statusText, xhr){
+            if(statusText == "success"){
+                //alert("Successfully loaded the content!");
+                //this alert should display the source of the page extracted.
+                //alert("in metric");
+            }
+            if(statusText == "error")
+                alert("An error occurred: " + xhr.status + " - " + xhr.statusText);		
+    	});
         
 		//hacky fix for graph invisibility
 		toggle('trendingTopics');
 		toggle('userTable');
 		toggle('trendLinks');
-        toggle('forumActivity');
-        hide('forumActivity');
+        	toggle('forumActivity');
+        	hide('forumActivity');
 		show('userTable');
 		
 
@@ -139,7 +141,7 @@ function changeLayoutTrendKeys(){
 
 	show('userTable');
 
-	document.getElementById('articleLinkContainer').style.width='700px';
+	document.getElementById('articleLinkContainer').style.width='850px';
 	document.getElementById('trendLinks').style.width='700px';
 	document.getElementById('leftContainer').style.width='300px';
 	//document.getElementById('trendLinks').style.border: 0;
@@ -155,7 +157,7 @@ function changeLayoutTrendKeys(){
 	hide('graphBotRight');
 	hide('graphTopLeft');
 	hide('graphTopRight');
-    hide('forumActivity');
+    	hide('forumActivity');
 
 }
 
@@ -163,7 +165,7 @@ function changeLayoutUserData(){
 
 	hide('trendingTopics');
 	hide('trendLinks');
-    hide('forumActivity');
+    	hide('forumActivity');
 
 	document.getElementById('articleLinkContainer').style.width='550px';	
 	//document.getElementById('trendLinks').style.width='1000px';
@@ -241,18 +243,23 @@ function toggle(id) {
 			<!-- user data -->
 			<div id="userTable"></div>
             
-            <!-- forum activity -->
-            <div id="forumActivity">
-                <div id="chart_vote" style="width: 100%; height: 50%;"></div>
-                <div id="chart_post" style="width: 100%; height: 50%;"></div>
-            </div>
+		    	<!-- forum activity -->
+		    	<div id="forumActivity">
+				<div id="chart_vote" style="width: 100%; height: 50%;"></div>
+				<div id="chart_post" style="width: 100%; height: 50%;"></div>
+		    	</div>
 		</div>
 		
 		<div id="articleLinkContainer">
 		
 			<div id="trendLinks"></div>
+
+			<div id="metricChoose"></div>			
+
 			<div id='graphTopLeft'></div>
-			<div id='dropdown'></div>
+
+			<!--<div id='dropdown'></div>-->
+
 			<div id='graphTopRight'></div>				
 			<div id="graphBotLeft"></div>
 			<div id="graphBotRight"></div>
