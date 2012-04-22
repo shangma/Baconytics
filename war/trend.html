@@ -2,7 +2,7 @@
 
 <html>
 
-<h3>This is where we show the trending topics..</h3>
+<h3>Top Trending Topics:</h3>
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript">
 
@@ -20,7 +20,7 @@
 			json = data;
 			
 			for (i = 0; i < data.keyEnt.length; i++) {
-				strContent= strContent +  "Trend: <a href='javascript:getLinkwithKeyword(" + i + ")'>" + data.keyEnt[i].keyword + "</a> " + "Score: " + data.keyEnt[i].score + "<br />";
+				strContent= strContent +  "<a href='javascript:getLinkwithKeyword(" + i + ")'>" + data.keyEnt[i].keyword + "</a><br />";
 				//alert(strContent);
 				//alert("repeat");
 				topic[i] = data.keyEnt[i].keyword;

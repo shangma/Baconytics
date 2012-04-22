@@ -39,7 +39,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 }
 
 #articleLinkContainer {
-	min-height:30em;
+	min-height:20em;
 	width: 850px;
 	/*margin-right: auto;
 	margin-left: left;*/
@@ -64,7 +64,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 
 
 #trendingTopics {
-	min-height: 30em;
+	min-height: 20em;
 	width: 300px;
 	
 	float: left;
@@ -74,13 +74,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 }
 
 #trendLinks {
-	min-height: 30em;
+	min-height: 20em;
+	max-height: 20em;
 	min-width: 700px;
 	max-width: 700px;
 	float: left;
 	border-style:solid;
 	border-width:1px;
-
+	overflow: auto;
 
 	background: rgb(240,243,252); /* Old browsers */
 	/* IE9 SVG, needs conditional override of 'filter' to 'none' */
@@ -132,7 +133,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fdfeff', end
 	min-height: 18em;
 	width: 400px;
 	background-color: #287;
-	float: right;
+	float: left;
 	z-index: 2;
 	
 	display:block;
