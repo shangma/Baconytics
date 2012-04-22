@@ -325,7 +325,7 @@
   		           
   		          chart.draw(data, {showRowNumber: false, allowHtml: true,height:'800'});  
      	  
-     	 show('userTable');
+     	 hide('userTable');
 
     	}
 
@@ -343,6 +343,8 @@
                 dataVote.addRows(obj.votes);
 
                 var options = {
+		    width: 900,
+		    height: 500,
                     title: 'Reddit Votes'
                 };
 
@@ -354,13 +356,15 @@
                 dataPost.addColumn('number', 'No. of Posts');
                 dataPost.addRows(obj.posts);
 
-                var options = {
+                var optionsPost = {
+		    width: 900,
+		    height: 500,
                     title: 'Reddit Posts',
                     colors: ['red','#004411']
                 };
 
                 var chart = new google.visualization.LineChart(document.getElementById('chart_post'));
-                chart.draw(dataPost, options);
+                chart.draw(dataPost, optionsPost);
             }
         });
     }

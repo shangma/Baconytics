@@ -92,6 +92,9 @@ function extractSource()
     	});
         
 		//hacky fix for graph invisibility
+		toggle('articleLinkContainer');
+		toggle('leftContainer');
+
 		toggle('trendingTopics');
 		toggle('userTable');
 		toggle('trendLinks');
@@ -139,6 +142,8 @@ function changeLayoutTrendKeys(){
 	//google.setOnLoadCallback(drawKeywordBarGraph);
 	//google.setOnLoadCallback(drawChart2);
 
+	show('articleLinkContainer');
+	show('leftContainer');
 	hide('userTable');
 
 	document.getElementById('articleLinkContainer').style.width='850px';
@@ -163,6 +168,9 @@ function changeLayoutTrendKeys(){
 
 function changeLayoutUserData(){
 
+	show('articleLinkContainer');
+	show('leftContainer');
+	
 	hide('trendingTopics');
 	hide('trendLinks');
     	hide('forumActivity');
@@ -185,6 +193,9 @@ function changeLayoutUserData(){
 
 function changeTimeVis(){
     
+	/*hide('articleLinkContainer');*/
+	document.getElementById('articleLinkContainer').style.width='850px';
+	hide('leftContainer');
 
     	hide('trendingTopics');
 	hide('trendLinks');
@@ -246,17 +257,18 @@ function toggle(id) {
 			<div id="userTable"></div>
             
 		    	<!-- forum activity -->
-		    	<div id="forumActivity">
-				<div id="chart_vote" style="width: 100%; height: 50%;"></div>
-				<div id="chart_post" style="width: 100%; height: 50%;"></div>
-		    	</div>
+		    	
 		</div>
 		
 		<div id="articleLinkContainer">
-		
+			<div id="metricChoose"></div>
+			<div id="forumActivity">
+				<div id="chart_vote"></div>
+				<div id="chart_post"></div>
+			</div>
 			<div id="trendLinks"></div>
 
-			<div id="metricChoose"></div>			
+						
 
 			<div id='graphTopLeft' ></div>
 
@@ -265,8 +277,12 @@ function toggle(id) {
 			<div id='graphTopRight'></div>				
 			<div id="graphBotLeft"></div>
 			<div id="graphBotRight"></div>
+
+			
 						
 		</div>
+
+		
 		
 		<!--
 		<div id="rightContainer">
