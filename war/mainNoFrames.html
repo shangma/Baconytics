@@ -194,8 +194,8 @@ function changeLayoutUserData(){
 function changeTimeVis(){
     
 	/*hide('articleLinkContainer');*/
-	document.getElementById('articleLinkContainer').style.width='850px';
-	hide('leftContainer');
+	document.getElementById('leftContainer').style.width='850px';
+	//hide('leftContainer');
 
     	hide('trendingTopics');
 	hide('trendLinks');
@@ -257,15 +257,14 @@ function toggle(id) {
 			<div id="userTable"></div>
             
 		    	<!-- forum activity -->
-		    	
+		    <div id="forumActivity">
+				<div id="chart_vote"></div>
+				<div id="chart_post"></div>
+			</div>
 		</div>
 		
 		<div id="articleLinkContainer">
 			<div id="metricChoose"></div>
-			<div id="forumActivity">
-				<div id="chart_vote"></div>
-				<div id="chart_post"></div>
-			</div>
 			<div id="trendLinks"></div>
 
 						
