@@ -24,11 +24,11 @@ import edu.gatech.cc.baconytics.model.LinkRelevanceBundle;
 import edu.gatech.cc.baconytics.model.PMF;
 import edu.gatech.cc.baconytics.model.UTCTime;
 
-public class TopicAggregator implements Aggregator {
+public class TopicAggregator extends Aggregator {
 	// Due to GAE datastore operation 1min-limit issue, we do aggregating
 	// through several batches.
-	private final static int BATCHSIZE = 100;
-	private final static String CURSORTYPE = "AGGREGATOR";
+	private final int BATCHSIZE = 100;
+	private final String CURSORTYPE = "AGGREGATOR";
 
 	@Override
 	public void aggregate() {
@@ -136,27 +136,21 @@ public class TopicAggregator implements Aggregator {
 	private Set<KeywordLinkMap> extract(Set<LinkKeywordMap> source,
 			NlpApi apiInterface) {
 		HashSet<KeywordLinkMap> ret = new HashSet<KeywordLinkMap>();
+		// Keyword -> Link (one-to-many) map
 		HashMap<String, HashSet<LinkRelevanceBundle>> sbMap = new HashMap<String, HashSet<LinkRelevanceBundle>>();
+
 		for (LinkKeywordMap linkKeyword : source) {
 			System.out.println("Processing " + linkKeyword.getTitle());
 			Set<KeywordRelevance> newWords = apiInterface.process(linkKeyword
 					.getTitle());
-			// If no valuable keyword extracted by NLP API, we put the subreddit
-			// as keyword here, and set the relevance 1.0
-			if (newWords == null || newWords.size() == 0) {
-				newWords = new HashSet<KeywordRelevance>();
-				KeywordRelevance kr = new KeywordRelevance(linkKeyword
-						.getSubreddit(), 1.0);
-				newWords.add(kr);
+			// Only build map if keyword found
+			if (newWords != null && newWords.size() > 0) {
+				HashMap<String, LinkRelevanceBundle> kwMap = map(linkKeyword,
+						newWords);
+				addToKeywordsMap(sbMap, kwMap);
 			}
-			HashMap<String, LinkRelevanceBundle> kwMap = map(linkKeyword,
-					newWords);
-			if (kwMap == null) {
-				continue;
-			}
-			// Here we create the Keyword -> Link (one-to-many) map
-			addToKeywordsMap(sbMap, kwMap);
 		}
+
 		Iterator<Entry<String, HashSet<LinkRelevanceBundle>>> iter = sbMap
 				.entrySet().iterator();
 		while (iter.hasNext()) {
