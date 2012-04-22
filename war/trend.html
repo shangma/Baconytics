@@ -16,7 +16,7 @@
     var topic=new Array();
 	
 	function getKeywords() {	
-		$.getJSON("http://localhost:8888/keyentjsonservlet", function(data) {
+		$.getJSON("./keyentjsonservlet", function(data) {
 			json = data;
 			
 			for (i = 0; i < data.keyEnt.length; i++) {
