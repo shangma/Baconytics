@@ -21,7 +21,7 @@
 		var link = "";
 		var keyword = topic;
 		//alert("1");
-		$('.links').remove();;
+		$('.links').remove();
 		$.each(jsonData.keyword_list, function(key, value){					
 			//console.log(value.keyword);
 			if(value.keyword==keyword){
@@ -72,7 +72,7 @@
 	</form>
 </div>
 -->
-<h3>These are the links associated with the keyword: <div id="kw"></div></h3>
+<h3>These are the posts of the topic: <div id="kw" style="font-size:40px;"></div></h3>
 <p style="word-wrap: break-word;"><b id='links'></b> </p> 
 </body>
 

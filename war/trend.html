@@ -3,12 +3,15 @@
 <html>
 
 <h3>Top Trending Topics</h3>
+<form id="weekform">
+	<select id="dropDown_week" onChange="getKeywords()">
+		<option>Week 1</option>
+		<option>Week 2</option>
+		<option>Week 3</option>
+	</select> 
+</form>
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript">
-
-	var txt=document.getElementById("content");
-	var strContent = "";
-
 	$(document).ready(function() {
 		getKeywords();
 	});
@@ -16,17 +19,13 @@
     var topic=new Array();
 	
 	function getKeywords() {	
+		$('.kw').remove();
 		$.getJSON("./keyentjsonservlet", function(data) {
 			json = data;
-			
 			for (i = 0; i < data.keyEnt.length; i++) {
-				strContent= strContent +  "<a href='javascript:getLinkwithKeyword(" + i + ")'>" + data.keyEnt[i].keyword + "</a><br />";
-				//alert(strContent);
-				//alert("repeat");
+				$('#content').append("<a class='kw' href='javascript:getLinkwithKeyword(" + i + ")'>" + data.keyEnt[i].keyword + "<br /></a>");
 				topic[i] = data.keyEnt[i].keyword;
 			}
-			//alert(strContent);
-			txt.innerHTML=strContent;
 		});	
 	}
 	function getLinkwithKeyword(i){

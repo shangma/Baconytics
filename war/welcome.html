@@ -1,5 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html dir="ltr" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title>Baconytics</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -9,44 +9,24 @@
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
-
 <script type="text/javascript" src="gchart.js"></script>
 
-<script type="text/javascript">
-
-	// Load the Visualization API and the piechart package.
-      google.load('visualization', '1.0', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.setOnLoadCallback(drawKeywordBarGraph);
-	  google.setOnLoadCallback(drawChart2);
-	  google.setOnLoadCallback(drawChart3);
-	  
-$(document).ready(function() {
-
-	$(document).ready(function() {
-		
-		$('#a').click(function () {
-			alert('jQuery.click()');
-			return true;
-		});
-	   
-	});
-});
-
-function button_onClick() {
-   document.location.href='http://localhost:8888/mainNoFrames.html';
-}
-
-</script>
 <body>
 
-	<div id="outerContainer">
+	<div id="outerContainer_welcome">
 		<div id="welcomeMain">
 			<h1>Baconytics <span>--Trends on Reddit</span></h1>
+			<div style="float:left;">
 			<a href="./mainNoFrames.html">
 			<img border="0" src="/images/tempImage2.png" title="Start analyzing!!" width="600" height="400" />
 			</a>
+			</div><div>
+			<p id="main_description">
+			Baconytics is a social media analyzer. We analyze all the information that's on Reddit to see:</br>
+			1. What's the hottest topic most people care about? </br>
+			2. Who's the most contributive user on Reddit? </br>
+			</p>
+			</div>
 			<br/>				
 		</div>		
 	</div>
