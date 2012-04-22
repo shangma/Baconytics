@@ -20,7 +20,6 @@ import org.json.JSONObject;
 import edu.gatech.cc.baconytics.model.AnalyzerCheckpoint;
 import edu.gatech.cc.baconytics.model.KeywordLinkMap;
 import edu.gatech.cc.baconytics.model.Link;
-import edu.gatech.cc.baconytics.model.LinkKeywordMap;
 import edu.gatech.cc.baconytics.model.LinkRelevanceBundle;
 import edu.gatech.cc.baconytics.model.LinkStats;
 import edu.gatech.cc.baconytics.model.PMF;
@@ -47,46 +46,6 @@ public class Analyzer extends HttpServlet {
 		} catch (IOException e1) {
 			System.out.println("IO exarg0ception!");
 			e1.printStackTrace();
-		}
-
-		if (path != null && path.equals("/flush")) {
-			Query userQuery = pm.newQuery(User.class);
-			userQuery.deletePersistentAll();
-
-			Query linkStatsQuery = pm.newQuery(LinkStats.class);
-			linkStatsQuery.deletePersistentAll();
-
-			Query linkQuery = pm.newQuery(Link.class);
-			linkQuery.deletePersistentAll();
-
-			Query linkRelevanceQuery = pm.newQuery(LinkRelevanceBundle.class);
-			linkRelevanceQuery.deletePersistentAll();
-
-			Query linkKeywordQuery = pm.newQuery(LinkKeywordMap.class);
-			linkKeywordQuery.deletePersistentAll();
-
-			Query keywordLinkQuery = pm.newQuery(KeywordLinkMap.class);
-			keywordLinkQuery.deletePersistentAll();
-
-			Query keywordQuery = pm.newQuery(KeywordEntity.class);
-			keywordQuery.deletePersistentAll();
-
-			Query timeQuery = pm.newQuery(AnalyzerCheckpoint.class);
-			List<AnalyzerCheckpoint> list = (List<AnalyzerCheckpoint>) timeQuery
-					.execute();
-			AnalyzerCheckpoint analyzerCheckpoint;
-			if (list.size() == 0) {
-				analyzerCheckpoint = new AnalyzerCheckpoint();
-				pm.makePersistent(analyzerCheckpoint);
-			} else {
-				pm.currentTransaction().begin();
-				analyzerCheckpoint = list.get(0);
-				analyzerCheckpoint.resetCheckPoint();
-				pm.currentTransaction().commit();
-				// writer.println(analyzerCheckpoint.getTime());
-			}
-
-			return;
 		}
 
 		Query query = pm.newQuery(KeywordLinkMap.class);
@@ -278,7 +237,7 @@ public class Analyzer extends HttpServlet {
 		 */
 		userQuery.setOrdering("karma desc");
 		List<User> userList = (List<User>) userQuery.execute(); // sorted on
-																// karma
+		// karma
 
 		JSONObject jsonUser = new JSONObject();
 		JSONObject categoryJSON;
@@ -476,8 +435,8 @@ public class Analyzer extends HttpServlet {
 		for (KeywordLinkMap e : keywordList) {
 			if (e != null) {
 
-				KeywordEntity kE = new KeywordEntity(e.getKeyword(),
-						e.getBundleSetSize(), e);
+				KeywordEntity kE = new KeywordEntity(e.getKeyword(), e
+						.getBundleSetSize(), e);
 				System.out.println(kE);
 				eList.add(kE);
 			}
@@ -517,9 +476,9 @@ public class Analyzer extends HttpServlet {
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(AnalyzerCheckpoint.class);
 		long ret = 9331619531L; // Here if the UTC table does not exsit or the
-								// marker is not set properly, the aggregator
-								// should do nothing, so set the return time
-								// larger than any Link in database.
+		// marker is not set properly, the aggregator
+		// should do nothing, so set the return time
+		// larger than any Link in database.
 		try {
 			@SuppressWarnings("unchecked")
 			List<AnalyzerCheckpoint> results = (List<AnalyzerCheckpoint>) query
