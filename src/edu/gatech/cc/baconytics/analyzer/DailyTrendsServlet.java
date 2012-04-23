@@ -35,7 +35,7 @@ import edu.gatech.cc.baconytics.model.WeeklyTrends;
 @SuppressWarnings("serial")
 public class DailyTrendsServlet extends HttpServlet {
 
-    public static final int MAX_POSTS_PER_KEYWORD = 2;
+    public static final int MAX_POSTS_PER_KEYWORD = 5;
     public static final long MILLISECOND_IN_ONE_HOUR = 3600000L;
     public static final String CURSORTYPE = "WEEKLY_TRENDS";
     public static final int THRESHHOLD = 10; // Only returns top 10 keywords
