@@ -4,36 +4,44 @@
 
 <h3>Top Trending Topics</h3>
 <form id="weekform">
-	<select id="dropDown_week" onChange="getKeywords()">
-		<option>Week 1</option>
-		<option>Week 2</option>
+	<select id="dropDown_week" onChange="getKeywords(this.options[this.selectedIndex].value)">
+		<option value="1334867411021">4/11-4/19</option>
+		<option value="1334957411021">4/19-4/20</option>
 		<option>Week 3</option>
 	</select> 
 </form>
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		getKeywords();
-	});
-	var json="test";
-    var topic=new Array();
-	
-	function getKeywords() {	
+	function getKeywords(time_index) {	
 		$('.kw').remove();
-		$.getJSON("./keyentjsonservlet", function(data) {
-			json = data;
-			for (i = 0; i < data.keyEnt.length; i++) {
-				$('#content').append("<a class='kw' href='javascript:getLinkwithKeyword(" + i + ")'>" + data.keyEnt[i].keyword + "<br /></a>");
-				topic[i] = data.keyEnt[i].keyword;
-			}
-		});	
+		$.ajax({
+            url: "./dailytrends",
+            type: "POST",
+            success: function (array) {
+				var jsonData = $.parseJSON(array);
+                console.log(jsonData);
+				//window.getData(jsonData);
+				$.each(jsonData, function(key, value){
+					//console.log(value);
+					if(value.end_time == time_index){
+						console.log(value.end_time);
+						//console.log(key);
+						window.getData(value);
+						$.each(value.keyword_list, function(k,v){
+							//console.log(k);
+							//console.log(v.keyword);
+							$('#content').append("<a class='kw' href='javascript:getLinkwithKeyword(" + k + ")'>" + v.keyword + "<br /></a>");
+						});
+					}
+				});
+            }
+        });	
 	}
 	function getLinkwithKeyword(i){
-		window.getLink(topic[i]);
-		//console.log(topic[i]);
+		window.getLink(i);
 	}
 </script>
-<p><b id='content'></b> </p> 
+<p><b id='content'></b><p class="kw"><b>Select the drop down menu to see trending topics within certain period of time.</b></p> </p> 
 <body>
 	
 </body>

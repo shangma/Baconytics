@@ -7,56 +7,35 @@
 <script type="text/javascript" src="jquery.json-2.3.js"></script>
 <script type="text/javascript">
     var jsonData;
-	$(document).ready(function(){
-		$('#links').append('<p class="links">Click on the topics to see the posts</p>');
-	});
 	
 	function getData(data){
 		jsonData = data;
 	}
 	
-	function getLink(topic){
-		var str = "";
+	function getLink(topic_index){
 		var baselink = "http://reddit.com";
 		var link = "";
-		var keyword = topic;
+		//var keyword = topic;
 		//alert("1");
 		$('.links').remove();
+		//console.log(jsonData);
 		$.each(jsonData.keyword_list, function(key, value){					
-			//console.log(value.keyword);
-			if(value.keyword==keyword){
+			//alert(value);
+			if(key==topic_index){
+				//alert(value.link_list[0].permalink);
 				//console.log(value.link_list);
+				$('#kw').text(value.keyword);
 				$.each(value.link_list, function(k,v){
 					link = baselink + v.permalink;
-					//console.log(v.title);
-					$('#links').append('<a class="links" href="'+link+'">'+v.title+'</br></a>')
+		//			console.log(v.title);
+					$('#links').append('<a class="links" target = "_blank" href="'+link+'">'+v.title+'</br></a>')
 				});
 			}
 		});				
 
 		//alert("got here! end");
-		$('#kw').text(keyword);
 	}
 
-/*
-	var sel = 99;
-	function alertselected(selectobj){
-
-		//alert(selectobj.selectedIndex + " is the selected ");
-		sel = selectobj.selectedIndex;
-		//alert(sel);
-		if(sel == 0){
-			window.changeLayoutTrendKeys();
-		}
-		else if(sel==1){
-			window.changeLayoutUserData();
-		}
-		else if(sel==2){
-			window.changeTimeVis();
-		}
-
-	}
-*/
 </script>
 
 <body>
@@ -73,7 +52,7 @@
 </div>
 -->
 <h3>These are the posts of the topic: <div id="kw" style="font-size:40px;"></div></h3>
-<p style="word-wrap: break-word;"><b id='links'></b> </p> 
+<p style="word-wrap: break-word;"><b id='links'><p class="links">Click on the topics to see the posts</p></b> </p> 
 </body>
 
 </html>
