@@ -35,12 +35,13 @@ import edu.gatech.cc.baconytics.model.WeeklyTrends;
 @SuppressWarnings("serial")
 public class DailyTrendsServlet extends HttpServlet {
 
+    public static final int MAX_POSTS_PER_KEYWORD = 2;
     public static final long MILLISECOND_IN_ONE_HOUR = 3600000L;
     public static final String CURSORTYPE = "WEEKLY_TRENDS";
     public static final int THRESHHOLD = 10; // Only returns top 10 keywords
     public static final int BATCHSIZE = 300;
 
-    public static PrintWriter writer;
+    public PrintWriter writer;
     public int numOfProcessedLinkStats = 0;
     public int numOfProcessedKeywords = 0;
 
@@ -60,9 +61,13 @@ public class DailyTrendsServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         writer = resp.getWriter();
+        int first = Integer.parseInt(req.getParameter("range_start"));
+        int last = Integer.parseInt(req.getParameter("range_end"));
         PersistenceManager pm = PMF.get().getPersistenceManager();
         try {
             Query query = pm.newQuery(WeeklyTrends.class);
+            query.setOrdering("timeInterval ASC");
+            query.setRange(first, last);
             List<WeeklyTrends> results = (List<WeeklyTrends>) query.execute();
             if (results.isEmpty()) {
                 return;
@@ -92,8 +97,14 @@ public class DailyTrendsServlet extends HttpServlet {
                     JSONObject kwJson = new JSONObject();
                     HashSet<LinkRelevanceBundle> krBundle = keywordLink
                             .getBundleSet();
+                    int bundleSize = 0;
                     JSONArray linkJsonArray = new JSONArray();
                     for (LinkRelevanceBundle item : krBundle) {
+                        // For saving quota, we only display 10 links
+                        if (bundleSize >= MAX_POSTS_PER_KEYWORD) {
+                            break;
+                        }
+                        ++bundleSize;
                         Query linkQuery = pm.newQuery(Link.class);
                         linkQuery.setFilter("id == idParam");
                         linkQuery.declareParameters("String idParam");
@@ -121,7 +132,9 @@ public class DailyTrendsServlet extends HttpServlet {
                 dailyJsonObj.put("keyword_list", keywordListArray);
                 dailyJsonArray.put(dailyJsonObj);
             }
-            writer.println(dailyJsonArray.toString());
+            JSONObject ret = new JSONObject();
+            ret.put("daily_trends", dailyJsonArray);
+            writer.println(ret.toString());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
