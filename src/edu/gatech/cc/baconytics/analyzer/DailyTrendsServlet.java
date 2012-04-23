@@ -41,11 +41,11 @@ public class DailyTrendsServlet extends HttpServlet {
     public static final int BATCHSIZE = 300;
 
     public static PrintWriter writer;
-    public static int numOfProcessedLinkStats = 0;
-    public static int numOfProcessedKeywords = 0;
+    public int numOfProcessedLinkStats = 0;
+    public int numOfProcessedKeywords = 0;
 
-    private HashMap<Key, Integer> keywordCount = new HashMap<Key, Integer>();
-    private HashMap<String, TimeVotesBundle> redditCount = new HashMap<String, TimeVotesBundle>();
+    private HashMap<Key, Integer> keywordCount = null;
+    private HashMap<String, TimeVotesBundle> redditCount = null;
 
     public class BundleComparator implements Comparator<KeywordVotesBundle> {
 
@@ -129,10 +129,24 @@ public class DailyTrendsServlet extends HttpServlet {
         }
     }
 
+    public static HashSet<String> subredditSet = null;
+
+    public static void initSubredditSet() {
+        if (subredditSet != null) {
+            return;
+        }
+        subredditSet = new HashSet<String>();
+        for (int i = 0; i < subreddits.length; ++i) {
+            subredditSet.add(subreddits[i]);
+        }
+    }
+
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         try {
+            // Initialize subreddit Set
+            initSubredditSet();
             // First get a week's Link->Votes map
             fetchOneWeekLinkStats();
             // Second get the keyword->votes map
@@ -184,6 +198,8 @@ public class DailyTrendsServlet extends HttpServlet {
 
     @SuppressWarnings("unchecked")
     private void populateKeywordVotesMap() throws Exception {
+        numOfProcessedKeywords = 0;
+        keywordCount = new HashMap<Key, Integer>();
         PersistenceManager pm = PMF.get().getPersistenceManager();
         Iterator<Entry<String, TimeVotesBundle>> iter = redditCount.entrySet()
                 .iterator();
@@ -204,6 +220,30 @@ public class DailyTrendsServlet extends HttpServlet {
             // There should be only one.
             LinkKeywordMap linkKeyword = lkmResults.get(0);
             HashSet<Key> keywordKeySet = linkKeyword.getKeywordSet();
+
+            // Roughly filter out subreddits, this filter generates some false
+            // positives
+            if (keywordKeySet.size() == 1) {
+                Iterator<Key> kIter = keywordKeySet.iterator();
+                boolean isSubreddit = false;
+                String keyword = "";
+                while (kIter.hasNext()) {
+                    keyword = kIter.next().getName();
+                    if (subredditSet.contains(keyword)) {
+                        // This keyword is very likely to be a subreddit
+                        // False positives: if the title of the post really has
+                        // the keyword, then still will be treated as a
+                        // subreddit
+                        isSubreddit = true;
+                        break;
+                    }
+                }
+                if (isSubreddit) {
+                    System.out.println("Subreddit " + keyword);
+                    continue;
+                }
+            }
+
             // Go through all keywords belong to the reddit and update the
             // Keyword->Vote map
             for (Key key : keywordKeySet) {
@@ -224,6 +264,8 @@ public class DailyTrendsServlet extends HttpServlet {
 
     @SuppressWarnings("unchecked")
     private void fetchOneWeekLinkStats() throws Exception {
+        numOfProcessedLinkStats = 0;
+        redditCount = new HashMap<String, TimeVotesBundle>();
         UTCTime utcTimeObj = UTCTime.fetchLastUTCTime(CURSORTYPE);
         long timeStart = utcTimeObj.getTime();
         weekStart = timeStart;
@@ -242,8 +284,7 @@ public class DailyTrendsServlet extends HttpServlet {
 
             List<LinkStats> results = (List<LinkStats>) query.execute();
             if (!results.isEmpty()) {
-                // Go through each LinkStats, and fill in a keyword->votes
-                // Map.
+                // Go through each LinkStats, and fill in a keyword->votes Map.
                 // Only added the latest ones' votes to the map
                 for (LinkStats item : results) {
                     ++numOfProcessedLinkStats;
@@ -305,4 +346,130 @@ public class DailyTrendsServlet extends HttpServlet {
             this.voteCount = votes;
         }
     }
+
+    public static final String[] subreddits = { "announcements", "blog",
+            "funny", "pics", "reddit.com", "wtf", "science", "worldnews",
+            "askreddit", "programming", "gaming", "offbeat", "atheism",
+            "comics", "business", "geek", "videos", "iama", "bestof", "music",
+            "economics", "todayilearned", "humor", "gadgets", "environment",
+            "news", "wikipedia", "linux", "sex", "movies", "scifi", "space",
+            "doesanybodyelse", "cogsci", "food", "philosophy", "marijuana",
+            "frugal", "fffffffuuuuuuuuuuuu", "self", "health", "books",
+            "history", "photography", "math", "worldpolitics", "sports",
+            "apple", "web_design", "art", "hoot", "happy", "energy", "netsec",
+            "aww", "libertarian", "webgames", "dig", "tldr", "locates",
+            "obama", "economy", "psychology", "conspiracy", "canada", "xkcd",
+            "fitness", "design", "drugs", "python", "photos", "listentothis",
+            "cooking", "compsci", "sexy", "trees", "4chan", "physics",
+            "software", "writing", "relationship_advice", "freethought",
+            "skeptic", "opensource", "hardware", "twoxchromosomes",
+            "wearethemusicmakers", "video", "lgbt", "mensrights", "anarchism",
+            "beer", "guns", "pictures", "documentaries", "android",
+            "bicycling", "tf2", "women", "religion", "coding", "astronomy",
+            "iphone", "youshouldknow", "bacon", "ubuntu", "itookapicture",
+            "circlejerk", "cannabis", "craigslist", "zombies", "webcomics",
+            "opendirectories", "lectures", "woahdude", "collapse", "lists",
+            "javascript", "ps3", "carlhprogramming", "travel", "green",
+            "anime", "christianity", "pic", "hackers", "google", "firefox",
+            "australia", "lost", "government", "military", "linguistics",
+            "zenhabits", "tech", "japan", "rpg", "ruby", "socialism",
+            "starcraft", "worstof", "shittyadvice", "newreddits",
+            "somethingimade", "robotics", "guitar", "education", "cpp",
+            "metal", "haskell", "moviecritic", "seduction", "mma", "ronpaul",
+            "productivity", "php", "buddhism", "nature", "feminisms", "jokes",
+            "computersecurity", "unitedkingdom", "astro", "windowshots",
+            "bad_cop_no_donut", "reverseengineering", "literature",
+            "tipofmytongue", "browsers", "chemistry", "pets", "lisp", "soccer",
+            "socialmedia", "celebrities", "philosophyofscience",
+            "architecture", "hockey", "wallpapers", "bestofcraigslist",
+            "truereddit", "perl", "secretsanta", "fashion", "equality",
+            "suicidewatch", "conspiracies", "redditstories", "meetup",
+            "torrents", "youtube", "doctorwho", "india", "ukpolitics", "wow",
+            "l33t", "xbox360", "israel", "recipes", "homebrewing", "usa",
+            "europe", "mac", "tedtalks", "electronicmusic", "dailywtf", "law",
+            "osx", "interestingasfuck", "graffiti", "biology", "autos",
+            "evolution", "apathy", "redditchan", "linux4noobs", "vegan",
+            "lostgeneration", "startups", "anthropology", "nyc", "gardening",
+            "django", "facebookquotes", "java", "911truth", "transhuman",
+            "vim", "sociology", "things", "cheap_meals", "csbooks", "gamedev",
+            "blackops", "dubstep", "idea", "microsoft", "ilivein",
+            "television", "uspe08", "drunk", "area51", "indiegaming",
+            "machinelearning", "starwars", "quotes", "trippy", "lol", "ufos",
+            "americanpolitics", "standupcomedy", "selfsufficiency",
+            "nonprofit", "movieclub", "scientology", "auto", "logo", "ideas",
+            "science2", "americangovernment", "veg", "survivalist", "zen",
+            "engineering", "seattle", "bash", "survival", "kde", "cheats",
+            "electronics", "cute", "needadvice", "cyberlaws", "creepy", "ted",
+            "overpopulation", "poker", "joel", "catpictures",
+            "ideasfortheadmins", "linux_gaming", "erlang", "chicago",
+            "reddithax", "emacs", "boston", "celebcrack", "hacking",
+            "malefashionadvice", "politicalhumor", "learnprogramming", "euro",
+            "gossip", "hardscience", "c_programming", "academicphilosophy",
+            "startrek", "hrw", "wave", "paranormal", "love", "coffee",
+            "dwarffortress", "ece", "depression", "softwaredevelopment",
+            "ediscover", "worldwidenews", "austin", "ama", "dotnet",
+            "tonightsdinner", "progressive", "windows", "tipoftheday",
+            "portland", "howtodiy", "onlinegames", "twitter", "selfhelp",
+            "ladybashing", "ohwhataworld", "database", "islam", "scientific",
+            "formula1", "bsd", "motorcycles", "porn", "ireland",
+            "codeprojects", "investing", "psychonaut", "comicbooks", "crime",
+            "poetry", "jobs", "ads", "eve", "lsd", "webdesign", "networking",
+            "agi", "neuro", "snobs", "liberty", "slackerrecipes",
+            "palinproblem", "toronto", "reportthespammers", "aviation",
+            "scheme", "mmj", "fakenews", "vegetarianism", "climateskeptics",
+            "conservative", "functional", "sanfrancisco", "spaceflight",
+            "fascinating", "pcgaming", "finance", "culture", "blogs",
+            "iwantout", "reddittraveljetblue", "commonlaw", "independent",
+            "gif", "typography", "pandemic", "occult", "baseball", "freegames",
+            "dnb", "classicalmusic", "mw2", "appengine", "fiction", "theology",
+            "asm", "tothemoon", "jazz", "marketing", "wdp", "photocritique",
+            "parenting", "egalitarian", "animals", "entrepreneur", "trance",
+            "types", "language", "wallpaper", "musictheory", "archlinux",
+            "digg", "promos", "hipstergurlz", "bestgamesever", "learnjapanese",
+            "statistics", "chrome", "sysor", "bikinis", "apod", "hacks",
+            "reddiªusicclub", "climate", "systems", "techplore", "evopsych",
+            "visualization", "gnu", "wireless", "clojure", "mashups",
+            "radioreddit", "cryptogon", "photoshop", "putinforpresident",
+            "bioinformatics", "computergraphics", "redditdev", "c_language",
+            "search", "baking", "idap", "anticonsumption", "alternativehealth",
+            "unix", "learnanewlanguage", "rugc", "semanticweb", "rails",
+            "scala", "magictcg", "bugs", "intp", "geopolitics", "singularity",
+            "sonyps3", "animalrights", "losangeles", "taoism",
+            "social_bookmarking", "mathbooks", "freemusic", "pch", "git",
+            "newzealand", "ªbr", "learnmath", "fsm", "furry",
+            "culturalstudies", "webnews", "shortfilms", "tea", "de", "mexico",
+            "smart", "philadelphia", "campingandhiking", "war", "lovecraft",
+            "chess", "webmaster", "nootropics", "tattoos", "financialplanning",
+            "omegle", "redditbooks", "cplusplus", "wackyworld", "permaculture",
+            "whedon", "worldnews2", "artificial", "bayarea", "musicians",
+            "fail", "lego", "mspainttoday", "ecoreddit", "greasemonkey",
+            "celebrity", "1000words", "zombie", "hackernews", "indierock",
+            "animation", "seo", "freelance", "fantasy", "guitarlessons",
+            "askme", "whalebait", "england", "p2p", "lastnight",
+            "whitemengonewild", "geospatial", "linux_devices", "wii",
+            "longtext", "moddit", "meta", "gamereviews", "artcrit", "askusers",
+            "agile", "reddiªakesagame", "spacefleet", "emmawatson",
+            "matheducation", "mixes", "sysadmin", "security", "haiti", "til",
+            "apocalypse", "meditation", "media", "nonaustrianeconomics",
+            "pittsburgh", "vid", "internet", "charts", "itsnotonion",
+            "learning", "dogs", "piracy", "nanotech", "texas",
+            "noveltyaccounts", "shortstories", "ocaml", "eebooks", "work",
+            "screenwriting", "forts", "france", "yourweek", "organicgardening",
+            "mycology", "dragonage", "datasets", "trust",
+            "politicalphilosophy", "picture", "designthought", "trt",
+            "wordplay", "podcasts", "tips_tricks", "americanhistory",
+            "algorithms", "bookclub", "fml", "xbox360games", "running",
+            "darwin", "slashdot", "libredesign", "plt", "leaked",
+            "statuegropers", "medicine", "code", "cars", "dae", "latex", "ufo",
+            "compilers", "forhire", "gamedeals", "walls", "giveaways",
+            "california", "tvcritic", "webdev", "ajax", "computers",
+            "archaeology", "shell", "sewerhorse", "football", "happybirthday",
+            "puzzles", "hiphop", "steampunk", "stocks", "cats", "blogging",
+            "grammar", "polyamory", "netfluff", "wearethefilmmakers",
+            "breakfast", "atlanta", "antiwar", "wine", "stoners",
+            "interneªarketing", "povertytips", "riaa", "worldbuilding",
+            "wordpress", "crypto", "tuxtraining", "boardgames",
+            "skateboarding", "particlephysics", "lifestyle", "punk", "magick",
+            "foodporn", "lifehacks", "jquery", "helpoutreddit", "gnome",
+            "iphoneappstore", "sketchcomedy", "artistic" };
 }
