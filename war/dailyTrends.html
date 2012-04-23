@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        $.ajax({
+            url: "./dailytrends",
+            type: "POST",
+            success: function (array) {
+                console.log(array);
+            }
+        });
+      }
+     
+    </script>
+  </head>
+</html>

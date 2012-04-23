@@ -5,12 +5,12 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet>
-        <servlet-name>weeklytrends</servlet-name>
-        <servlet-class>edu.gatech.cc.baconytics.analyzer.WeeklyTrendsServlet</servlet-class>
+        <servlet-name>dailytrends</servlet-name>
+        <servlet-class>edu.gatech.cc.baconytics.analyzer.DailyTrendsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>weeklytrends</servlet-name>
-        <url-pattern>/weeklytrends</url-pattern>
+        <servlet-name>dailytrends</servlet-name>
+        <url-pattern>/dailytrends</url-pattern>
     </servlet-mapping>
 
 	<servlet>
