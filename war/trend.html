@@ -5,28 +5,47 @@
 <h3>Top Trending Topics</h3>
 <form id="weekform">
 	<select id="dropDown_week" onChange="getKeywords(this.options[this.selectedIndex].value)">
-		<option value="1334867411021">4/11-4/19</option>
-		<option value="1334957411021">4/19-4/20</option>
-		<option>Week 3</option>
+
 	</select> 
 </form>
 <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="gchart.js"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
+	$.ajax({
+            url: "./dailytrends",
+            type: "POST",
+			data: {range_start: 0, range_end: 10},
+            success: function (array) {
+				var jsonData = $.parseJSON(array);
+                //console.log(jsonData.daily_trends);
+				$.each(jsonData.daily_trends, function(key,value){
+					var d1= new Date(value.start_time),
+						d2= new Date(value.end_time);
+						//console.log(d1.toDateString());
+						//console.log(d2.toDateString());
+					$('#dropDown_week').append('<option value="' + value.end_time + '">' + d1.toDateString()+ ' ~ ' +d2.toDateString()+ '</option>');
+				});				
+            }
+        });
+	
 	function getKeywords(time_index) {	
 		$('.kw').remove();
 		$.ajax({
             url: "./dailytrends",
             type: "POST",
+			data: {range_start: 0, range_end: 10},
             success: function (array) {
 				var jsonData = $.parseJSON(array);
-                console.log(jsonData);
+                //console.log(jsonData);
 				//window.getData(jsonData);
-				$.each(jsonData, function(key, value){
+				$.each(jsonData.daily_trends, function(key, value){
 					//console.log(value);
 					if(value.end_time == time_index){
-						console.log(value.end_time);
 						//console.log(key);
 						window.getData(value);
+						drawChart2(value);
+						drawKeywordBarGraph(value);
 						$.each(value.keyword_list, function(k,v){
 							//console.log(k);
 							//console.log(v.keyword);

@@ -8,7 +8,8 @@
             type: "POST",
             data: {range_start: 0, range_end: 10},
             success: function (array) {
-                console.log(array);
+                var jsonData = $.parseJSON(array);
+                console.log(jsonData);
             }
         });
      

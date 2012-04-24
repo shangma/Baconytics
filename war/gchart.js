@@ -2,31 +2,19 @@
     // Callback that creates and populates a data table,
     // instantiates the pie chart, passes in the data and
     // draws it.
-      function drawChart2() {
-
-	$.ajax({
-            url: "./keyentjsonservlet",
-            success: function (array) {
-                var obj = jQuery.parseJSON(array);
-                //console.log(obj.keyEnt);
+      function drawChart2(arrayData) {
 				var array_data = new Array();
 				var i = 0;
-				$.each(obj.keyEnt, function(key,value){
-					var keyword,score;
-					$.each(value, function(k,v){
-						if(k == 'keyword'){
-							keyword = v;
-						}
-						else if(k == 'score'){
-							score = v;
-						}
-					});
+				//console.log(arrayData.keyword_list);
+				$.each(arrayData.keyword_list, function(key,value){
+					//console.log(value.keyword);
+					//console.log(value.score);
 					array_data[i] = new Array();
-					array_data[i][0] = keyword;
-					array_data[i][1] = score;
+					array_data[i][0] = value.keyword;
+					array_data[i][1] = value.score;
 					i++
 				});
-				console.log(array_data);
+				//console.log(array_data);
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'keyword');
                 data.addColumn('number', 'score');
@@ -39,9 +27,7 @@
                 };
 
                 var chart = new google.visualization.PieChart(document.getElementById('graphRight'));
-                chart.draw(data, options);
-            }
-        });      
+                chart.draw(data, options);  
       }
 
 
@@ -75,31 +61,19 @@
 		document.write("inside gchart!");
 	}
 
-    function drawKeywordBarGraph(graphLoc) {
-
-	$.ajax({
-            url: "./keyentjsonservlet",
-            success: function (array) {
-                var obj = jQuery.parseJSON(array);
-                //console.log(obj.keyEnt);
+    function drawKeywordBarGraph(arrayData) {
 				var array_data = new Array();
 				var i = 0;
-				$.each(obj.keyEnt, function(key,value){
-					var keyword,score;
-					$.each(value, function(k,v){
-						if(k == 'keyword'){
-							keyword = v;
-						}
-						else if(k == 'score'){
-							score = v;
-						}
-					});
+				//console.log(arrayData.keyword_list);
+				$.each(arrayData.keyword_list, function(key,value){
+					//console.log(value.keyword);
+					//console.log(value.score);
 					array_data[i] = new Array();
-					array_data[i][0] = keyword;
-					array_data[i][1] = score;
+					array_data[i][0] = value.keyword;
+					array_data[i][1] = value.score;
 					i++
 				});
-				console.log(array_data);
+				//console.log(array_data);
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', 'keyword');
                 data.addColumn('number', 'score');
@@ -110,11 +84,8 @@
 					'width': 400,
 					'height': 300
                 };
-
                 var chart = new google.visualization.BarChart(document.getElementById('graphLeft'));
-                chart.draw(data, options);
-            }
-        });      
+                chart.draw(data, options);    
       }
 /****************************************************************/
 
