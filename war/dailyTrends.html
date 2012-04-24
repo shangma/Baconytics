@@ -3,15 +3,11 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript" src="jquery-1.7.1.min.js"></script>
     <script type="text/javascript">
-        $.ajax({
-            url: "./dailytrends",
-            type: "POST",
-            data: {range_start: 0, range_end: 10},
-            success: function (array) {
-                console.log(array);
-            }
+        $.getJSON("./baconytics.json", function(data) {
+            $('#data').html(data);
+            console.log(data);
         });
-     
     </script>
+    <div id="data"></div>
   </head>
 </html>

@@ -61,6 +61,12 @@ public class DailyTrendsServlet extends HttpServlet {
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         writer = resp.getWriter();
+        String sFirst = req.getParameter("range_start");
+        String sLast = req.getParameter("range_end");
+        if (sFirst == null || sLast == null) {
+            writer.println("{\"error\": \"empty parameter\"}");
+            return;
+        }
         int first = Integer.parseInt(req.getParameter("range_start"));
         int last = Integer.parseInt(req.getParameter("range_end"));
         PersistenceManager pm = PMF.get().getPersistenceManager();
