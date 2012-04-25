@@ -25,6 +25,9 @@
 	
 	function getKeywords(time_index) {	
 		$('.kw').remove();
+		$('.links').remove();
+		$('#kw').text('');
+		$('#links').append('<p class="links">Click on the topics to see the posts</p>');
 		$.getJSON("./baconytics.json", function(data) {
                 //console.log(jsonData);
 				//window.getData(jsonData);
