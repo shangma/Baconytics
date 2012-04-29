@@ -2,21 +2,14 @@
 <cronentries>
   <cron>
     <url>/scraper</url>
-    <description>Run the scraper hourly</description>
+    <description>Scrape /r/all/top.json</description>
     <schedule>every 1 hours</schedule>
   </cron>
   
   <cron>
     <url>/aggregator</url>
-    <description>Run the aggregator every 6 hours</description>
-    <schedule>every 6 hours</schedule>
+    <description>Data Aggregator</description>
+    <schedule>every 8 hours</schedule>
   </cron>
-  
-  <cron>
-    <url>/timevisualization</url>
-    <description>Run the timevisualization 6 hours</description>
-    <schedule>every 6 hours</schedule>
-  </cron>
-  
 </cronentries>
 

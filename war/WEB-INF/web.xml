@@ -4,15 +4,6 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-    <servlet>
-        <servlet-name>dailytrends</servlet-name>
-        <servlet-class>edu.gatech.cc.baconytics.analyzer.DailyTrendsServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>dailytrends</servlet-name>
-        <url-pattern>/dailytrends</url-pattern>
-    </servlet-mapping>
-
 	<servlet>
 		<servlet-name>scraper</servlet-name>
 		<servlet-class>edu.gatech.cc.baconytics.scraper.ScraperServlet</servlet-class>
@@ -21,7 +12,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>scraper</servlet-name>
 		<url-pattern>/scraper</url-pattern>
 	</servlet-mapping>
-	
 	<servlet>
         <servlet-name>aggregator</servlet-name>
         <servlet-class>edu.gatech.cc.baconytics.aggregator.AggregatorServlet</servlet-class>
@@ -29,53 +19,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
     <servlet-mapping>
         <servlet-name>aggregator</servlet-name>
         <url-pattern>/aggregator</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>analyzer</servlet-name>
-        <servlet-class>edu.gatech.cc.baconytics.analyzer.Analyzer</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>analyzer</servlet-name>
-        <url-pattern>/analyzer</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>keyentjsonservlet</servlet-name>
-        <servlet-class>edu.gatech.cc.baconytics.analyzer.json.KeyEntJSONServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>keyentjsonservlet</servlet-name>
-        <url-pattern>/keyentjsonservlet</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>timer</servlet-name>
-        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.SetUTCTime</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>timer</servlet-name>
-        <url-pattern>/debug/timer</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>testapi</servlet-name>
-        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.NlpApiTester</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>show</servlet-name>
-        <servlet-class>test.edu.gatech.cc.baconytics.aggregator.Show</servlet-class>
-    </servlet>
-    
-	<servlet>
-		<servlet-name>timevis</servlet-name>
-		<servlet-class>edu.gatech.cc.baconytics.analyzer.ForumActivity</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>timevis</servlet-name>
-		<url-pattern>/timevisualization</url-pattern>
-	</servlet-mapping>
-    
+    </servlet-mapping>    
     <welcome-file-list>
 		<welcome-file>welcome.html</welcome-file>
 	</welcome-file-list>

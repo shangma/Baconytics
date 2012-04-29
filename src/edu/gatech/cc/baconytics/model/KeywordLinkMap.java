@@ -14,7 +14,7 @@ import com.google.appengine.api.datastore.Key;
 public class KeywordLinkMap {
 
 	@Persistent(mappedBy = "keyword")
-	private HashSet<LinkRelevanceBundle> bundleSet;
+	private HashSet<LinkRelevance> bundleSet;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -25,10 +25,10 @@ public class KeywordLinkMap {
 
 	public KeywordLinkMap(String keyword) {
 		this.keyword = keyword;
-		bundleSet = new HashSet<LinkRelevanceBundle>();
+		bundleSet = new HashSet<LinkRelevance>();
 	}
 
-	public KeywordLinkMap(String keyword, HashSet<LinkRelevanceBundle> bundleSet) {
+	public KeywordLinkMap(String keyword, HashSet<LinkRelevance> bundleSet) {
 		this.keyword = keyword;
 		this.bundleSet = bundleSet;
 	}
@@ -39,7 +39,7 @@ public class KeywordLinkMap {
 				&& this.key.equals(((KeywordLinkMap) obj).getKey());
 	}
 
-	public HashSet<LinkRelevanceBundle> getBundleSet() {
+	public HashSet<LinkRelevance> getBundleSet() {
 		return bundleSet;
 	}
 
@@ -63,7 +63,7 @@ public class KeywordLinkMap {
 		this.keyword = keyword;
 	}
 
-	public void setLinkList(HashSet<LinkRelevanceBundle> bundleSet) {
+	public void setLinkList(HashSet<LinkRelevance> bundleSet) {
 		this.bundleSet = bundleSet;
 	}
 
@@ -72,7 +72,7 @@ public class KeywordLinkMap {
 		StringBuilder ret = new StringBuilder();
 		ret.append("Keyword: ").append(getKeyword()).append(" Size: ")
 				.append(bundleSet.size()).append("\n");
-		for (LinkRelevanceBundle bundle : bundleSet) {
+		for (LinkRelevance bundle : bundleSet) {
 			ret.append("\t" + bundle.toString());
 		}
 		return ret.toString();
