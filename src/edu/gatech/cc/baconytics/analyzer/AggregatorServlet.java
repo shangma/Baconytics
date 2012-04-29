@@ -20,5 +20,7 @@ public class AggregatorServlet extends HttpServlet {
 		for (Aggregator e : aggregatorList) {
 			e.aggregate();
 		}
+
+		resp.getWriter().println("Aggregator");
 	}
 }

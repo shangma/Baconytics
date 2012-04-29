@@ -14,12 +14,20 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	<servlet>
         <servlet-name>aggregator</servlet-name>
-        <servlet-class>edu.gatech.cc.baconytics.aggregator.AggregatorServlet</servlet-class>
+        <servlet-class>edu.gatech.cc.baconytics.analyzer.AggregatorServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>aggregator</servlet-name>
         <url-pattern>/aggregator</url-pattern>
-    </servlet-mapping>    
+    </servlet-mapping>
+	<servlet>
+        <servlet-name>api</servlet-name>
+        <servlet-class>edu.gatech.cc.baconytics.api.JsonServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>api</servlet-name>
+        <url-pattern>/api</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
 		<welcome-file>welcome.html</welcome-file>
 	</welcome-file-list>
