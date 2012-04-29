@@ -2,7 +2,9 @@ package edu.gatech.cc.baconytics.api;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -14,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.gatech.cc.baconytics.model.Link;
 import edu.gatech.cc.baconytics.model.LinkStats;
 import edu.gatech.cc.baconytics.model.PMF;
 
@@ -27,25 +30,41 @@ public class JsonServlet extends HttpServlet {
 
 		String action = req.getParameter("action");
 		if (action.equals("getLinkStats")) {
-			writer.println(getLinkStats().toString());
+			writer.println(getLinkStats(2400).toString());
 		}
 
 		writer.close();
 	}
 
-	private JSONObject getLinkStats() {
+	/**
+	 * Returns Links and LinkStats in the form of JSON
+	 * 
+	 * @param range
+	 *            The number of records returned
+	 * @return JSONObject representation of LinkStats
+	 */
+	private JSONObject getLinkStats(int range) {
+		// Query for the last [range] LinkStats
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(LinkStats.class);
 		query.setOrdering("timeSeen desc, score desc");
-		query.setRange(0, 2400);
+		query.setRange(0, range);
 
 		@SuppressWarnings("unchecked")
 		List<LinkStats> linkStats = (List<LinkStats>) query.execute();
 
 		JSONObject jsonObj = new JSONObject();
-		JSONArray jsonArr = new JSONArray();
+		Set<Link> linkSet = new HashSet<Link>();
+		JSONArray linkArr = new JSONArray();
+		JSONArray linkStatsArr = new JSONArray();
+
 		try {
 			for (LinkStats e : linkStats) {
+				// Query the Link and add it to the set
+				Link myLink = pm.getObjectById(Link.class, e.getId());
+				linkSet.add(myLink);
+
+				// Build JSON Data for a single LinkStat
 				JSONObject linkStatsJson = new JSONObject();
 				linkStatsJson.put("downs", e.getDowns());
 				linkStatsJson.put("num_comments", e.getNumComments());
@@ -53,9 +72,28 @@ public class JsonServlet extends HttpServlet {
 				linkStatsJson.put("time_seen", e.getTimeSeen());
 				linkStatsJson.put("ups", e.getUps());
 				linkStatsJson.put("id", e.getId());
-				jsonArr.put(linkStatsJson);
+				linkStatsArr.put(linkStatsJson);
 			}
-			jsonObj.put("linkStats", jsonArr);
+			for (Link e : linkSet) {
+				// Build JSON Data for a single Link
+				JSONObject linkJson = new JSONObject();
+				linkJson.put("id", e.getId());
+				linkJson.put("author", e.getAuthor());
+				linkJson.put("domain", e.getDomain());
+				linkJson.put("name", e.getName());
+				linkJson.put("permalink", e.getPermalink());
+				linkJson.put("subreddit", e.getSubreddit());
+				linkJson.put("subreddit_id", e.getSubredditId());
+				linkJson.put("title", e.getTitle());
+				linkJson.put("url", e.getUrl());
+				linkJson.put("created_utc", e.getCreatedUtc());
+				linkJson.put("is_self", e.isSelf());
+				linkJson.put("over_18", e.isOver18());
+				linkArr.put(linkJson);
+			}
+
+			jsonObj.put("link", linkArr);
+			jsonObj.put("linkStats", linkStatsArr);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
