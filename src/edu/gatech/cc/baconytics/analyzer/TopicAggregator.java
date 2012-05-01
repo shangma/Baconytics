@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -17,12 +17,12 @@ import com.google.appengine.api.datastore.KeyFactory;
 import edu.gatech.cc.baconytics.analyzer.nlp.AlchemyImpl;
 import edu.gatech.cc.baconytics.analyzer.nlp.KeywordRelevance;
 import edu.gatech.cc.baconytics.analyzer.nlp.NlpApi;
+import edu.gatech.cc.baconytics.model.Checkpoint;
 import edu.gatech.cc.baconytics.model.KeywordLinkMap;
 import edu.gatech.cc.baconytics.model.Link;
 import edu.gatech.cc.baconytics.model.LinkKeywordMap;
 import edu.gatech.cc.baconytics.model.LinkRelevance;
 import edu.gatech.cc.baconytics.model.PMF;
-import edu.gatech.cc.baconytics.model.Checkpoint;
 
 public class TopicAggregator extends Aggregator {
 	// Due to GAE datastore operation 1min-limit issue, we do aggregating
@@ -49,11 +49,7 @@ public class TopicAggregator extends Aggregator {
 	 * @return a HashSet of LinkKeyword objects
 	 */
 	private Set<LinkKeywordMap> feed() {
-		Checkpoint utcTimeObj = Checkpoint.fetchLastUTCTime(CURSORTYPE);
-		if (utcTimeObj == null) {
-			return null;
-		}
-		long lastUTCTime = utcTimeObj.getTime();
+		long lastUTCTime = Checkpoint.getCheckpoint(CURSORTYPE);
 		Query query = null;
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		try {
@@ -67,8 +63,8 @@ public class TopicAggregator extends Aggregator {
 			List<Link> results = (List<Link>) query.execute(lastUTCTime);
 			if (!results.isEmpty()) {
 				for (Link e : results) {
-					LinkKeywordMap reddit = new LinkKeywordMap(e.getId(), e
-							.getTitle(), e.getSubreddit());
+					LinkKeywordMap reddit = new LinkKeywordMap(e.getId(),
+							e.getTitle(), e.getSubreddit());
 					long utcTime = e.getCreatedUtc();
 					if (utcTime > lastUTCTime) {
 						lastUTCTime = utcTime;
@@ -76,7 +72,7 @@ public class TopicAggregator extends Aggregator {
 					ret.add(reddit);
 				}
 			}
-			Checkpoint.commitLastUTCTime(lastUTCTime, CURSORTYPE);
+			Checkpoint.setCheckpoint(CURSORTYPE, lastUTCTime);
 			return ret;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,8 +98,7 @@ public class TopicAggregator extends Aggregator {
 	 * @param kwMap
 	 *            - the new generated LinkKeyword object
 	 */
-	private void addToKeywordsMap(
-			HashMap<String, HashSet<LinkRelevance>> pool,
+	private void addToKeywordsMap(HashMap<String, HashSet<LinkRelevance>> pool,
 			HashMap<String, LinkRelevance> kwMap) {
 		Iterator<Entry<String, LinkRelevance>> iter = kwMap.entrySet()
 				.iterator();
@@ -151,8 +146,8 @@ public class TopicAggregator extends Aggregator {
 			}
 		}
 
-		Iterator<Entry<String, HashSet<LinkRelevance>>> iter = sbMap
-				.entrySet().iterator();
+		Iterator<Entry<String, HashSet<LinkRelevance>>> iter = sbMap.entrySet()
+				.iterator();
 		while (iter.hasNext()) {
 			Map.Entry<String, HashSet<LinkRelevance>> pair = iter.next();
 			HashSet<LinkRelevance> lrSet = pair.getValue();
@@ -187,8 +182,7 @@ public class TopicAggregator extends Aggregator {
 			if (kr == null) {
 				continue;
 			}
-			LinkRelevance redrel = new LinkRelevance(link, kr
-					.getRelevance());
+			LinkRelevance redrel = new LinkRelevance(link, kr.getRelevance());
 			// Alchemy is case-sensitive
 			ret.put(kr.getKeyword().toLowerCase(), redrel);
 		}
@@ -240,8 +234,8 @@ public class TopicAggregator extends Aggregator {
 	private void populateLinkKeyword(Set<LinkKeywordMap> redditSet) {
 		for (LinkKeywordMap reddit : redditSet) {
 			String redditID = reddit.getId();
-			Key redditKey = KeyFactory.createKey(LinkKeywordMap.class
-					.getSimpleName(), redditID);
+			Key redditKey = KeyFactory.createKey(
+					LinkKeywordMap.class.getSimpleName(), redditID);
 			reddit.setKey(redditKey);
 		}
 	}
@@ -261,8 +255,8 @@ public class TopicAggregator extends Aggregator {
 			LinkKeywordMap reddit = item.getLink();
 			reddit.getKeywordSet().add(gaeKW.getKey());
 			// Add the bundle to gaeKW which is going to be stored in database
-			LinkRelevance lrBundle = new LinkRelevance(reddit
-					.getKey(), item.getRelevance());
+			LinkRelevance lrBundle = new LinkRelevance(reddit.getKey(),
+					item.getRelevance());
 			bdSet.add(lrBundle);
 		}
 	}
@@ -281,8 +275,8 @@ public class TopicAggregator extends Aggregator {
 				System.out.println(keyword + " already exists");
 				updateGAEKeyword(krr, gaeKW);
 			} else {
-				Key kwKey = KeyFactory.createKey(KeywordLinkMap.class
-						.getSimpleName(), krr.getKeyword());
+				Key kwKey = KeyFactory.createKey(
+						KeywordLinkMap.class.getSimpleName(), krr.getKeyword());
 				gaeKW = new KeywordLinkMap(keyword);
 				gaeKW.setKey(kwKey);
 				updateGAEKeyword(krr, gaeKW);
@@ -319,14 +313,13 @@ public class TopicAggregator extends Aggregator {
 		try {
 			pm.newQuery(KeywordLinkMap.class);
 		} catch (Exception e) {
-			Key linkKey = KeyFactory.createKey(LinkKeywordMap.class
-					.getSimpleName(), "@@");
-			Key keywordKey = KeyFactory.createKey(KeywordLinkMap.class
-					.getSimpleName(), "@@");
+			Key linkKey = KeyFactory.createKey(
+					LinkKeywordMap.class.getSimpleName(), "@@");
+			Key keywordKey = KeyFactory.createKey(
+					KeywordLinkMap.class.getSimpleName(), "@@");
 			KeywordLinkMap keyword = new KeywordLinkMap("@@");
 			keyword.setKey(keywordKey);
-			LinkRelevance bundle = new LinkRelevance(linkKey,
-					keyword, -1.0);
+			LinkRelevance bundle = new LinkRelevance(linkKey, keyword, -1.0);
 			HashSet<LinkRelevance> bdSet = new HashSet<LinkRelevance>();
 			bdSet.add(bundle);
 			keyword.setLinkList(bdSet);
