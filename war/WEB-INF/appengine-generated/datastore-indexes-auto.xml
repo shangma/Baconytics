@@ -1,8 +1,8 @@
-<!-- Indices written at Sun, 29 Apr 2012 06:19:43 EDT -->
+<!-- Indices written at Mon, 30 Apr 2012 23:58:00 EDT -->
 
 <datastore-indexes>
 
-    <!-- Used 2 times in query history -->
+    <!-- Used 1 time in query history -->
     <datastore-index kind="LinkStats" ancestor="false" source="auto">
         <property name="timeSeen" direction="desc"/>
         <property name="score" direction="desc"/>

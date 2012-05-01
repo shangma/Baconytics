@@ -13,14 +13,6 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/scraper</url-pattern>
 	</servlet-mapping>
 	<servlet>
-        <servlet-name>aggregator</servlet-name>
-        <servlet-class>edu.gatech.cc.baconytics.analyzer.AggregatorServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>aggregator</servlet-name>
-        <url-pattern>/aggregator</url-pattern>
-    </servlet-mapping>
-	<servlet>
         <servlet-name>api</servlet-name>
         <servlet-class>edu.gatech.cc.baconytics.api.JsonServlet</servlet-class>
     </servlet>
