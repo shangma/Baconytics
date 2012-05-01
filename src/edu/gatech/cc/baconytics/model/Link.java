@@ -2,6 +2,7 @@ package edu.gatech.cc.baconytics.model;
 
 import java.util.List;
 
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -17,8 +18,8 @@ public class Link implements Comparable<Link> {
 	private long createdUtc;
 	@Persistent
 	private boolean isSelf, over18;
-	@Persistent
-	private List<LinkStats> linkStats;
+	@NotPersistent
+	private List<LinkStats> linkStats; // Helper for saving LinkStats
 
 	public Link(String id, String name, String author, String domain,
 			String permalink, String subreddit, String subredditId,
