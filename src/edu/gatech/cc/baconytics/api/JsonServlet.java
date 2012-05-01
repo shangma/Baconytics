@@ -88,10 +88,12 @@ public class JsonServlet extends HttpServlet {
 		JSONObject jsonObj = new JSONObject();
 		JSONObject linkArr = new JSONObject();
 		JSONArray timeWrapperArr = new JSONArray();
+		Set<String> linkIds = new HashSet<String>();
 		Set<Link> linkSet = new HashSet<Link>();
 
 		// Group LinkStats by time seen
 		Map<Long, List<LinkStats>> timeLinkMap = new HashMap<Long, List<LinkStats>>();
+		System.out.println("linkStats.size(): " + linkStats.size());
 		for (LinkStats e : linkStats) {
 			List<LinkStats> linkStatsList = timeLinkMap.get(e.getTimeSeen());
 			if (linkStatsList == null) {
@@ -99,6 +101,16 @@ public class JsonServlet extends HttpServlet {
 			}
 			linkStatsList.add(e);
 			timeLinkMap.put(e.getTimeSeen(), linkStatsList);
+
+			// Store the link id for querying links
+			linkIds.add(e.getId());
+		}
+
+		// Query the links
+		System.out.println("linkIds.size(): " + linkIds.size());
+		for (String id : linkIds) {
+			Link myLink = pm.getObjectById(Link.class, id);
+			linkSet.add(myLink);
 		}
 
 		// Build the JSON
@@ -109,10 +121,6 @@ public class JsonServlet extends HttpServlet {
 				JSONArray linkStatsArr = new JSONArray();
 				List<LinkStats> linkStatsList = timeLinkMap.get(timeSeen);
 				for (LinkStats e : linkStatsList) {
-					// Query the Link and add it to the set
-					Link myLink = pm.getObjectById(Link.class, e.getId());
-					linkSet.add(myLink);
-
 					// Build JSON Data for a single LinkStat
 					JSONObject linkStatsJson = new JSONObject();
 					linkStatsJson.put("downs", e.getDowns());
