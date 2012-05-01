@@ -1,4 +1,5 @@
-<html xmlns="htttp://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<!doc html>
+<html>
 <head>
 <title>the front page of the past</title>
 <link rel="stylesheet" href="reddit-style.css" type="text/css" />
@@ -21,102 +22,29 @@
 	color: #9494FF;
 	font-weight: normal;
    }
+   .redditname {
+	display: inline-block;
+	min-width: 250px;
+	font-size: small;
+   }
+   .link { position: absolute; opacity: 0;}
+   #siteTable { position: relative; }
 </style>
+<script type="text/javascript" src="date.js"></script>
+<script type="text/javascript" src="time.js"></script>
 <script type="text/javascript" src="http://www.google.com/jsapi"></script>
-<script type="text/javascript">
-    google.load("jquery", "1");
-    google.load("jqueryui", "1");
-    
-    var playing = false;
-    var ppString = ["Play","Pause"];
-    var start = new Date(1335694714609);
-    var now = start;
-    var step = 15*60*1000; //15 minutes
-    
-    function slower() { step *= 0.5; }
-    function faster() { step *= 2; }
-    function playpause() { $("#playstring").html((playing = !playing) ? ppString[1] : ppString [0]); }
-    
-    function loop() {
-	if (!playing) return;
-	now = new Date(now.getTime() + step);
-	$("#timestring").html(now.toUTCString());
-	updateDiv("sdvfa", Math.floor(Math.random()*1000), Math.floor(Math.random()*1000), Math.floor(Math.random()*1000), Math.floor(Math.random()*1000), Math.floor(Math.random()*10) + " hours ago");
-	return;
-	/*
-	
-	var i = Math.floor(Math.random()*9);
-	var j = -1;
-	while (j < 0 || j == i) j = Math.floor(Math.random()*9);
-	
-	var a = $("#siteTable > .real").get(i);
-	var b = $("#siteTable > .real").get(j);
-	
-	if ($(a).offset().top < $(b).offset().top) { 
-		var c = a;
-		a = b;
-		b = c;
-	}
-	
-	$(a).find(".midcol > .uparrow").addClass("upmod").removeClass("up");
-	$(b).find(".midcol > .downarrow").addClass("downmod").removeClass("down");
-	
-	$(a).swap({  
-            target: $(b).attr('id'),
-            opacity: "0.8",
-            speed: 1000,
-            callback: function() { 
-		$(".uparrow").addClass("up").removeClass("upmod");
-		$(".downarrow").addClass("down").removeClass("downmod");
-            }  
-        });
-	*/
-    }
-    
-    function onLoad() {
-	setTimeout(function() {$("#timestring").html("Ready"); }, 500);
-	setInterval(loop, 1000);
-	createPostDiv("sdvfa", 8, "startrek", "amonkey", "that post", "k3u.com", 1000, 10, 5, 100);
-    }
-        
-    function createPostDiv(id, posttime, subreddit, author, title, domain, karma, ups, downs, numcomments) {
-	age = "42 hours ago";
-	
-        var c = $("#protoman").clone(true).attr("id", id).addClass("real");
-	$(c).find(".entry > .title >.domain").html(domain);
-	$(c).find(".entry > .title > a.title").html(title);
-	$(c).find(".entry > .tagline > .author").html(author);
-	$(c).find(".entry > .tagline > .subreddit").html(subreddit);
-	$(c).appendTo("#siteTable");
-	
-	updateDiv(id, karma, numcomments, ups, downs, age);
-	
-	$(c).show();
-    }
-    function updateDiv(id, karma, numcomments, ups, downs, age) {
-	var c = $("#"+id);
-	console.log(c);
-	var s = $(c).find(".entry > .tagline");
-	
-	$(c).find(".midcol > .score").html(karma);
-	$(c).find(".entry > ul > li.first > a.comments").html(numcomments+" comments");	
-	$(s).find("span > .res_post_ups").html(ups);
-	$(s).find("span > .res_post_downs").html(downs);
-	$(s).find(".age").html(age);
-    }
-    google.setOnLoadCallback(onLoad);
-  </script>
+<script type="text/javascript" src="redditrewind.js"></script>
 </head>
 <body class="listing-page">
 <div id="header">
 <div id="header-bottom-left">
 <img id="header-img" src="logo.png" width="120" height="40"alt=" reddit.com" />
-<ul class="tabmenu">
-<li class="selected"><a id="timestring">Loading...</a></li>
-<li><a style="width:20px;"></a></li>
+<span class="hover pagename redditname"><a id="timestring">Loading...</a>&nbsp;</span>
+<ul class="tabmenu hover">
 <li><a onclick="playpause()" id="playstring">Play</a></li>
 <li><a onclick="slower()">Slower</a></li>
 <li><a onclick="faster()">Faster</a></li>
+<li><a onclick="reset()">Reset</a></li>
 </ul>
 </div>
 </div>
@@ -142,117 +70,5 @@
 </div>
 <div class="clearleft"></div>
 </div></div></div>
-<script type="text/javascript">
-/*!
- * jQuery Swapsie Plugin
- * Examples and documentation at: http://biostall.com/swap-and-re-order-divs-smoothly-using-jquery-swapsie-plugin
- * Copyright (c) 2010 Steve Marks - info@biostall.com
- * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
- * Version: 1 (09-JULY-2010)
- */
-
-var swapping = false;
-
-(function($) {
-    $.fn.extend({
-        swap: function(options) {
-			
-			var defaults = {
-			    target: "",
-				speed: 1000,
-				opacity: "1",
-				callback: function() {}
-			};
-			var options = $.extend(defaults, options);
-			
-			return this.each(function() {
-				
-				var obj = $(this);
-				
-				if (options.target!="" && !swapping) {
-					
-					swapping = true;
-					
-					// set primary and secondary elements to relative if not already specified a positon CSS attribute
-					var current_primary_pos = obj.css("position");
-					var current_secondary_pos = $("#"+options.target).css("position");
-					if (current_primary_pos!="relative" && current_primary_pos!="absolute") {
-						obj.css("position", "relative");
-					}
-					if (current_secondary_pos!="relative" && current_secondary_pos!="absolute") {
-						$("#"+options.target).css("position", "relative");
-					}
-					//
-					
-					// calculate y-axis movement
-					var current_primary_position = obj.offset();
-					var current_primary_top = current_primary_position.top;
-					var current_secondary_position = $("#"+options.target).offset();
-					var current_secondary_top = current_secondary_position.top;
-					var direction_primary_y = '-';
-					var direction_secondary_y = '-';
-					if (current_primary_top<=current_secondary_top) { // if primary above secondary 
-						var direction_primary_y = '+'; 
-						var total_y = current_secondary_top-current_primary_top;
-					}else{ // if primary below secondary 
-						var total_y = current_primary_top-current_secondary_top;
-					}
-					if (direction_primary_y=='-') { direction_secondary_y='+'; }else{ direction_secondary_y='-'; }
-					//
-					
-					// calculate x-axis movement
-					var current_primary_position = obj.offset();
-					var current_primary_left = current_primary_position.left;
-					var current_secondary_position = $("#"+options.target).offset();
-					var current_secondary_left = current_secondary_position.left;
-					var direction_primary_x = '-';
-					var direction_secondary_x = '-';
-					if (current_primary_left<=current_secondary_left) { // if primary left of secondary 
-						var direction_primary_x = '+'; 
-						var total_x = current_secondary_left-current_primary_left;
-					}else{ // if primary below secondary 
-						var total_x = current_primary_left-current_secondary_left;
-					}
-					if (direction_primary_x=='-') { direction_secondary_x='+'; }else{ direction_secondary_x='-'; }
-					//
-					
-					// do swapping
-					obj.animate({
-						opacity: options.opacity
-					}, 100, function() {
-						obj.animate({
-							top: direction_primary_y+"="+(total_y)+"px",
-							left: direction_primary_x+"="+(total_x)+"px"
-						}, options.speed, function() {
-							obj.animate({
-								opacity: "1"
-							}, 100);
-						});
-					});
-					$("#"+options.target).animate({
-						opacity: options.opacity
-					}, 100, function() {
-						$("#"+options.target).animate({
-							top: direction_secondary_y+"="+(total_y)+"px",
-							left: direction_secondary_x+"="+(total_x)+"px"
-						}, options.speed, function() {
-							$("#"+options.target).animate({
-								opacity: "1"
-							}, 100, function() { 
-								swapping = false; // call the callback and apply the scope:
-    								options.callback.call(this);
- 							});
-						});
-					});
-					
-				}
-				
-			});
-			
-			
-        }
-    });
-})(jQuery);
-</script>
 </body>
 </html>
