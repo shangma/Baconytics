@@ -1,78 +1,186 @@
     google.load("jquery", "1");
     google.load("jqueryui", "1");
-	goog.require('goog.dom')
     
     var playing = false;
     var ppString = ["Play","Pause"];
-    var step = 500;
+    var step = 2000;
     
-    function slower() { step *= 0.5; if (step < 100)  step = 100; }
-    function faster() { step *= 2;   if (step > 2000) step = 2000;}
+    function faster() { step *= 0.5; if (step < 10)  step = 10; }
+    function slower() { step *= 2;   if (step > 10000) step = 10000;}
     function playpause() { 
 		$("#playstring").html((playing = !playing) ? ppString[1] : ppString [0]); 
 		if (playing) loop();
 	}
+	
+	var dirstr = {"-1": "up", "1": "down", "0": "same"};
     
 	var source = null;
 	var statCount = 0;
-	var era = 10*60*1000;                                 
+	var era = 5*60*1000;                                 
 	var now = null;
+	var oldnow = null;
+	var max = 10;
+	var maxinmem = 200;
 	
-	var debug = 20;
-	
+	var mutex = false;
     function loop() {
-		if (!playing) { setTimeout(loop, step); return;    }
-		if (now == null) {
-			now = new Date(source.linkStats[0].time_seen);
-		} else {
-			now = new Date(now.getTime()+era);
-		}
-		$("#timestring").html(now.toString("dddd MMM d yyyy hh:mm tt"));
+		if (!playing || mutex) { setTimeout(loop, step); return; }
+		mutex = true;
+		
 		
 		var done = true;
-		while (done) {
-			var group = source.linkStats[statCount++];
-			if (group.time_seen > now) done = false;
-			$.each(group.stats, function(key, val) {
-				if (debug-- == 0) return;
-				updateLinkStats(val);
-			});
-			//TODO: updateRanks();
+		if (++statCount < source.linkStats.length) { 
+		
+		var group = source.linkStats[statCount];
+		
+		now = group.time_seen;
+		console.log(now + " - " + new Date(oldnow).toString("dddd MMM d yyyy hh:mm tt"));
+				
+		var major = false;
+		if (now - oldnow > era) {
+			$("#timestring").html(new Date(oldnow).toString("dddd MMM d yyyy hh:mm tt"));
+			updateRanks();
+			oldnow = now;
+			major = true;
 		}
-		playpause();
-		setTimeout(loop, step);
+		} else {
+		console.log("done"); playpause(); statCount = 0; 
+		now = oldnow = source.linkStats[0].time_seen;
+		}
+		
+		$.each(group.stats, function(key, val) { updateLinkStats(val); });
+		
+		mutex = false;
+		setTimeout(loop, major ? step : 0);
 	}
-	var active = [];
+	var active = {};
 	function updateRanks() {
-		//sorting v3
+		//sorting v3	
+		
+		for (var k in active) {
+			if (active[k].gen++ > 2) {
+				$(active[k].pointer).animate({
+				"top": 10000+"px",
+				"opacity": 0.0
+			},{
+				"duration": step/2,
+				"queue": q,
+				"complete": function() {
+					$(this).hide().remove();
+				}
+			});
+			delete active[k];
+			}
+		}
 		
 		//updateLinkStats adds link to active on every update
+		
 		//sort active links by karma
+		var q = false; //"aq" + now;
+		var keys = [];
+		for (var k in active) keys.push(k);
+		keys.sort(byScore);
+		
+		console.log("min: "+keys[keys.length-1]+"("+active[keys[keys.length-1]].score+","+(keys.length-1)+"), max: "+keys[0]+"("+active[keys[0]].score+")");
+		
 		//calculate new offsets for < max
-		//fade out prune > max from dom and active
 		//animate to new offsets and ranks in a batch, set up/down votes
-		//setTimeout to remove up/down votes (fade?)
+		var i, offset = 0;
+		for (i = 0; i < max && i < keys.length; i++) {
+			
+			var dir = 0;
+			if ("rank" in active[keys[i]]) {
+				if (active[keys[i]].rank > i) {
+					dir = -1;
+				}
+				if (active[keys[i]].rank < i) {
+					dir = 1;
+				}
+			} else {
+				dir = -1;
+			}
+			active[keys[i]].rank = i;
+			
+			var a = active[keys[i]].pointer;
+			
+			if (dir == -1) {
+				$(a).find(".midcol > .uparrow").addClass("upmod").removeClass("up");
+			} else if (dir == 1) {
+				$(a).find(".midcol > .downarrow").addClass("downmod").removeClass("down");
+			}
+			
+			$(a).show().animate({
+				"top": offset+"px",
+				"opacity": 1.0
+			},{
+				"duration": step/2,
+				"queue": q,
+				"complete": function () {
+					$(this).find(".upmod").removeClass("upmod").addClass("up");
+					$(this).find(".downmod").removeClass("downmod").addClass("down");
+				}
+			});
+			
+			var span = new TimeSpan(now-active[keys[i]].time_seen);
+			var age = 0; var unit = null;
+			if (age == 0) { age = span.getDays();    unit = "days"; }
+			if (age == 0) { age = span.getHours();   unit = "hours"; }
+			if (age == 0) { age = span.getMinutes(); unit = "minutes"; }
+			if (age == 0) { age = span.getSeconds(); unit = "seconds"; }
+			$(a).find(".age").html(age + " " + unit + " ago");
+			
+			$(a).find(".rank").html(i+1);
+			console.log(keys[i] + " is " + dirstr[dir] + " to " +i+" with "+(active[keys[i]].score)+" at "+ offset+"px");
+			offset += active[keys[i]].height;
+		}
+		
+		//fade out prune > max from dom and active
+		while (i < keys.length && i < maxinmem) {
+			$(active[keys[i]].pointer).animate({
+				"top": offset+"px",
+				"opacity": 0.0
+			},{
+				"duration": step/2,
+				"queue": q,
+				"complete": function() {
+					$(this).hide();
+				}
+			});
+			i++;
+		}	
+		
+		while (i < keys.length) {
+			//delete active[keys[i++]];
+		}
+		
+		$("#siteTable").css({"height": offset+"px"});
+		
+		return;
+		console.log(q + ": "+$.queue(q).length);
+		while ($.queue(q).length > 0) $.queue(q).dequeue();
 	}
 	
-	/*
-	css for upvotes
+	function byScore(a,b) {
+		a = active[a];
+		b = active[b];
+		if (a.score < b.score)
+			return 1;
+		if (a.score > b.score)
+			return -1;
+		return 0;
+	}
 	
-	$(a).find(".midcol > .uparrow").addClass("upmod").removeClass("up");
-	$(b).find(".midcol > .downarrow").addClass("downmod").removeClass("down");
-	
-	$(".uparrow").addClass("up").removeClass("upmod");
-	$(".downarrow").addClass("down").removeClass("downmod");
-	*/
-	
-    function onLoad() {
+	function onLoad() {
 		setTimeout(function() { 
 			$.getJSON("api.json", function(data) {
 				source = data;
 				console.log(source);
+				now = oldnow = source.linkStats[0].time_seen;
 				$("#timestring").html("Ready");
 			});
 		}, 200);
 	}
+	
 	function newLinkDiv(linkid) {
 		var link = source.link[linkid];
 		var c = $("#protoman").clone(true).addClass("real");
@@ -81,13 +189,13 @@
 		$(c).find(".entry > .title > a.title").html(link.title);
 		$(c).find(".entry > .tagline > .author").html(link.author);
 		$(c).find(".entry > .tagline > .subreddit").html(link.subreddit);
+		$(c).css({"top":"1000px"});
 		$(c).appendTo("#siteTable");
 		return c;
 	}
 	
-	var toplinks = [];
-	
 	function updateLinkStats(linkStat) {
+		//console.log(linkStat.id + " updated "+(now-linkStat.time_seen) + " seconds ago");
 		var c = $("#"+linkStat.id);
 		if ($(c).length == 0) c = newLinkDiv(linkStat.id);
 		var s = $(c).find(".entry > .tagline");
@@ -96,100 +204,13 @@
 		$(s).find("span > .res_post_ups").html(linkStat.ups);
 		$(s).find("span > .res_post_downs").html(linkStat.downs);
 		
-		var span = new TimeSpan(new Date(linkStat.time_seen)-now);
-		var age = 0; var unit = null;
-		if (age == 0) { age = span.getDays();    unit = "days"; }
-		if (age == 0) { age = span.getHours();   unit = "hours"; }
-		if (age == 0) { age = span.getMinutes(); unit = "minutes"; }
-		if (age == 0) { age = span.getSeconds(); unit = "seconds"; }
-		
-		$(s).find(".age").html(age + " " + unit + " ago");
-		/*
-		//sorting v2
-		
-		var found = false;
-		var offset = 0;
-		var max = 100;
-		var i;
-		var myheight = $(c).height() + 5;
-		if (toplinks.length == 0) {
-			console.log("1");
-			toplinks[0] = {"id": linkStat.id, "score": linkStat.score, "height": myheight, "elem": c};
-			$(c).show().animate({"top":"0px", "opacity": 1.0}, 1000);
-		} else for (i = 0; i < toplinks.length+1; i++) {
-			if (i == toplinks.length) {
-				if (!found) {
-				console.log("5 "+i+" "+offset);
-				toplinks[toplinks.length]={"id": linkStat.id, "score": linkStat.score, "height": myheight, "elem": c};
-				$(c).show().animate({"top":offset+"px", "opacity": 1.0}, 1000);
-				$(c).find(".rank").html(i+1);
-				offset += myheight;
-				found = true;
-				}
-			} else if (linkStat.score > toplinks[i].score) {
-				if (!found) {
-				console.log("9 "+i+" "+offset);
-				toplinks.splice(i,0,{"id": linkStat.id, "score": linkStat.score, "height": myheight, "elem": c});
-				$(c).animate({"top":offset+"px"}, 1000);
-				$(c).find(".rank").html(i+1);
-				offset += myheight;
-				found = true;
-				}
-			} else if (i > max) {
-				console.log("6 "+i);
-				$(c).animate({"opacity": 0.0}, 500, "linear", function() { $(this).remove(); });
-				delete toplinks[i--];
-			} else if (linkStat.id == toplinks[i].id) {
-				console.log("4 "+i);
-				//toplinks.splice(i--,1);
-			} else if (found) {
-				console.log("7 "+i+" "+offset);
-				$(toplinks[i].elem).animate({"top":offset+"px"}, 1000);
-				$(c).find(".rank").html(i+1);
-				offset += toplinks[i].height;
-			} else if (linkStat.score < toplinks[i].score) {
-				console.log("3 "+i+" "+offset);
-				offset += toplinks[i].height;				
-			}
+		if (!(linkStat.id in active)) {
+			active[linkStat.id] = { "pointer": c, "height": $(c).height(), "time_seen": now };
 		}
-		console.log("e");
-	
-		//====
-		//sorting v1
-		var prev = $(c);
-		while((prev = $(c).prev(".real")) && $(prev).size() > 0 && source.link[$(prev).attr('id')].score && source.link[$(prev).attr('id')].score < linkStat.score);
-		if (prev && $(prev).attr('id') != linkStat.id) $(c).after($(prev));
-		var next = $(c);
-		while((next = $(c).next(".real")) && $(next).size() > 0 && source.link[$(next).attr('id')].score && source.link[$(next).attr('id')].score > linkStat.score);
-		if (next && $(next).attr('id') != linkStat.id) $(c).before($(next));
-		
-		while($(c).siblings(".real").size() > 25) $(c).siblings(".real:last-child").remove();
-		*/
+		active[linkStat.id].score = linkStat.score;
+		active[linkStat.id].gen = 0;
+		//active[linkStat.id].time_seen = now;
+
 	}
-        
-    function createPostDiv(id, posttime, subreddit, author, title, domain, karma, ups, downs, numcomments) {
-	age = "42 hours ago";
 	
-    var c = $("#protoman").clone(true).attr("id", id).addClass("real");
-	$(c).find(".entry > .title >.domain").html(domain);
-	$(c).find(".entry > .title > a.title").html(title);
-	$(c).find(".entry > .tagline > .author").html(author);
-	$(c).find(".entry > .tagline > .subreddit").html(subreddit);
-	$(c).appendTo("#siteTable").show();
-	
-	
-	updateDiv(id, karma, numcomments, ups, downs, age);
-	
-	$(c).show();
-    }
-    function updateDiv(id, karma, numcomments, ups, downs, age) {
-	var c = $("#"+id);
-	var s = $(c).find(".entry > .tagline");
-	
-	$(c).find(".midcol > .score").html(karma);
-	$(c).find(".entry > ul > li.first > a.comments").html(numcomments+" comments");	
-	$(s).find("span > .res_post_ups").html(ups);
-	$(s).find("span > .res_post_downs").html(downs);
-	$(s).find(".age").html(age);
-    }
     google.setOnLoadCallback(onLoad);
