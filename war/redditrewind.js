@@ -199,7 +199,7 @@
 	
 	function onLoad() {
 		setTimeout(function() { 
-			$.getJSON("api.json", function(data) {
+			$.getJSON("api?action=getLinkStats", function(data) {
 				source = data;
 				console.log(source);
 				now = oldnow = source.linkStats[0].time_seen;
