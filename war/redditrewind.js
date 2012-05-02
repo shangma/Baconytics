@@ -188,7 +188,7 @@ function updateRanks() {
 	if (oldkarma == null) {
 		oldkarma = karmatotal;
 	} else {
-		var d = totalkarma - oldkarma;
+		var d = karmatotal - oldkarma;
 		$("#karmicdelta").html(
 				d + "&nbsp;&nbsp;" + (d > 0 ? "up" : "down") + "votes");
 	}
