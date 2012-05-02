@@ -11,6 +11,7 @@
 		if (playing) playpause();
 		statCount = 0;
 		now = oldnow = source.linkStats[0].last_seen;
+		step = 2000;
 	}
     function playpause() { 
 		$("#playstring").html((playing = !playing) ? ppString[1] : ppString [0]); 
