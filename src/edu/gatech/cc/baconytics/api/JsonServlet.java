@@ -3,6 +3,7 @@ package edu.gatech.cc.baconytics.api;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -56,16 +58,25 @@ public class JsonServlet extends HttpServlet {
 				if (cache.containsKey("getLinkStats")) {
 					json = (String) cache.get("getLinkStats");
 				} else {
-					json = getLinkStats(2400).toString();
+					json = getLinkStats(normalizedToMidnight(2400)).toString();
 					cache.put("getLinkStats", json);
 				}
 				writer.println(json);
+			} else {
+				writer.println(normalizedToMidnight(2400));
 			}
 		} catch (CacheException e) {
 			// ...
 		}
 
 		writer.close();
+	}
+
+	private int normalizedToMidnight(int seedRange) {
+		Calendar currentTime = Calendar
+				.getInstance(TimeZone.getTimeZone("EST"));
+		int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
+		return seedRange + currentHour * 100;
 	}
 
 	/**
