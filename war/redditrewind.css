@@ -1,0 +1,26 @@
+html { width: 100%; padding: 0 0 0 0; margin: 0 0 0 0; }
+  body { width: 100%; padding: 0 0 0 0; margin: 0 0 0 0; }
+  #vcontainer { margin: 5px 5px 0 5px;}
+  #visualization { width: 100%; height: 200px; }
+  #maindiv {
+	height: 60%;
+	#overflow-y: scroll;
+  }
+  #protoman { display: none; }
+  #header-img { margin-top: -10px; }
+  .res_post_ups {
+	color: #FF8B24;
+	font-weight: normal;
+  }
+  .res_post_downs {
+	color: #9494FF;
+	font-weight: normal;
+   }
+   .redditname {
+	display: inline-block;
+	min-width: 250px;
+	font-size: small;
+   }
+   .link { position: absolute; opacity: 0;}
+   #siteTable { position: relative; overflow-y: hidden; height: 100px; }
+   .tabmenu li a { display: none; cursor: hand; }

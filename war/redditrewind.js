@@ -7,6 +7,11 @@
     
     function faster() { step *= 0.5; if (step < 10)  step = 10; }
     function slower() { step *= 2;   if (step > 10000) step = 10000;}
+	function reset() {
+		if (playing) playpause();
+		statCount = 0;
+		now = oldnow = source.linkStats[0].last_seen;
+	}
     function playpause() { 
 		$("#playstring").html((playing = !playing) ? ppString[1] : ppString [0]); 
 		if (playing) loop();
@@ -44,8 +49,8 @@
 			major = true;
 		}
 		} else {
-		console.log("done"); playpause(); statCount = 0; 
-		now = oldnow = source.linkStats[0].time_seen;
+		console.log("done"); playpause();
+		reset();
 		}
 		
 		$.each(group.stats, function(key, val) { updateLinkStats(val); });
@@ -176,6 +181,7 @@
 				source = data;
 				console.log(source);
 				now = oldnow = source.linkStats[0].time_seen;
+				$(".tabmenu li a").show();
 				$("#timestring").html("Ready");
 			});
 		}, 200);
