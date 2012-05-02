@@ -176,6 +176,18 @@
 		return 0;
 	}
 	
+	if (true) {
+	
+	if (navigator.userAgent.indexOf("Firefox") != -1) {
+    try {
+        netscape.security.PrivilegeManager.enablePrivilege("UniversalBrowserRead");
+    } 
+    catch (e) {
+        alert("Permission UniversalBrowserRead denied -- not running Mozilla?");
+    }
+}
+}
+	
 	function onLoad() {
 		setTimeout(function() { 
 			$.getJSON("api.json", function(data) {
