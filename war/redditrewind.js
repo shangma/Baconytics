@@ -203,7 +203,7 @@
 				source = data;
 				console.log(source);
 				now = oldnow = source.linkStats[0].time_seen;
-				$(".tabmenu li a").show();
+				$("#nav").show();
 				$("#timestring").html("Ready");
 			});
 		}, 200);
