@@ -28,3 +28,13 @@ The installation locations are as follows:
         http://dl.google.com/eclipse/plugin/3.7
 
 If you need more help, see: http://code.google.com/appengine/docs/java/tools/eclipse.html
+
+Running the Application
+=======================
+Once you have your Eclipse workspace set up, run the project as a Google Web Application.
+
+You can view the application through your browser at http://localhost:8888/
+
+To run the scraper, direct your browser to http://localhost:8888/scraper
+
+You can view the datastore through the admin console at http://localhost:8888/_ah/admin
