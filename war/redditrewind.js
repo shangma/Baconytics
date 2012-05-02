@@ -27,6 +27,7 @@
 	var oldnow = null;
 	var max = 10;
 	var maxinmem = 200;
+	var oldkarma = null;
 	
 	var mutex = false;
     function loop() {
@@ -92,8 +93,9 @@
 		//calculate new offsets for < max
 		//animate to new offsets and ranks in a batch, set up/down votes
 		var i, offset = 0;
+		var karmatotal = 0;
 		for (i = 0; i < max && i < keys.length; i++) {
-			
+			karmatotal += active[keys[i]].score;
 			var dir = 0;
 			if ("rank" in active[keys[i]]) {
 				if (active[keys[i]].rank > i) {
@@ -138,6 +140,13 @@
 			$(a).find(".rank").html(i+1);
 			console.log(keys[i] + " is " + dirstr[dir] + " to " +i+" with "+(active[keys[i]].score)+" at "+ offset+"px");
 			offset += active[keys[i]].height;
+		}
+		
+		if (oldkarma == null) {
+			oldkarma = totalkarma;
+		} else {
+			var d = totalkarma - oldkarma;
+			$("#karmicdelta").html(d+"&nbsp;&nbsp;"+(d>0?"up":"down")+"votes");
 		}
 		
 		//fade out prune > max from dom and active
