@@ -7,6 +7,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @PersistenceCapable
 public class Link implements Comparable<Link> {
 	@PrimaryKey
@@ -123,4 +126,29 @@ public class Link implements Comparable<Link> {
 		return toRet.toString();
 	}
 
+	/**
+	 * Convert the Link Object to JSON
+	 * 
+	 * @return JSONObject representation of a Link
+	 */
+	public JSONObject toJson() {
+		JSONObject toRet = new JSONObject();
+		try {
+			toRet.put("id", getId());
+			toRet.put("author", getAuthor());
+			toRet.put("domain", getDomain());
+			toRet.put("name", getName());
+			toRet.put("permalink", getPermalink());
+			toRet.put("subreddit", getSubreddit());
+			toRet.put("subreddit_id", getSubredditId());
+			toRet.put("title", getTitle());
+			toRet.put("url", getUrl());
+			toRet.put("created_utc", getCreatedUtc());
+			toRet.put("is_self", isSelf());
+			toRet.put("over_18", isOver18());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return toRet;
+	}
 }

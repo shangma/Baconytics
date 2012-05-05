@@ -5,5 +5,12 @@
     <description>Scrape /r/all/top.json</description>
     <schedule>every 1 hours</schedule>
   </cron>
+  
+  
+  <cron>
+    <url>/api?action=refreshCache</url>
+    <description>Refresh API MemCache</description>
+    <schedule>every 1 hours</schedule>
+  </cron>
 </cronentries>
 

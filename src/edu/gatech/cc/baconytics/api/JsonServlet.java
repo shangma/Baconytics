@@ -28,6 +28,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.jsr107cache.GCacheFactory;
 
 import edu.gatech.cc.baconytics.model.Link;
@@ -36,47 +37,62 @@ import edu.gatech.cc.baconytics.model.PMF;
 
 public class JsonServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private static final int recordsPerHour = 100;
+	Cache cache;
 
-	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		PrintWriter writer = resp.getWriter();
-		Cache cache;
-
-		Map props = new HashMap();
-		props.put(GCacheFactory.EXPIRATION_DELTA, 3600);
+	public JsonServlet() {
+		super();
 
 		try {
+			Map props = new HashMap();
+			props.put(GCacheFactory.EXPIRATION_DELTA, 3600);
+			props.put(MemcacheService.SetPolicy.SET_ALWAYS, true);
+
 			CacheFactory cacheFactory = CacheManager.getInstance()
 					.getCacheFactory();
 			cache = cacheFactory.createCache(props);
-
-			String action = req.getParameter("action");
-			String json;
-			if (action.equals("getLinkStats")) {
-				if (cache.containsKey("getLinkStats")) {
-					json = (String) cache.get("getLinkStats");
-				} else {
-					json = getLinkStats(normalizedToMidnight(2400)).toString();
-					cache.put("getLinkStats", json);
-				}
-				writer.println(json);
-			} else {
-				writer.println(normalizedToMidnight(2400));
-			}
 		} catch (CacheException e) {
 			// ...
 		}
+	}
 
+	@Override
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		PrintWriter writer = resp.getWriter();
+
+		String action = req.getParameter("action");
+		String json = "";
+		if (action == null || action.isEmpty()) {
+			return;
+		}
+		if (action.equals("getLinkStats")) {
+			json = getLinkStats();
+		} else if (action.equals("refreshCache")) {
+			// Refresh the cache as needed
+			json = getLinkStats();
+		}
+		writer.println(json);
 		writer.close();
 	}
 
-	private int normalizedToMidnight(int seedRange) {
-		Calendar currentTime = Calendar
-				.getInstance(TimeZone.getTimeZone("EST"));
-		int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
-		return seedRange + currentHour * 100;
+	/**
+	 * Returns Links and LinkStats from MemCache (or from the datastore upon
+	 * cache miss)
+	 * 
+	 * @return String containing JSON for Links and Linkstats
+	 */
+	private String getLinkStats() {
+		String toRet;
+		if (cache.containsKey("getLinkStats")) {
+			toRet = (String) cache.get("getLinkStats");
+		} else {
+			toRet = fetchLinkStats(normalizeToMidnight(24 * recordsPerHour))
+					.toString();
+			cache.put("getLinkStats", toRet);
+		}
+		return toRet;
 	}
 
 	/**
@@ -84,23 +100,23 @@ public class JsonServlet extends HttpServlet {
 	 * 
 	 * @param range
 	 *            The number of records returned
-	 * @return JSONObject representation of LinkStats
+	 * @return JSONObject representation of Links and LinkStats
 	 */
 	@SuppressWarnings("unchecked")
-	private JSONObject getLinkStats(int range) {
+	private JSONObject fetchLinkStats(int range) {
+		// Initial JSON Variables
+		JSONObject toRet = new JSONObject();
+		JSONObject linkJson = new JSONObject();
+		JSONArray linkStatsJsonArr = new JSONArray();
+		Set<String> linkIds = new HashSet<String>();
+		Set<Link> linkSet = new HashSet<Link>();
+
 		// Query for the last [range] LinkStats
 		PersistenceManager pm = PMF.get().getPersistenceManager();
 		Query query = pm.newQuery(LinkStats.class);
 		query.setOrdering("timeSeen desc, score desc");
 		query.setRange(0, range);
 		List<LinkStats> linkStats = (List<LinkStats>) query.execute();
-
-		// Initial JSON Variables
-		JSONObject jsonObj = new JSONObject();
-		JSONObject linkArr = new JSONObject();
-		JSONArray timeWrapperArr = new JSONArray();
-		Set<String> linkIds = new HashSet<String>();
-		Set<Link> linkSet = new HashSet<Link>();
 
 		// Group LinkStats by time seen
 		Map<Long, List<LinkStats>> timeLinkMap = new HashMap<Long, List<LinkStats>>();
@@ -129,48 +145,38 @@ public class JsonServlet extends HttpServlet {
 			List<Long> keyList = new ArrayList<Long>(timeLinkMap.keySet());
 			Collections.sort(keyList);
 			for (Long timeSeen : keyList) {
-				JSONArray linkStatsArr = new JSONArray();
 				List<LinkStats> linkStatsList = timeLinkMap.get(timeSeen);
+				JSONArray timeGroupJsonArr = new JSONArray();
 				for (LinkStats e : linkStatsList) {
-					// Build JSON Data for a single LinkStat
-					JSONObject linkStatsJson = new JSONObject();
-					linkStatsJson.put("downs", e.getDowns());
-					linkStatsJson.put("num_comments", e.getNumComments());
-					linkStatsJson.put("score", e.getScore());
-					linkStatsJson.put("time_seen", e.getTimeSeen());
-					linkStatsJson.put("ups", e.getUps());
-					linkStatsJson.put("id", e.getId());
-					linkStatsArr.put(linkStatsJson);
+					timeGroupJsonArr.put(e.toJson());
 				}
-				JSONObject timeJson = new JSONObject();
-				timeJson.put("time_seen", timeSeen);
-				timeJson.put("stats", linkStatsArr);
-				timeWrapperArr.put(timeJson);
+				JSONObject timeGroupJson = new JSONObject();
+				timeGroupJson.put("time_seen", timeSeen);
+				timeGroupJson.put("stats", timeGroupJsonArr);
+				linkStatsJsonArr.put(timeGroupJson);
 			}
-
 			for (Link e : linkSet) {
-				// Build JSON Data for a single Link
-				JSONObject linkJson = new JSONObject();
-				linkJson.put("id", e.getId());
-				linkJson.put("author", e.getAuthor());
-				linkJson.put("domain", e.getDomain());
-				linkJson.put("name", e.getName());
-				linkJson.put("permalink", e.getPermalink());
-				linkJson.put("subreddit", e.getSubreddit());
-				linkJson.put("subreddit_id", e.getSubredditId());
-				linkJson.put("title", e.getTitle());
-				linkJson.put("url", e.getUrl());
-				linkJson.put("created_utc", e.getCreatedUtc());
-				linkJson.put("is_self", e.isSelf());
-				linkJson.put("over_18", e.isOver18());
-				linkArr.put(e.getId(), linkJson);
+				linkJson.put(e.getId(), e.toJson());
 			}
-
-			jsonObj.put("linkStats", timeWrapperArr);
-			jsonObj.put("link", linkArr);
+			toRet.put("linkStats", linkStatsJsonArr);
+			toRet.put("link", linkJson);
 		} catch (JSONException e1) {
 			e1.printStackTrace();
 		}
-		return jsonObj;
+		return toRet;
+	}
+
+	/**
+	 * Normalizes a range to the previous midnight (EST)
+	 * 
+	 * @param range
+	 *            the number of records fetched
+	 * @return the normalized range
+	 */
+	private int normalizeToMidnight(int range) {
+		Calendar currentTime = Calendar
+				.getInstance(TimeZone.getTimeZone("EST"));
+		int currentHour = currentTime.get(Calendar.HOUR_OF_DAY);
+		return range + currentHour * recordsPerHour;
 	}
 }

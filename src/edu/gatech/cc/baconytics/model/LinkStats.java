@@ -5,6 +5,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Text;
 
@@ -83,5 +86,25 @@ public class LinkStats implements Comparable<LinkStats> {
 		toRet.append("selftext: ").append(getSelftext().toString())
 				.append("\n");
 		return toRet.toString();
+	}
+
+	/**
+	 * Convert the LinkStats Object to JSON
+	 * 
+	 * @return JSONObject representation of a LinkStats
+	 */
+	public JSONObject toJson() {
+		JSONObject toRet = new JSONObject();
+		try {
+			toRet.put("downs", getDowns());
+			toRet.put("num_comments", getNumComments());
+			toRet.put("score", getScore());
+			toRet.put("time_seen", getTimeSeen());
+			toRet.put("ups", getUps());
+			toRet.put("id", getId());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return toRet;
 	}
 }
